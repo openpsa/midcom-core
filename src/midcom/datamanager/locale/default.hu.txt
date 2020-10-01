@@ -1,0 +1,51 @@
+---# MidCOM String Database
+---VERSION 2.1.0
+---LANGUAGE hu
+
+---STRING (confirm)
+(jóváhagyás)
+---STRINGEND
+
+---STRING archived image
+Archivált kép
+---STRINGEND
+
+---STRING captcha image alt text
+Ez egy Captcha (http://en.wikipedia.org/wiki/Captcha), a megjelenítéséhez szükséges egy grafikus webböngésző.
+---STRINGEND
+
+---STRING captcha message
+Ez egy <a target='_new' href="http://en.wikipedia.org/wiki/Captcha">Captcha.</a> A megjelenítéséhez gépelje be a képen látható karaktereket.
+---STRINGEND
+
+---STRING captcha validation failed
+A begépelt karakterek nem egyeznek meg a képen láthatóval.
+---STRINGEND
+
+---STRING form submit: cancel
+Mégsem
+---STRINGEND
+
+---STRING form submit: next
+Következő
+---STRINGEND
+
+---STRING form submit: previous
+Elöző
+---STRINGEND
+
+---STRING form submit: save
+Mentés
+---STRINGEND
+
+---STRING passwords do not match
+A jelszavak nem egyeznek.
+---STRINGEND
+
+---STRING type select: no selection
+Nincs kijelölve
+---STRINGEND
+
+---STRING widget select: other value
+Más
+---STRINGEND

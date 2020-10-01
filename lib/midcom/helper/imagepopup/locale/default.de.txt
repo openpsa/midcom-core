@@ -1,0 +1,43 @@
+---# MidCOM String Database
+---VERSION 2.1.0
+---LANGUAGE de
+
+---STRING files
+Dateien
+---STRINGEND
+
+---STRING file picker
+Datei-Auswahl
+---STRINGEND
+
+---STRING folder attachments
+Ordner-Anhänge
+---STRINGEND
+
+---STRING images
+Bilder
+---STRINGEND
+
+---STRING links
+Verknüpfungen
+---STRINGEND
+
+---STRING midcom.helper.imagepopup
+Popup zum Hinzufügen von Bildern
+---STRINGEND
+
+---STRING page attachments
+Seiten-Anhänge
+---STRINGEND
+
+---STRING unified search
+Vereinheitlichte Suche
+---STRINGEND
+
+---STRING query
+Suchbegriff
+---STRINGEND
+
+---STRING search
+Suchen
+---STRINGEND

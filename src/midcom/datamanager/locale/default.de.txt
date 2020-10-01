@@ -1,0 +1,129 @@
+---# MidCOM String Database
+---VERSION 2.1.0
+---LANGUAGE de
+
+---STRING (confirm)
+(Bestätigung)
+---STRINGEND
+
+---STRING add new file
+Neue Datei hinzufügen
+---STRINGEND
+
+---STRING archived image
+Archiv-Bild
+---STRINGEND
+
+---STRING break the lock
+Sperre brechen
+---STRINGEND
+
+---STRING captcha image alt text
+Dies ist ein Captcha (http://de.wikipedia.org/wiki/Captcha), Sie benötigen einen graphischen Browser zur Anzeige.
+---STRINGEND
+
+---STRING captcha message
+Dies ist ein <a target='_new' href="http://de.wikipedia.org/wiki/Captcha">Captcha.</a> Sie müssen die im Bild
+dargestellten Buchstaben <em>unter Berücksichtigung der Groß- und Kleinschreibung</em> eingeben.
+---STRINGEND
+
+---STRING captcha validation failed
+Die eingegebene Zeichenfolge stimmt nicht mit dem Bild überein.
+---STRINGEND
+
+---STRING could not figure out which image to show, listing files
+Konnte nicht feststellen, welches Bild gezeigt werden soll, zeige stattdessen Dateien
+---STRINGEND
+
+---STRING delete photo
+Löschen
+---STRINGEND
+
+---STRING failed to unlock, reason %s
+Das Objekt konnte nicht entsperrt werden. Ursache: %s
+---STRINGEND
+
+---STRING file
+Datei
+---STRINGEND
+
+---STRING form submit: cancel
+Abbrechen
+---STRINGEND
+
+---STRING form submit: delete
+Löschen
+---STRINGEND
+
+---STRING form submit: next
+Weiter
+---STRINGEND
+
+---STRING form submit: previous
+Zurück
+---STRINGEND
+
+---STRING form submit: save
+Speichern
+---STRINGEND
+
+---STRING lock will expire on %s
+Die Sperre läuft am %s ab
+---STRINGEND
+
+---STRING object locked
+Objekt gesperrt
+---STRINGEND
+
+---STRING passwords do not match
+Die Passwörter stimmen nicht überein.
+---STRINGEND
+
+---STRING this object was locked by %s
+Dieses Objekt wurde von %s gesperrt
+---STRINGEND
+
+---STRING type php: parse error in line %s
+Parse Error in Zeile %s
+---STRINGEND
+
+---STRING type select: no selection
+Keine Auswahl
+---STRINGEND
+
+---STRING type text: value contains an expression that is not allowed: "%s". %s
+Der Wert enthält einen unzulässigen Ausdruck: "%s". %s
+---STRINGEND
+
+---STRING type urlname: name is already taken, try "%s"
+Der Name ist bereits vergeben, versuchen sie "%s"
+---STRINGEND
+
+---STRING type urlname: name is not "URL-safe", try "%s"
+Der Name ist nicht "URL-sicher", versuchen sie "%s"
+---STRINGEND
+
+---STRING type urlname: name is not "clean", try "%s"
+Der Name ist "unsauber", versuchen sie "%s"
+---STRINGEND
+
+---STRING widget privilege: allow
+Erlauben
+---STRINGEND
+
+---STRING widget privilege: deny
+Verbieten
+---STRINGEND
+
+---STRING widget privilege: inherit
+Nicht gesetzt (vererbt)
+---STRINGEND
+
+---STRING widget privilege: inherit %s
+Vererbt (%s)
+---STRINGEND
+
+---STRING widget select: other value
+Andere Eingabe
+---STRINGEND
+

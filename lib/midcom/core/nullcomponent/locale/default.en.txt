@@ -1,0 +1,12 @@
+---# MidCOM String Database
+---VERSION 2.1.0
+---LANGUAGE en
+
+---STRING enable_folder_code_execution
+Enable execution of folder's code
+---STRINGEND
+
+---STRING midcom.core.nullcomponent
+Fallback component
+---STRINGEND
+

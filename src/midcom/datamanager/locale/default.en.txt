@@ -1,0 +1,128 @@
+---# MidCOM String Database
+---VERSION 2.1.0
+---LANGUAGE en
+
+---STRING (confirm)
+(confirm)
+---STRINGEND
+
+---STRING add new file
+Add a new file
+---STRINGEND
+
+---STRING archived image
+Archived image
+---STRINGEND
+
+---STRING break the lock
+Break the lock
+---STRINGEND
+
+---STRING captcha image alt text
+This is a Captcha (http://en.wikipedia.org/wiki/Captcha), you need a graphical browser to display it.
+---STRINGEND
+
+---STRING captcha message
+This is a <a target='_new' href="http://en.wikipedia.org/wiki/Captcha">Captcha.</a> You have to enter the
+characters displayed in the image <em>taking case sensitivity into account.</em>
+---STRINGEND
+
+---STRING captcha validation failed
+The characters entered do not match the image.
+---STRINGEND
+
+---STRING could not figure out which image to show, listing files
+Could not figure out which image to show, listing files
+---STRINGEND
+
+---STRING delete photo
+Delete
+---STRINGEND
+
+---STRING failed to unlock, reason %s
+Unlocking the object failed, reason %s.
+---STRINGEND
+
+---STRING file
+File
+---STRINGEND
+
+---STRING form submit: cancel
+Cancel
+---STRINGEND
+
+---STRING form submit: delete
+Delete
+---STRINGEND
+
+---STRING form submit: next
+Next
+---STRINGEND
+
+---STRING form submit: previous
+Previous
+---STRINGEND
+
+---STRING form submit: save
+Save
+---STRINGEND
+
+---STRING lock will expire on %s
+Lock will expire on %s
+---STRINGEND
+
+---STRING object locked
+Object locked
+---STRINGEND
+
+---STRING passwords do not match
+The passwords do not match.
+---STRINGEND
+
+---STRING this object was locked by %s
+This object was locked by %s
+---STRINGEND
+
+---STRING type php: parse error in line %s
+Parse Error in line %s
+---STRINGEND
+
+---STRING type select: no selection
+No selection
+---STRINGEND
+
+---STRING type text: value contains an expression that is not allowed: "%s". %s
+Value contains an expression that is not allowed: "%s". %s
+---STRINGEND
+
+---STRING type urlname: name is already taken, try "%s"
+Given name is already taken, try '%s'
+---STRINGEND
+
+---STRING type urlname: name is not "URL-safe", try "%s"
+Given name is not "URL-safe", try "%s"'
+---STRINGEND
+
+---STRING type urlname: name is not "clean", try "%s"
+Given name is not "clean", try '%s'
+---STRINGEND
+
+---STRING widget privilege: allow
+Allow
+---STRINGEND
+
+---STRING widget privilege: deny
+Deny
+---STRINGEND
+
+---STRING widget privilege: inherit
+Not set (inherited)
+---STRINGEND
+
+---STRING widget privilege: inherit %s
+Inherited (%s)
+---STRINGEND
+
+---STRING widget select: other value
+Other
+---STRINGEND

@@ -1,0 +1,379 @@
+form.datamanager2 label
+{
+    display: block;
+    padding: 3px 0 3px 0;
+    font-weight: bold;
+}
+
+form.datamanager2 fieldset
+{
+    border: none;
+}
+
+form.datamanager2 fieldset.fieldset
+{
+    border: solid 1px #333;
+    padding: .5em 1em;
+    margin-bottom: .75em
+}
+
+form.datamanager2 .element
+{
+    padding-bottom: .75em;
+}
+
+form.datamanager2 fieldset.radio label
+{
+    display: inline;
+    font-weight: normal;
+}
+form.datamanager2 fieldset.radio label span
+{
+    font-weight: bold;
+    margin: 0;
+    padding: 0;
+    height: 1em;
+    font-size: 1em;
+    width: 100px;
+    margin-right: 6px;
+    display: inline-block;
+}
+
+form.datamanager2 input.radiobutton
+{
+    display: inline;
+}
+
+form.datamanager2 fieldset
+{
+    margin: 0;
+    padding: 0;
+}
+
+form.datamanager2 fieldset legend
+{
+    font-weight: bold;
+    padding: 1px 3px;
+}
+
+form.datamanager2 label span.field_text
+{
+    margin-right: 1em;
+}
+
+form.datamanager2 .error,
+form.datamanager2 .field_error
+{
+    color: red;
+}
+
+form.datamanager2 .error input
+{
+    border-color: red;
+}
+
+form.datamanager2 fieldset.account legend,
+form.datamanager2 fieldset.blob legend,
+form.datamanager2 fieldset.image legend,
+form.datamanager2 fieldset.radiobox legend,
+form.datamanager2 fieldset.mailtemplate legend
+{
+    font-weight: normal;
+}
+
+form.datamanager2 fieldset.radiobox label,
+form.datamanager2 fieldset.checkbox label
+{
+    display: inline;
+    margin: 0 10px 0 0;
+    white-space: nowrap;
+    font-weight: normal;
+}
+
+form.datamanager2 fieldset.radiobox .separator-vertical,
+form.datamanager2 fieldset.checkbox .separator-vertical
+{
+    display: block;
+}
+
+form.datamanager2 fieldset.radiobox input,
+form.datamanager2 fieldset.checkbox input
+{
+    display: inline;
+    vertical-align: top;
+}
+
+form.datamanager2 .preview-image
+{
+	max-width: 75px;
+	max-height: 75px;
+}
+
+form.datamanager2 div.image_frame
+{
+    width: 180px;
+    height: 140px;
+    margin: 0px;
+    padding: 0px;
+    border: none;
+    overflow: scroll;
+}
+
+/* Save and cancel buttons */
+form.datamanager2 div.form_toolbar
+{
+    margin-top: 1.5em
+}
+
+form.datamanager2 div.form_toolbar .submit
+{
+    background-image: url('');
+    background-repeat: no-repeat;
+    background-position: 1px center;
+    border-style: outset;
+    padding: 0 .3em;
+}
+
+form.datamanager2 div.form_toolbar .save
+{
+    padding-left: 19px;
+    background-image: url('../stock-icons/16x16/save.png');
+}
+
+form.datamanager2 div.form_toolbar .cancel
+{
+    padding-left: 19px;
+    background-image: url('../stock-icons/16x16/cancel.png');
+}
+
+form.datamanager2 div.form_toolbar .previous
+{
+    padding-left: 19px;
+    background-image: url('../stock-icons/16x16/previous.png');
+}
+
+form.datamanager2 div.form_toolbar .next
+{
+    padding-left: 19px;
+    background-image: url('../stock-icons/16x16/next.png');
+}
+
+form.datamanager2 div.form_toolbar .delete
+{
+    padding-left: 19px;
+    background-image: url('../stock-icons/16x16/trash.png');
+}
+
+form.datamanager2 div.form_toolbar .preview
+{
+    padding-left: 19px;
+    background-image: url('../stock-icons/16x16/view.png');
+}
+
+/* Checkbox display */
+form.datamanager2 .element_checkbox label,
+form.datamanager2 .element_checkbox .input
+{
+    display: inline;
+}
+
+/* Selection lists */
+div.form_multiselect ul
+{
+    margin: 0px;
+    padding: 0px;
+}
+div.form_multiselect ul li
+{
+    list-style: none;
+}
+
+form.datamanager2 table.datamanager_table
+{
+    margin: 1em;
+}
+
+form.datamanager2 table.datamanager_table td
+{
+    border: 0.2px solid #000000;
+    text-align: center;
+}
+
+form.datamanager2 table.datamanager_table td.datamanager_table_rows_header
+{
+    font-weight:bold;
+    padding:0.3em;
+}
+
+form.datamanager2 table.datamanager_table td input.shorttext
+{
+    border:none;
+    background-color: #EAE8E3;
+    text-align: left;
+}
+
+form.datamanager2 img.captcha
+{
+    display: block;
+}
+
+form.datamanager2 fieldset.checkbox
+{
+    border: none;
+}
+form.datamanager2 fieldset.checkbox input.radiobutton
+{
+    clear: left;
+    float: left;
+}
+
+form.datamanager2 tr
+{
+  vertical-align: top;
+}
+
+form.datamanager2 td.midcom_helper_datamanager2_helper_sortable .enabled
+{
+  cursor: pointer;
+}
+
+.CodeMirror
+{
+    resize: vertical;
+}
+
+.CodeMirror .activeline
+{
+    background-color: #f5f5f5;
+}
+
+.CodeMirror-focused .activeline
+{
+    background-color: #eff5ff;
+}
+
+form.datamanager2 .ui-sortable > *
+{
+    cursor: move
+}
+
+form.datamanager2 .element_subform .input a.button
+{
+    border: solid 1px #ddd;
+    padding: .2em 1em;
+    border-radius: .3em;
+    cursor: pointer;
+    background-color: white;
+}
+form.datamanager2 .element_subform .input a.button:hover
+{
+	text-decoration: none;
+}
+
+form.datamanager2 .element_subform .input .remove-item
+{
+    float: right
+}
+
+form.datamanager2 .element_subform fieldset
+{
+    border: solid 1px #ddd;
+    padding: .5em;
+    margin-bottom: .75em;
+    border-radius: .3em;
+}
+
+form.datamanager2 .element_subform fieldset legend
+{
+    font-weight: normal;
+}
+
+form.datamanager2 .attachment-container
+{
+    display: table-row
+}
+
+form.datamanager2 .attachment-preview,
+form.datamanager2 .attachment-input
+{
+    display: table-cell
+}
+
+form.datamanager2 .attachment-preview
+{
+    padding: 0 1em;
+    vertical-align: middle
+}
+
+form.datamanager2 .attachment-preview .icon
+{
+    position: relative;
+    opacity: .5;
+    transition: opacity .3s;
+}
+form.datamanager2 .attachment-preview a.icon:hover
+{
+    opacity: .9
+}
+
+form.datamanager2 .attachment-preview .icon i
+{
+    font-size: 52px;
+    color: rgba(0, 0, 0, .7);
+}
+
+form.datamanager2 .attachment-preview .icon .extension
+{
+    color: white;
+    background-color: #d41f2a;
+    position: absolute;
+    right: -2px;
+    bottom: 4px;
+    padding: 0 .25em;
+    text-transform: uppercase;
+    font-size: 11px;
+    border-radius: 1px;
+}
+
+form.datamanager2 .attachment-preview .no-file
+{
+    opacity: .3
+}
+
+form.datamanager2 .attachment-preview .unsaved-file
+{
+    opacity: .4
+}
+
+.CodeMirror .activeline
+{
+    background-color: #f5f5f5;
+}
+
+.CodeMirror-focused .activeline
+{
+    background-color: #eff5ff;
+}
+
+.element_markdown .CodeMirror,
+.element_markdown .CodeMirror-scroll
+{
+	min-height: 3em;
+}
+
+.ui-datepicker-trigger {
+    font-family: FontAwesome;
+    border: none;
+    margin-left: .3em;
+    vertical-align: middle;
+    opacity: .75;
+    cursor: pointer;
+    background-color: transparent;
+    font-size: 14px;
+}
+
+.ui-datepicker-trigger:hover,
+.ui-datepicker-trigger:active
+{
+    opacity: 1;
+}

@@ -1,0 +1,6 @@
+'name' => 'midcom.core.nullcomponent',
+'icon' => 'square-o',
+'purecode' => false,
+'privileges' => [],
+'class_mapping' => [],
+'description' => 'MidCOM nomodule handler',

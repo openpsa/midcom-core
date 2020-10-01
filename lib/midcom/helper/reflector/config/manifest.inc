@@ -1,0 +1,6 @@
+'name' => 'midcom.helper.reflector',
+'purecode' => true,
+'icon' => 'object-group',
+'privileges' => [],
+'class_mapping' => [],
+'description' => 'Contains helper methods for shortcutting common reflection based tasks',

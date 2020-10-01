@@ -1,0 +1,6 @@
+'name' => 'midcom.admin.help',
+'icon' => 'question-circle',
+'description' => 'On-site help displayer',
+'purecode' => true,
+'privileges' => [],
+'class_mapping' => [],

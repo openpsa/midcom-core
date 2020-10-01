@@ -1,0 +1,85 @@
+.table_widget
+{
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+.table_widget thead
+{
+    background-color: #555753;
+    color: #ffffff;
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+.table_widget thead th,
+.table_widget td
+{
+    padding-left: 4px;
+    padding-right: 2px;
+    text-align: left;
+}
+
+.table_widget thead th
+{
+    padding: 2px 20px 2px 5px;
+    cursor: pointer;
+    white-space: nowrap;
+    position: relative;
+}
+
+.table_widget thead th:before {
+    content: '';
+    position: absolute;
+    top: 7px;
+    right: 7px;
+    border-style: solid;
+    border-color: white transparent;
+    visibility: hidden;
+    opacity: 0;
+    user-select: none;
+}
+
+.table_widget thead th.headerSortUp:before {
+    border-bottom: none;
+    border-width: 4px 4px 0;
+}
+
+.table_widget thead th.headerSortDown:before {
+    border-width: 0 4px 4px;
+}
+
+.table_widget thead th.headerSortUp:before,
+.table_widget thead th.headerSortDown:before {
+    visibility: visible;
+    opacity: .7;
+}
+.table_widget td
+{
+    padding: 2px 5px
+}
+.table_widget tbody tr:nth-child(odd) td
+{
+    background-color: #eeeeef;
+}
+
+.table_widget tbody tr:nth-child(even) td
+{
+    background-color: white;
+}
+
+.table_widget tbody tr.row_selected td
+{
+    background-color: #C0CEDE;
+    color: #000000;
+}
+
+.table_widget tbody tr:nth-child(odd).row_selected td
+{
+    background-color: #DFE6EE;
+}
+
+.table_widget td.nowrap
+{
+    white-space: nowrap
+}

@@ -1,0 +1,36 @@
+URL Methods to the root page
+===
+The following URL parameters are recognized by the _process function and are
+executed before any component processing is done. They all belong to the
+domain "midcom", e.g. they are executed like this: midcom-$name-$value.
+
+<b>GUID serveattachmentguid</b>
+
+This method will serve the attachment denoted by the given ID/GUID.
+It uses the default expiration time of serve_attachment (see there).
+
+<b>GUID permalink</b>
+
+This will resolve the given GUID into the MidCOM NAP tree, relocating to the
+URL corresponding to the node/leaf. The Permalink can be created by using the
+key MIDCOM_NAV_PERMALINK of any NAP data array. Upon resolving it, MidCOM will
+relocate to the automatically computed MIDCOM_NAV_FULLURL.
+
+<b>string exec</b>
+
+Allows you to execute certain php files directly, in full MidCOM context.
+The argument is the name of the component, which holds the script to be
+executed. Script files are searched in the subdirectory "exec" of the component.
+If you use "midcom" as component name, MidCOM core scripts, located in
+lib/midcom/exec will be accessible. The next argument on the command line must
+be the name of the script file. Accessing subdirectories is not possible, only
+a single argument will be taken.
+
+The scripts executed need to do their own permission checks, they will work with
+the credentials of the current MidCOM instance unconditionally.
+
+Example: http://$host/midcom-exec-midcom/purge_deleted.php
+
+<b>string cache</b>
+
+"invalidate" will clear the cache of the current site 

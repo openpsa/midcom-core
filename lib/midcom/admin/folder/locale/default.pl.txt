@@ -1,0 +1,219 @@
+---# MidCOM String Database
+---VERSION 2.1.0
+---LANGUAGE pl
+
+---STRING author
+Autor
+---STRINGEND
+
+---STRING authors
+Autorzy
+---STRINGEND
+
+---STRING by score
+Sortowanie ręczne
+---STRINGEND
+
+---STRING cancelled
+Anulowano
+---STRINGEND
+
+---STRING could not save folder: %s
+Nie mogę zapisać folderu. Powód:
+---STRINGEND
+
+---STRING create folder
+Utwórz folder
+---STRINGEND
+
+---STRING create subfolder
+Utwórz folder
+---STRINGEND
+
+---STRING created
+Utworzono
+---STRINGEND
+
+---STRING creator
+Twórca
+---STRINGEND
+
+---STRING default
+Domyślnie
+---STRINGEND
+
+---STRING default sort order
+Domyślne sortowanie
+---STRINGEND
+
+---STRING delete folder
+Usuń folder
+---STRINGEND
+
+---STRING edit folder
+Edytuj folder
+---STRINGEND
+
+---STRING edit folder %s
+Edytuj folder "%s"
+---STRINGEND
+
+---STRING edit folder metadata
+Edytuj metadane folderu
+---STRINGEND
+
+---STRING edit layout template
+Edytuj szablony
+---STRINGEND
+
+---STRING edit metadata
+Edytuj metadane
+---STRINGEND
+
+---STRING edit metadata of %s
+Edytuj metadane "%s"
+---STRINGEND
+
+---STRING exported
+Eksportowano
+---STRINGEND
+
+---STRING failed to create a new style template: %s
+Błąd dodania stylu: %s
+---STRINGEND
+
+---STRING folder created
+Folder utworzono
+---STRINGEND
+
+---STRING folder page class
+Styl CSS
+---STRINGEND
+
+---STRING folder saved
+Folder zapisano
+---STRINGEND
+
+---STRING folder type
+Typ folderu
+---STRINGEND
+
+---STRING folders first
+Najpierw foldery
+---STRINGEND
+
+---STRING hide from navigation
+Ukryj w nawigacji
+---STRINGEND
+
+---STRING imported
+Importowano
+---STRINGEND
+
+---STRING inherit style
+Dziedzicz szablon do podfolderów
+---STRINGEND
+
+---STRING midcom.admin.folder
+Zarządzanie folderami
+---STRINGEND
+
+---STRING move
+Przenieś
+---STRINGEND
+
+---STRING move %s
+Przenieś %s
+---STRINGEND
+
+---STRING nav order
+Kolejność nawigacji
+---STRINGEND
+
+---STRING new layout template
+[Nowy styl]
+---STRINGEND
+
+---STRING new style created
+Utworzono nowy styl
+---STRINGEND
+
+---STRING no sortable elements found
+Brak elementów do sortowania
+---STRINGEND
+
+---STRING objects with no navigation entry are still accessible on-site if the url is known
+Obiekty ukryte w nawigacji nadal można osiągną bezpośrednim URLem
+---STRINGEND
+
+---STRING order navigation
+Ustalanie kolejności elementów
+---STRINGEND
+
+---STRING order navigation in folder %s
+Ustalanie kolejności elementów w "%s"
+---STRINGEND
+
+---STRING owner
+Właściciel
+---STRINGEND
+
+---STRING pages first
+Najpierw strony
+---STRINGEND
+
+---STRING prevent entering
+Zabroń dostępu
+---STRINGEND
+
+---STRING privilege template_management
+Zarządzanie szablonami
+---STRINGEND
+
+---STRING privilege topic_management
+Zarządzanie folderami
+---STRINGEND
+
+---STRING published
+Publikacja
+---STRINGEND
+
+---STRING revised
+Zmiana
+---STRINGEND
+
+---STRING revision
+Wersja
+---STRINGEND
+
+---STRING revisor
+Autor zmiany
+---STRINGEND
+
+---STRING schedule end
+Wyświetlaj do (puste - bez limitu)
+---STRINGEND
+
+---STRING schedule start
+Wyświetlaj od (puste - natychmiast)
+---STRINGEND
+
+---STRING scheduling
+Wyświetlanie
+---STRINGEND
+
+---STRING select the ordering method first to sort the pages
+Metoda sortowania
+---STRINGEND
+
+---STRING size
+Rozmiar
+---STRINGEND
+
+---STRING style
+Szablon stylu
+---STRINGEND
+
+---STRING style template
+Szablon stylu
+---STRINGEND

@@ -1,0 +1,155 @@
+services:
+    subscriber:
+        class: midcom\httpkernel\subscriber
+
+    streamed_response_listener:
+        class: Symfony\Component\HttpKernel\EventListener\StreamedResponseListener
+
+    watcher:
+        class: midcom\events\watcher
+        arguments: ['@componentloader']
+
+    event_dispatcher:
+        class: Symfony\Component\EventDispatcher\EventDispatcher
+        calls:
+            - [addSubscriber, ['@subscriber']]
+            - [addSubscriber, ['@streamed_response_listener']]
+            - [addSubscriber, ['@watcher']]
+            - [addSubscriber, ['@cache']]
+
+    dispatcher:
+        alias: event_dispatcher
+        public: true
+
+    logger.formatter:
+        class: Monolog\Formatter\LineFormatter
+        arguments: [null, null, true, true]
+
+    logger.filehandler:
+        class: Monolog\Handler\StreamHandler
+        calls:
+            - [setFormatter, ['@logger.formatter']]
+
+    logger:
+        class: Monolog\Logger
+        arguments: [midcom]
+        calls:
+            - [pushHandler, ['@logger.filehandler']]
+
+    controller_resolver:
+        class:  Symfony\Component\HttpKernel\Controller\ControllerResolver
+
+    request_stack:
+        class: Symfony\Component\HttpFoundation\RequestStack
+
+    arguments_resolver:
+        class: Symfony\Component\HttpKernel\Controller\ArgumentResolver
+
+    http_kernel:
+        class: Symfony\Component\HttpKernel\HttpKernel
+        arguments: ['@event_dispatcher', '@controller_resolver', '@request_stack', '@arguments_resolver']
+        public: true
+
+    auth.acl:
+        class: midcom_services_auth_acl
+
+    auth:
+        class: midcom_services_auth
+        public: true
+        arguments: ['@auth.acl']
+
+    componentloader:
+        class: midcom_helper__componentloader
+        public: true
+
+    cache:
+        class: midcom_services_cache
+        public: true
+
+    cache.module.content:
+        class: midcom_services_cache_module_content
+        arguments: ['@config', '@cache.module.content.backend', '@cache.module.content_data.backend']
+
+    cache.module.content.backend:
+        class: Doctrine\Common\Cache\VoidCache
+
+    cache.module.content_data.backend:
+        class: Doctrine\Common\Cache\VoidCache
+
+    cache.module.memcache:
+        class: midcom_services_cache_module_memcache
+        arguments: ['@config', '@cache.module.memcache.backend']
+
+    cache.module.memcache.backend:
+        class: Doctrine\Common\Cache\VoidCache
+
+    cache.module.nap:
+        class: midcom_services_cache_module_nap
+        arguments: ['@cache.module.nap.backend']
+
+    cache.module.nap.backend:
+        class: Doctrine\Common\Cache\VoidCache
+
+    config:
+        synthetic: true
+        public: true
+
+    dbclassloader:
+        class: midcom_services_dbclassloader
+        public: true
+
+    dbfactory:
+        class: midcom_helper__dbfactory
+        public: true
+
+    debug:
+       class:  midcom_debug
+       arguments: ['@logger']
+       public: true
+
+    head:
+        class: midcom_helper_head
+        public: true
+
+    i18n:
+        class: midcom_services_i18n
+        arguments: ['@request_stack', '%midcom.i18n_fallback_language%']
+        public: true
+
+    indexer:
+        class: midcom_services_indexer
+        public: true
+
+    indexer.backend:
+        class: midcom_services_indexer_backend_solr
+        arguments: ['@config']
+        
+    metadata:
+        class: midcom_services_metadata
+        public: true
+
+    permalinks:
+        class: midcom_services_permalinks
+        public: true
+
+    rcs:
+        class: midcom_services_rcs
+        arguments: ['@config']
+        public: true
+
+    session:
+        class: midcom_services__sessioning
+        arguments: ['@request_stack']
+        public: true
+
+    style:
+        class: midcom_helper_style
+        public: true
+
+    toolbars:
+        class: midcom_services_toolbars
+        public: true
+
+    uimessages:
+        class: midcom_services_uimessages
+        public: true

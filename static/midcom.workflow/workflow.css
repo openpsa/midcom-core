@@ -1,0 +1,73 @@
+.midcom-workflow-dialog
+{
+    z-index: 100000;
+    box-shadow: 0 1rem 3rem rgba(0,0,0,.175)
+}
+
+.midcom-view-toolbar
+{
+    display: none;
+}
+
+.midcom-workflow-dialog .ui-dialog-content {
+    overflow: hidden;
+}
+
+.midcom-workflow-dialog .ui-widget-header.ui-dialog-titlebar {
+    background-color: transparent;
+    border-color: transparent;
+}
+
+.midcom-workflow-dialog .ui-dialog-title {
+    font-size: 120%
+}
+
+.midcom-workflow-dialog .ui-widget-content .ui-dialog-buttonset {
+    float: none;
+    text-align: right;
+}
+
+.midcom-workflow-dialog .ui-dialog-buttonset .dialog-extra-button {
+    float: left;
+    margin: 0.5em 0 0.5em 0.4em
+}
+
+.midcom-workflow-dialog .ui-dialog-content > i,
+.midcom-delete-dialog > .spinner i
+{
+    font-size: 32px;
+    color: orange;
+}
+
+.midcom-workflow-dialog .ui-dialog-content > i
+{
+    position: absolute;
+    top: calc(50% - 16px);
+    left: calc(50% - 16px);
+}
+
+.midcom-delete-dialog > .spinner
+{
+    height: 40px;
+    text-align: center;
+    display: none;
+}
+
+.midcom-delete-dialog.loading > .spinner
+{
+    display: block;
+}
+
+.midcom-delete-dialog .warning
+{
+    color: red;
+    font-weight: bold;
+}
+
+#delete-child-list ul
+{
+    list-style: none;
+    padding-left: 32px;
+    padding-bottom: 6px;
+    margin-left: 0;
+}

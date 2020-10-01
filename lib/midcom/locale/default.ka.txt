@@ -1,0 +1,20 @@
+---# MidCOM String Database
+---VERSION 2.1.0
+---LANGUAGE ka
+
+---STRING component configuration
+კომპონენტის კონფიგურაცია
+---STRINGEND
+
+---STRING create %s
+თემის %s
+---STRINGEND
+
+---STRING delete
+წაშლა
+---STRINGEND
+
+---STRING logout
+გამოსვლა
+---STRINGEND
+

@@ -1,0 +1,75 @@
+---# MidCOM String Database
+---VERSION 2.1.0
+---LANGUAGE pl
+
+---STRING back to %s
+Idź do strony "%s"
+---STRINGEND
+
+---STRING changes done in revision %s to %s
+Zmiany z wersji %s do %s
+---STRINGEND
+
+---STRING date
+Data
+---STRINGEND
+
+---STRING lines
+Linie
+---STRINGEND
+
+---STRING message
+Info
+---STRINGEND
+
+---STRING midcom.admin.rcs
+Kontrola wersji
+---STRINGEND
+
+---STRING restore to version %s failed, reason %s
+Przywrócenie wersji %s nieudane: %s
+---STRINGEND
+
+---STRING restore to version %s successful
+Przywrócono wersję %s
+---STRINGEND
+
+---STRING restore version %s
+Przywróć wersję %s
+---STRINGEND
+
+---STRING revision
+Wersja
+---STRINGEND
+
+---STRING revision history of %s
+Historia wersji %s
+---STRINGEND
+
+---STRING show history
+Pokaż historię
+---STRINGEND
+
+---STRING user
+Użytkownik
+---STRINGEND
+
+---STRING version %s
+Wersja %s
+---STRINGEND
+
+---STRING viewing version %s of %s
+%s: wersja %s
+---STRINGEND
+
+---STRING differences between %s and %s
+Zmiany między wersją %s i %s
+---STRINGEND
+
+---STRING no changes in content
+Brak zmian w treści
+---STRINGEND
+
+---STRING show differences
+Pokaż zmiany
+---STRINGEND

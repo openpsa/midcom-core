@@ -1,0 +1,163 @@
+services:
+    form.resolved_type_factory:
+        class: Symfony\Component\Form\ResolvedFormTypeFactory
+
+    form.type_extension.midcom.form.extension:
+        class: midcom\datamanager\extension\formExtension
+        arguments: ['@auth']
+        tags:
+            - {name: 'form.type_extension', extended-type: Symfony\Component\Form\Extension\Core\Type\FormType}
+
+    form.type_extension.midcom.button.extension:
+        class: midcom\datamanager\extension\buttonExtension
+        tags:
+            - {name: 'form.type_extension', extended-type: Symfony\Component\Form\Extension\Core\Type\ButtonType}
+
+    form.type_extension.midcom.text.extension:
+        class: midcom\datamanager\extension\textExtension
+        tags:
+            - {name: 'form.type_extension', extended-type: Symfony\Component\Form\Extension\Core\Type\TextType}
+
+    form.type_extension.midcom.textarea.extension:
+        class: midcom\datamanager\extension\textareaExtension
+        tags:
+            - {name: 'form.type_extension', extended-type: Symfony\Component\Form\Extension\Core\Type\TextareaType}
+
+    form.type.captcha:
+        class: midcom\datamanager\extension\type\captchaType
+        arguments: ['@i18n']
+        tags: ['form.type']
+
+    form.type.privilege:
+        class: midcom\datamanager\extension\type\privilegeType
+        arguments: ['@auth', '@dbfactory']
+        tags: ['form.type']
+
+    form.type.tinymce:
+        class: midcom\datamanager\extension\type\tinymceType
+        arguments: ['@i18n']
+        tags: ['form.type']
+
+    form.type.toolbar:
+        class: midcom\datamanager\extension\type\toolbarType
+        arguments: ['@i18n']
+        tags: ['form.type']
+
+    form.property_accessor:
+        class: Symfony\Component\PropertyAccess\PropertyAccessorInterface
+        factory: [Symfony\Component\PropertyAccess\PropertyAccess, 'createPropertyAccessor']
+
+    form.choice_list_factory.default:
+        class: Symfony\Component\Form\ChoiceList\Factory\DefaultChoiceListFactory
+
+    form.choice_list_factory.property_access:
+        class: Symfony\Component\Form\ChoiceList\Factory\PropertyAccessDecorator
+        arguments: ['@form.choice_list_factory.default', '@form.property_accessor']
+
+    form.choice_list_factory:
+        class: Symfony\Component\Form\ChoiceList\Factory\CachingFactoryDecorator
+        arguments: ['@form.choice_list_factory.property_access']
+
+    form.type.form:
+        class: Symfony\Component\Form\Extension\Core\Type\FormType
+        arguments: ['@form.property_accessor']
+        tags: ['form.type']
+
+    form.type.choice:
+        class: Symfony\Component\Form\Extension\Core\Type\ChoiceType
+        arguments: ['@form.choice_list_factory']
+        tags: ['form.type']
+
+    form.type.file:
+        class: Symfony\Component\Form\Extension\Core\Type\FileType
+        arguments: ['@translator']
+        tags: ['form.type']
+
+    form.type_extension.form.transformation_failure_handling:
+        class: Symfony\Component\Form\Extension\Core\Type\TransformationFailureExtension
+        arguments: ['@translator']
+        tags:
+            - {name: 'form.type_extension', extended-type: Symfony\Component\Form\Extension\Core\Type\FormType}
+
+    form.server_params:
+        class: Symfony\Component\Form\Util\ServerParams
+        arguments: ['@request_stack']
+
+    form.type_extension.form.request_handler:
+        class: Symfony\Component\Form\Extension\HttpFoundation\HttpFoundationRequestHandler
+        arguments: ['@form.server_params']
+
+    form.type_extension.form.http_foundation:
+        class: Symfony\Component\Form\Extension\HttpFoundation\Type\FormTypeHttpFoundationExtension
+        arguments: ['@form.type_extension.form.request_handler']
+        tags: ['form.type_extension']
+
+    translator.xliff_file_loader:
+        class: Symfony\Component\Translation\Loader\XliffFileLoader
+
+    translator:
+        class: Symfony\Component\Translation\Translator
+        factory: ['@i18n', 'get_translator']
+        calls:
+            - ['addLoader', [xlf, '@translator.xliff_file_loader']]
+
+    form.csrf_token_storage:
+        class: Symfony\Component\Security\Csrf\TokenStorage\SessionTokenStorage
+        arguments: ['@session']
+
+    form.csrf_token_manager:
+        class: Symfony\Component\Security\Csrf\CsrfTokenManager
+        arguments: [null, '@form.csrf_token_storage']
+
+    form.type_extension.csrf:
+        class: Symfony\Component\Form\Extension\Csrf\Type\FormTypeCsrfExtension
+        arguments: ['@form.csrf_token_manager', true, '_token', '@translator', null, '@form.server_params']
+        tags: ['form.type_extension']
+
+    validator.builder:
+        class: Symfony\Component\Validator\ValidatorBuilder
+        factory: [Symfony\Component\Validator\Validation, createValidatorBuilder]
+        calls:
+            - ['setTranslator', ['@translator']]
+
+    validator:
+        class: Symfony\Component\Validator\Validator\ValidatorInterface
+        factory: ['@validator.builder', getValidator]
+
+    form.type_guesser.validator:
+        class: Symfony\Component\Form\Extension\Validator\ValidatorTypeGuesser
+        arguments: ['@validator']
+        tags: ['form.type_guesser']
+
+    form.type_extension.form.validator:
+        class: Symfony\Component\Form\Extension\Validator\Type\FormTypeValidatorExtension
+        arguments: ['@validator']
+        tags:
+            - {name: 'form.type_extension', extended-type: Symfony\Component\Form\Extension\Core\Type\FormType}
+
+    form.type_extension.repeated.validator:
+        class: Symfony\Component\Form\Extension\Validator\Type\RepeatedTypeValidatorExtension
+        tags: ['form.type_extension']
+
+    form.type_extension.submit.validator:
+        class: Symfony\Component\Form\Extension\Validator\Type\SubmitTypeValidatorExtension
+        tags:
+            - {name: 'form.type_extension', extended-type: Symfony\Component\Form\Extension\Core\Type\SubmitType}
+
+    form.type_extension.upload.validator:
+        class: Symfony\Component\Form\Extension\Validator\Type\UploadValidatorExtension
+        arguments: ['@translator']
+        tags: ['form.type_extension']
+
+    form.extension:
+        class: Symfony\Component\Form\Extension\DependencyInjection\DependencyInjectionExtension
+        arguments: [null, [], !iterator []]
+
+    form.registry:
+        class: Symfony\Component\Form\FormRegistry
+        arguments: [['@form.extension'], '@form.resolved_type_factory']
+
+    form.factory:
+        class: Symfony\Component\Form\FormFactory
+        arguments: ['@form.registry']
+        public: true

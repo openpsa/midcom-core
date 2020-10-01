@@ -1,0 +1,28 @@
+---# MidCOM String Database
+---VERSION 2.1.0
+---LANGUAGE en
+
+---STRING failed
+Failed
+---STRINGEND
+
+---STRING midcom.services.at
+Scheduled command execution
+---STRINGEND
+
+---STRING running
+Running
+---STRINGEND
+
+---STRING scheduled
+Scheduled
+---STRINGEND
+
+---STRING status
+Status
+---STRINGEND
+
+---STRING time
+Time
+---STRINGEND
+

@@ -1,0 +1,119 @@
+---# MidCOM String Database
+---VERSION 2.1.0
+---LANGUAGE pl
+
+---STRING (confirm)
+(potwierdź)
+---STRINGEND
+
+---STRING add new file
+Dodaj plik
+---STRINGEND
+
+---STRING archived image
+Zapisany obraz
+---STRINGEND
+
+---STRING break the lock
+Usuń blokadę edycji
+---STRINGEND
+
+---STRING captcha image alt text
+To jest Captcha (http://en.wikipedia.org/wiki/Captcha), musisz mieć przeglądarkę wyświetlającą grafikę.
+---STRINGEND
+
+---STRING captcha message
+To jest <a target='_new' href="http://en.wikipedia.org/wiki/Captcha">Captcha.</a> Wpisz podane znaki <em>zachowując ich wielkość.</em>
+---STRINGEND
+
+---STRING captcha validation failed
+Wpisano niepoprawne znaki.
+---STRINGEND
+
+---STRING could not figure out which image to show, listing files
+Nie wiem, który obraz pokazać - wyświetlam listę.
+---STRINGEND
+
+---STRING delete photo
+Usunąć
+---STRINGEND
+
+---STRING failed to unlock, reason %s
+Odblokowanie obiektu nieudane (%s).
+---STRINGEND
+
+---STRING form submit: cancel
+Anuluj
+---STRINGEND
+
+---STRING form submit: next
+Dalej
+---STRINGEND
+
+---STRING form submit: previous
+Wstecz
+---STRINGEND
+
+---STRING form submit: save
+Zapisz
+---STRINGEND
+
+---STRING lock will expire on %s
+Blokada wygaśnie %s
+---STRINGEND
+
+---STRING object locked
+Obiekt zablokowany
+---STRINGEND
+
+---STRING passwords do not match
+Hasła nie pasują
+---STRINGEND
+
+---STRING this object was locked by %s
+Obiekt zablokowany przez %s
+---STRINGEND
+
+---STRING type php: parse error in line %s
+Błąd składni w linii %s
+---STRINGEND
+
+---STRING type select: no selection
+Brak wyboru
+---STRINGEND
+
+---STRING type text: value contains an expression that is not allowed: "%s". %s
+Nieprawidłowe wyrażenie: "%s". %s
+---STRINGEND
+
+---STRING type urlname: name is already taken, try "%s"
+Nazwa już zajęta, spróbuj '%s'
+---STRINGEND
+
+---STRING type urlname: name is not "URL-safe", try "%s"
+Nazwa nie jest bezpieczna dla URLi, spróbuj '%s'
+---STRINGEND
+
+---STRING type urlname: name is not "clean", try "%s"
+Nazwa nie jest "czysta", spróbuj '%s'
+---STRINGEND
+
+---STRING widget privilege: allow
+Zezwalaj
+---STRINGEND
+
+---STRING widget privilege: deny
+Zabroń
+---STRINGEND
+
+---STRING widget privilege: inherit
+Nie ustawione (dziedziczone)
+---STRINGEND
+
+---STRING widget privilege: inherit %s
+Dziedziczone (%s)
+---STRINGEND
+
+---STRING widget select: other value
+Inne
+---STRINGEND

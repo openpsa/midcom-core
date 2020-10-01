@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Schema xmlns="http://www.midgard-project.org/repligard/1.4">
+    <type name="openpsa_person" extends="midgard_person" table="person">
+        <property name="homephone" type="string">
+            <description>Home phone number of the person</description>
+        </property>
+        <property name="handphone" type="string">
+            <description>Cell phone number of the person</description>
+        </property>
+        <property name="workphone" type="string">
+            <description>Work phone name of the person</description>
+        </property>
+        <property name="homepage" type="string">
+            <description>Homepage URL of the person</description>
+        </property>
+        <property name="email"    type="string" index="yes">
+            <description>Email address of the person</description>
+        </property>
+        <property name="street"   type="string">
+            <description>Street address of the person</description>
+        </property>
+        <property name="postcode" type="string">
+            <description>Zip code of the person</description>
+        </property>
+        <property name="city"     type="string">
+            <description>City of the person</description>
+        </property>
+        <property name="extra"    type="text">
+            <description>Additional information about the person</description>
+        </property>
+    </type>
+
+    <type name="midgard_article" table="article" parent="midgard_topic">
+        <property name="id" type="unsigned integer" primaryfield="id">
+            <description>Local non-replication-safe database identifier</description>
+        </property>
+        <property name="name"     type="string" index="yes">
+            <description>URL name of the article</description>
+        </property>
+        <property name="extra1"   type="string">
+            <description>Extra string field</description>
+        </property>
+        <property name="extra2"   type="string">
+            <description>Extra string field</description>
+        </property>
+        <property name="extra3"   type="string">
+            <description>Extra string field</description>
+        </property>
+        <property name="type"     type="integer" index="yes">
+            <description>Type of the article</description>
+        </property>
+        <property name="up"       type="unsigned integer" link="midgard_article:id" upfield="up">
+            <description>Possible prior part of the article</description>
+        </property>
+        <property name="topic"    type="unsigned integer" link="midgard_topic:id" parentfield="topic">
+            <description>Topic the article is under</description>
+        </property>
+        <property name="title"    type="string">
+            <description>Title of the article</description>
+        </property>
+        <property name="abstract" type="text">
+            <description>Short abstract of the article</description>
+        </property>
+        <property name="content"  type="text">
+            <description>Content of the article</description>
+        </property>
+        <property name="url"      type="string" index="yes">
+            <description>External URL of the article</description>
+        </property>
+    </type>
+
+    <type name="midgard_topic" table="topic">
+        <property name="id" type="unsigned integer" primaryfield="id">
+            <description>Local non-replication-safe database identifier</description>
+        </property>
+        <property name="name"     type="string" index="yes">
+            <description>URL name of the topic</description>
+        </property>
+        <property name="code"     type="text">
+            <description>Executable PHP code for topic display</description>
+        </property>
+        <property name="up"       link="midgard_topic:id" type="unsigned integer" upfield="up">
+            <description>Topic the topic is under</description>
+        </property>
+        <!-- MidCOM properties -->
+        <property name="component"    type="string" index="yes">
+            <description>MidCOM component responsible for the topic</description>
+        </property>
+        <property name="style"    type="string" index="yes">
+            <description>MidCOM style path for the topic</description>
+        </property>
+        <property name="styleInherit"    type="boolean" field="style_inherit" index="yes">
+            <description>Whether the MidCOM style should be inherited to subtopics</description>
+        </property>
+        <property name="title"    type="string">
+            <description>Title of the topic</description>
+        </property>
+        <property name="extra"    type="text">
+            <description>Extra information about the topic</description>
+        </property>
+        <property name="description" type="text">
+            <description>Topic description</description>
+        </property>
+    </type>
+
+    <type name="midgard_snippetdir" table="snippetdir">
+        <property name="id" type="unsigned integer" primaryfield="id">
+            <description>Local non-replication-safe database identifier</description>
+        </property>
+        <property name="name" type="string" index="yes" unique="yes">
+            <description>Path name of the snippetdir</description>
+        </property>
+        <property name="up" type="unsigned integer" link="midgard_snippetdir:id" upfield="up">
+            <description>Snippetdir the snippetdir is under</description>
+        </property>
+    </type>
+
+    <type name="midgard_snippet" table="snippet" parent="midgard_snippetdir">
+        <property name="id" type="unsigned integer" primaryfield="id">
+            <description>Local non-replication-safe database identifier</description>
+        </property>
+        <property name="name" type="string" index="yes" unique="yes">
+            <description>Path name of the snippet</description>
+        </property>
+        <property name="snippetdir" type="unsigned integer" link="midgard_snippetdir:id" parentfield="snippetdir">
+            <description>Snippetdir the snippet is under</description>
+        </property>
+        <property name="code" type="text">
+            <description>Code of the snippet</description>
+        </property>
+        <property name="doc" type="text">
+            <description>Documentation of the snippet</description>
+        </property>
+    </type>
+
+    <type name="midgard_style" table="style">
+        <property name="id" type="unsigned integer" primaryfield="id">
+            <description>Local non-replication-safe database identifier</description>
+        </property>
+        <property name="name"     type="string" index="yes" unique="yes">
+            <description>Path name of the style</description>
+        </property>
+        <property name="up"       type="unsigned integer" link="midgard_style:id" upfield="up">
+            <description>Style the style is under</description>
+        </property>
+    </type>
+
+    <type name="midgard_element" table="element" parent="midgard_style">
+        <property name="id" type="unsigned integer" primaryfield="id">
+            <description>Local non-replication-safe database identifier</description>
+        </property>
+        <property name="name"     type="string" index="yes" unique="yes">
+            <description>Path name of the element</description>
+        </property>
+        <property name="style"    type="unsigned integer" link="midgard_style:id" parentfield="style">
+            <description>Style the element is in</description>
+        </property>
+        <property name="value"    type="text">
+            <description>Contents of the style element</description>
+        </property>
+    </type>
+
+    <type name="midgard_group" table="grp">
+        <property name="id" type="unsigned integer" primaryfield="id">
+            <description>Local non-replication-safe database identifier</description>
+        </property>
+        <property name="name"     type="string" index="yes" unique="yes">
+            <description>Path name of the group</description>
+        </property>
+        <property name="official" type="string">
+            <description>Official name of the group</description>
+        </property>
+        <property name="street"   type="string">
+            <description>Street address of the group</description>
+        </property>
+        <property name="postcode" type="string">
+            <description>Zip code of the group</description>
+        </property>
+        <property name="city"     type="string">
+            <description>City of the group</description>
+        </property>
+        <property name="country"  type="string">
+            <description>Country of the group</description>
+        </property>
+        <property name="homepage" type="string">
+            <description>Homepage URL of the group</description>
+        </property>
+        <property name="email"    type="string">
+            <description>Email of the group</description>
+        </property>
+        <property name="phone"    type="string">
+            <description>Phone number of the group</description>
+        </property>
+        <property name="fax"      type="string">
+            <description>Fax number of the group</description>
+        </property>
+        <property name="extra"    type="text">
+            <description>Additional information about the group</description>
+        </property>
+        <property name="owner"    link="midgard_group:id" type="unsigned integer" upfield="owner">
+            <description>Group the group is under</description>
+        </property>
+    </type>
+
+    <type name="midgard_member" table="member">
+        <property name="id" type="unsigned integer" primaryfield="id">
+            <description>Local non-replication-safe database identifier</description>
+        </property>
+        <property name="uid"      type="unsigned integer" link="midgard_person:id">
+            <description>Identifier of the user that belongs to a group</description>
+        </property>
+        <property name="gid"      type="unsigned integer" link="midgard_group:id" parentfield="gid">
+            <description>Identifier of the group that the user belongs to</description>
+        </property>
+        <property name="extra"    type="string">
+            <description>Additional information about the membership</description>
+        </property>
+    </type>
+
+</Schema>

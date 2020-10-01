@@ -1,0 +1,79 @@
+---# MidCOM String Database
+---VERSION 2.1.0
+---LANGUAGE hu
+
+---STRING default
+Alapértelmezett
+---STRINGEND
+
+---STRING delete folder
+Mappa törlése
+---STRINGEND
+
+---STRING folder type
+Mappa típus
+---STRINGEND
+
+---STRING midcom.admin.folder
+Mappa menedzsment
+---STRINGEND
+
+---STRING size
+Méret
+---STRINGEND
+
+---STRING style
+Stílus sablon
+---STRINGEND
+
+---STRING create folder
+Mappa létrehozása
+---STRINGEND
+
+---STRING created
+Létrehozva
+---STRINGEND
+
+---STRING creator
+Létrehozó
+---STRINGEND
+
+---STRING edit folder
+Mappa szerkesztése
+---STRINGEND
+
+---STRING edit folder %s
+%s mappa szerkesztése
+---STRINGEND
+
+---STRING edit metadata
+Metaadat szerkesztése
+---STRINGEND
+
+---STRING edit metadata of %s
+%s metaadat szerkesztése
+---STRINGEND
+
+---STRING exported
+Exportálva
+---STRINGEND
+
+---STRING failed to create a new style template: %s
+Nem sikerült új stílus sablont létrehozni: %s
+---STRINGEND
+
+---STRING imported
+Importálva
+---STRINGEND
+
+---STRING owner
+Tulajdonos
+---STRINGEND
+
+---STRING privilege topic_management
+Mappakezelés
+---STRINGEND
+
+---STRING published
+Publikálva
+---STRINGEND

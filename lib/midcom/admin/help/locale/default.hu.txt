@@ -1,0 +1,16 @@
+---# MidCOM String Database
+---VERSION 2.1.0
+---LANGUAGE hu
+
+---STRING help
+Online súgó
+---STRINGEND
+
+---STRING help for %s in %s
+%s online súgója %s témakörben
+---STRINGEND
+
+---STRING midcom.admin.help
+Online súgó
+---STRINGEND
+

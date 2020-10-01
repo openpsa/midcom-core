@@ -1,0 +1,76 @@
+---# MidCOM String Database
+---VERSION 2.1.0
+---LANGUAGE fi
+
+---STRING back to %s
+Takaisin sivulle "%s"
+---STRINGEND
+
+---STRING changes done in revision %s to %s
+Version %s muutokset tietueeseen %s
+---STRINGEND
+
+---STRING date
+Päivämäärä
+---STRINGEND
+
+---STRING differences between %s and %s
+Versioiden %s ja %s väliset erot
+---STRINGEND
+
+---STRING lines
+Rivit
+---STRINGEND
+
+---STRING message
+Viesti
+---STRINGEND
+
+---STRING no changes in content
+Sisällössä ei muutoksia
+---STRINGEND
+
+---STRING midcom.admin.rcs
+Versionhallinta
+---STRINGEND
+
+---STRING restore to version %s failed, reason %s
+Palautus versioon %s epäonnistui, syy %s
+---STRINGEND
+
+---STRING restore to version %s successful
+Palautus versioon %s onnistui
+---STRINGEND
+
+---STRING restore version %s
+Palauta versio %s
+---STRINGEND
+
+---STRING revision
+Versio
+---STRINGEND
+
+---STRING revision history of %s
+Muutoshistoria tietueelle %s
+---STRINGEND
+
+---STRING show history
+Näytä versiohistoria
+---STRINGEND
+
+---STRING user
+Käyttäjä
+---STRINGEND
+
+---STRING version %s
+Versio %s
+---STRINGEND
+
+---STRING viewing version %s of %s
+Versio %s tietueesta %s
+---STRINGEND
+
+---STRING show differences
+Näytä erot
+---STRINGEND
+

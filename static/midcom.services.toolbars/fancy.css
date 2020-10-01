@@ -1,0 +1,292 @@
+@media print
+{
+  .midcom_services_toolbars_fancy
+  {
+    display: none !important;
+    height: 0 !important;
+  }
+}
+
+.midcom_services_toolbars_fancy
+{
+    display: block;
+    z-index: 9999;
+    height: 22px;
+    position: fixed !important;
+    background-color: #eee;
+    color: #222;
+    margin: 0;
+    padding: 0;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #888 #444 #333 #888;
+    font-size: 11px;
+    cursor: default;
+    line-height: 18px;
+    vertical-align: middle;
+    box-shadow: 3px 4px 7px rgba(0, 0, 0, .25)
+}
+
+.midcom_services_toolbars_fancy:hover
+{
+    z-index: 100001;
+}
+.midcom_services_toolbars_fancy.type_palette
+{
+    border-radius: 0.6em;
+}
+
+.midcom_services_toolbars_fancy li,
+.midcom_services_toolbars_fancy li button
+{
+  font-size: 11px !important;
+}
+
+.midcom_services_toolbars_fancy .midcom_services_toolbars_topic_title:hover,
+.midcom_services_toolbars_fancy .midcom_services_toolbars_topic_title.hover,
+.midcom_services_toolbars_fancy a:hover,
+.midcom_services_toolbars_fancy ul li a.selected,
+.midcom_services_toolbars_fancy ul li button:focus,
+.midcom_services_toolbars_fancy button:hover
+{
+    color: HighlightText !important;
+    background-color: Highlight !important;
+}
+
+.midcom_services_toolbars_fancy,
+.midcom_services_toolbars_fancy .midcom_services_toolbars_topic_title,
+.midcom_services_toolbars_fancy li,
+.midcom_services_toolbars_fancy a,
+.midcom_services_toolbars_fancy ul li button
+{
+    font-family: 'Verdana', 'Arial', 'Helvetica', sans-serif !important;
+    background-image: none;
+}
+
+.midcom_services_toolbars_fancy .midcom_services_toolbars_topic_title
+{
+    margin-bottom: 0px;
+    padding: 1px 8px;
+    font-size: 1.1em;
+    text-shadow: 1px 1px 1px rgba(255, 255, 255, .6);
+}
+
+.midcom_services_toolbars_fancy ul li
+{
+  display: block !important;
+  line-height: 16px;
+  text-align: left;
+  list-style-type: none;
+  white-space: nowrap !important;
+  z-index: 7010 !important;
+  padding: 1px 0;
+  margin: 0px;
+  width: 100%;
+  min-width: 7em;
+}
+
+.midcom_services_toolbars_fancy .logos
+{
+    margin-left: 2px;
+    margin-right: 2px;
+    padding-top: 0.1em;
+    float: left;
+    clear: right;
+}
+.midcom_services_toolbars_fancy .logos img
+{
+    border: none;
+}
+.midcom_services_toolbars_fancy .items
+{
+    display: inline-block;
+    margin: 0;
+    margin-left: 5px;
+    line-height: 20px;
+}
+.midcom_services_toolbars_fancy .items div.item
+{
+    width: auto;
+    margin: auto 0;
+    padding-left: 1px;
+    padding-bottom: 1px;
+    float: left;
+    clear: right;
+    background-color: transparent;
+}
+
+.midcom_services_toolbars_fancy .items div.item .midcom_services_toolbars_topic_title
+{
+    display: block;
+}
+
+.midcom_services_toolbars_fancy div.dragbar
+{
+    repeating-linear-gradient(315deg, transparent, transparent 2.1px, #fff 2.1px, #fff 2.8px);
+    height: 20px;
+    width: 20px;
+    cursor: move;
+    position: absolute;
+    right: 3px;
+    top: 0
+}
+
+.midcom_services_toolbars_fancy div.minimizer
+{
+    background: url('../stock-icons/logos/midgard-16x16.png') no-repeat top right;
+    display: inline-block;
+    height: 20px;
+    width: 20px;
+    cursor: pointer;
+}
+
+.midcom_services_toolbars_fancy .items div.item ul
+{
+    margin-top: 0px;
+    margin-left: -1px;
+    text-align: left;
+    padding: 3px 0 6px 0;
+    background-color: rgba(255, 255, 255, 0.95);
+    border: #444444 solid 1px;
+    border-top-color: #999;
+    border-bottom-left-radius: 0.4em;
+    border-bottom-right-radius: 0.4em;
+    color: #000000;
+    position: absolute;
+    display: none;
+    box-shadow: 1px 2px 7px rgba(0, 0, 0, .25)
+}
+
+.midcom_services_toolbars_fancy .items div.item ul li.disabled img
+{
+    opacity: 0.3;
+}
+
+.midcom_services_toolbars_fancy .items div.item ul li.disabled abbr,
+.midcom_services_toolbars_fancy .items div.item ul li.disabled span
+{
+    color: #b0b0b0;
+    cursor: default;
+}
+
+.midcom_services_toolbars_fancy .items div.item ul li.separator
+{
+    height: 6px;
+    line-height: 6px;
+    padding-top: 5px;
+    padding-bottom: 2px;
+}
+
+.midcom_services_toolbars_fancy .items div.item ul li.separator hr
+{
+    margin: 0;
+    padding: 0;
+}
+
+.midcom_services_toolbars_fancy .items div.item ul li a,
+.midcom_services_toolbars_fancy .items div.item ul li abbr,
+.midcom_services_toolbars_fancy .items div.item ul li button
+{
+    display: block;
+    font-weight: 300;
+    color: #3F3F3F;
+    text-decoration: none;
+    padding: 0 5px 0 4px;
+    margin: 0 2px;
+}
+
+.midcom_services_toolbars_fancy .items div.item ul li button
+{
+    height: 20px;
+    margin-left: 6px;
+}
+
+.midcom_services_toolbars_fancy .items div.item ul li i
+{
+    font-size: 140%;
+    opacity: .5;
+    vertical-align: baseline;
+    margin: 2px 0;
+    width: 16px;
+    height: 16px;
+    text-align: center;
+}
+
+.midcom_services_toolbars_fancy .items div.item ul li:hover i
+{
+    opacity: .95;
+}
+
+.midcom_services_toolbars_fancy .items div.item ul li img
+{
+    padding: 0;
+    border: 0;
+    vertical-align: middle;
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+
+.midcom_services_toolbars_fancy .items div.item ul li abbr
+{
+    border-bottom: none;
+}
+
+.midcom_services_toolbars_fancy .items div.item ul li form
+{
+    padding: 0;
+    border: 0px;
+    margin: 0;
+    display: inline;
+}
+
+.midcom_services_toolbars_fancy .items div.item ul li button
+{
+    border: 0;
+    border-spacing: 0;
+    border-style: none;
+    background-color: transparent;
+    color: #3F3F3F;
+    cursor: pointer;
+    text-align: left;
+    width: 100%;
+    padding: 0;
+    cursor: pointer;
+}
+
+.midcom_services_toolbars_fancy .items div.item ul li button img
+{
+    padding: 0;
+    margin: 0;
+    border: 0;
+    display: inline;
+    vertical-align: middle;
+}
+
+.midcom_services_toolbars_fancy.type_menu
+{
+    border-width: 0 0 1px 0;
+    position: fixed;
+    left: 0px !important;
+    top: 0px !important;
+    width: 100% !important;
+    border-color: rgba(240, 240, 240, 0.85);
+    background-color: rgba(240, 240, 240, 0.9);
+    padding-left: 1em;
+}
+
+#midcom_services_toolbars_minimizer
+{
+    position: fixed;
+    top: 3px;
+    left: 3px;
+    width: 38px;
+    height: 43px;
+    background-image: url('../stock-icons/logos/midgard-monochrome.png');
+    z-index: 1000;
+    cursor: pointer
+}
+
+#midcom_services_toolbars_minimizer.toolbar-visible
+{
+    display: none;
+}

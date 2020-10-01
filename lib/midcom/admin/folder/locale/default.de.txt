@@ -1,0 +1,223 @@
+---# MidCOM String Database
+---VERSION 2.1.0
+---LANGUAGE de
+
+---STRING author
+Verfasser
+---STRINGEND
+
+---STRING authors
+Verfasser
+---STRINGEND
+
+---STRING by score
+von Hand sortiert
+---STRINGEND
+
+---STRING cancelled
+Abgebrochen
+---STRINGEND
+
+---STRING could not save folder: %s
+Ordner konnte nicht gespeichert werden. Ursache: %s
+---STRINGEND
+
+---STRING create folder
+Ordner anlegen
+---STRINGEND
+
+---STRING create subfolder
+Unterordner anlegen
+---STRINGEND
+
+---STRING created
+Erstellungszeit
+---STRINGEND
+
+---STRING creator
+Ersteller
+---STRINGEND
+
+---STRING default
+Standard
+---STRINGEND
+
+---STRING default sort order
+Standard-Sortierreihenfolge
+---STRINGEND
+
+---STRING delete folder
+Ordner löschen
+---STRINGEND
+
+---STRING edit folder
+Ordner bearbeiten
+---STRINGEND
+
+---STRING edit folder %s
+Ordner "%s" bearbeiten
+---STRINGEND
+
+---STRING edit folder metadata
+Metadaten des Ordners bearbeiten
+---STRINGEND
+
+---STRING edit layout template
+Layout-Vorlage bearbeiten
+---STRINGEND
+
+---STRING edit metadata
+Metadaten bearbeiten
+---STRINGEND
+
+---STRING edit metadata of %s
+Metadaten von '%s' bearbeiten
+---STRINGEND
+
+---STRING exported
+Exportiert
+---STRINGEND
+
+---STRING failed to create a new style template: %s
+Neue Stilvorlage konnte nicht erstellt werden: %s
+---STRINGEND
+
+---STRING folder created
+Ordner erstellt
+---STRINGEND
+
+---STRING folder page class
+Ordner-Klasse
+---STRINGEND
+
+---STRING folder saved
+Ordner gespeichert
+---STRINGEND
+
+---STRING folder type
+Ordner-Typ
+---STRINGEND
+
+---STRING folders first
+Ordner zuerst
+---STRINGEND
+
+---STRING hide from navigation
+In der Navigation unsichtbar
+---STRINGEND
+
+---STRING imported
+Importiert
+---STRINGEND
+
+---STRING inherit style
+Stilvorlage an Unterordner vererben
+---STRINGEND
+
+---STRING midcom.admin.folder
+Ordnerverwaltung
+---STRINGEND
+
+---STRING move
+Verschieben
+---STRINGEND
+
+---STRING move %s
+Verschiebe %s
+---STRINGEND
+
+---STRING moved %s to %s
+%s wurde nach %s verschoben
+---STRINGEND
+
+---STRING nav order
+Reihenfolge der Navigationselemente
+---STRINGEND
+
+---STRING new layout template
+[Neue Stilvorlage]
+---STRINGEND
+
+---STRING new style created
+Neue Stilvorlage wurde erstellt
+---STRINGEND
+
+---STRING no sortable elements found
+keine sortierbaren Elemente gefunden
+---STRINGEND
+
+---STRING order navigation
+Navigationselemente anordnen
+---STRINGEND
+
+---STRING order navigation in folder %s
+Navigationselemente im Ordner "%s" anordnen
+---STRINGEND
+
+---STRING owner
+Besitzer
+---STRINGEND
+
+---STRING pages first
+Seiten zuerst
+---STRINGEND
+
+---STRING prevent entering
+Zugriff verhindern
+---STRINGEND
+
+---STRING privilege template_management
+Stilvorlagen-Verwaltung
+---STRINGEND
+
+---STRING privilege topic_management
+Ordner-Verwaltung
+---STRINGEND
+
+---STRING published
+Veröffentlicht
+---STRINGEND
+
+---STRING revised
+Letzte Bearbeitung
+---STRINGEND
+
+---STRING revision
+Revision
+---STRINGEND
+
+---STRING revisor
+Revisor
+---STRINGEND
+
+---STRING schedule end
+Anzeigen bis (für unbegrenzte Anzeige frei lassen)
+---STRINGEND
+
+---STRING schedule start
+Veröffentlichen am (für sofortige Veröffentlichung frei lassen)
+---STRINGEND
+
+---STRING scheduling
+Zeitgesteuerte Veröffentlichung
+---STRINGEND
+
+---STRING select the ordering method first to sort the pages
+Wählen Sie eine Sortiermethode, um die Seiten anzuordnen
+---STRINGEND
+
+---STRING size
+Größe
+---STRINGEND
+
+---STRING style
+Stilvorlage
+---STRINGEND
+
+---STRING style template
+Stilvorlage
+---STRINGEND
+
+---STRING objects with no navigation entry are still accessible on-site if the url is known
+Objekte ohne Navigationseintrag sind weiterhin verfügbar, insofern die URL bekannt ist
+---STRINGEND

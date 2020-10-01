@@ -1,0 +1,684 @@
+---# MidCOM String Database
+---VERSION 2.1.0
+---LANGUAGE en
+
+---STRING %s (%s)
+%s (%s)
+---STRINGEND
+
+---STRING %s deleted items
+%s deleted items
+---STRINGEND
+
+---STRING %s is under type %s
+%s is under type %s.
+---STRINGEND
+
+---STRING %s trash
+%s trash
+---STRINGEND
+
+---STRING 1 day
+1 day
+---STRINGEND
+
+---STRING 1 month
+1 month
+---STRINGEND
+
+---STRING 1 week
+1 week
+---STRINGEND
+
+---STRING ANONYMOUS
+Anonymous users
+---STRINGEND
+
+---STRING EVERYONE
+Everyone
+---STRINGEND
+
+---STRING USERS
+All users
+---STRINGEND
+
+---STRING actions
+Actions
+---STRINGEND
+
+---STRING add assignee
+Add group for privilege assignment
+---STRINGEND
+
+---STRING add parameter
+Add parameter
+---STRINGEND
+
+---STRING add text file
+Add text file
+---STRINGEND
+
+---STRING all of the following items will be deleted
+All of the following items will be deleted
+---STRINGEND
+
+---STRING always display in top frame
+Always display in top frame
+---STRINGEND
+
+---STRING any
+Any
+---STRINGEND
+
+---STRING apply to selected
+Apply to selected
+---STRINGEND
+
+---STRING asgard
+Asgard
+---STRINGEND
+
+---STRING asgard for
+Asgard for
+---STRINGEND
+
+---STRING attachment
+Attachment
+---STRINGEND
+
+---STRING attachment %s undeleted
+Attachment %s undeleted
+---STRINGEND
+
+---STRING attachments
+Attachments
+---STRINGEND
+
+---STRING attachments of %s %s
+Attachments of %s "%s"
+---STRINGEND
+
+---STRING back to site
+Back to site
+---STRINGEND
+
+---STRING cascading style sheet
+Cascading Style Sheet
+---STRINGEND
+
+---STRING child types of %s
+Child types of %s
+---STRINGEND
+
+---STRING clear all
+Clear all
+---STRINGEND
+
+---STRING choose the target
+Choose the target
+---STRINGEND
+
+---STRING code
+Code
+---STRINGEND
+
+---STRING component
+Component
+---STRINGEND
+
+---STRING components
+Components
+---STRINGEND
+
+---STRING configuration for %s
+Configuration for component %s
+---STRINGEND
+
+---STRING configuration save failed: %s
+Configuration save failed: %s
+---STRINGEND
+
+---STRING configuration saved successfully
+Configuration saved successfully
+---STRINGEND
+
+---STRING content
+Content
+---STRINGEND
+
+---STRING copy %s
+Copy %s
+---STRINGEND
+
+---STRING copy %s and its descendants
+Copy "%s" and its descendants
+---STRINGEND
+
+---STRING copy attachments
+Copy attachments
+---STRINGEND
+
+---STRING copy metadata
+Copy metadata
+---STRINGEND
+
+---STRING copy parameters
+Copy parameters
+---STRINGEND
+
+---STRING copy successful, you have been relocated to the new object
+Copy successful, you have been relocated to the new object.
+---STRINGEND
+
+---STRING copy successful, you have been relocated to the root of the new object tree
+Copy successful, you have been relocated to the root of the new object tree.
+---STRINGEND
+
+---STRING copy to editor
+Copy to editor
+---STRINGEND
+
+---STRING copy tree
+Copy tree
+---STRINGEND
+
+---STRING create %s under %s
+Create %s under %s
+---STRINGEND
+
+---STRING created by
+Created by
+---STRINGEND
+
+---STRING created by %s on %s
+Created by %s on %s
+---STRINGEND
+
+---STRING created on
+Created on
+---STRINGEND
+
+---STRING creating new style element
+Elements you can use in this Style
+---STRINGEND
+
+---STRING delete %s %s
+Delete %s "%s"
+---STRINGEND
+
+---STRING deleted by
+Deleted by
+---STRINGEND
+
+---STRING deleted on
+Deleted on
+---STRINGEND
+
+---STRING dependencies
+Dependencies
+---STRINGEND
+
+---STRING disable rcs
+Disable RCS for this action
+---STRINGEND
+
+---STRING dropdown list
+Dropdown list
+---STRINGEND
+
+---STRING edit %s %s
+Edit %s "%s"
+---STRINGEND
+
+---STRING edit configuration for %s
+Edit configuration for component %s
+---STRINGEND
+
+---STRING edit configuration for %s folder %s
+Edit configuration for component %s folder %s
+---STRINGEND
+
+---STRING edit file %s
+Edit file %s
+---STRINGEND
+
+---STRING edit text file
+Edit text file
+---STRINGEND
+
+---STRING editor options
+Editor options
+---STRINGEND
+
+---STRING element %s from component %s
+Element "%s" used in %s
+---STRINGEND
+
+---STRING element defaults
+Default contents of the element
+---STRINGEND
+
+---STRING enable quicklinks
+Enable quicklinks
+---STRINGEND
+
+---STRING exclude
+Exclude
+---STRINGEND
+
+---STRING expanded list
+Expanded list
+---STRINGEND
+
+---STRING failed purging %s, reason %s
+Failed purging %s, reason %s
+---STRINGEND
+
+---STRING failed purging attachment %s => %s, reason %s
+Failed purging attachment %s => %s, reason %s
+---STRINGEND
+
+---STRING failed undeleting %s, reason %s
+Failed undeleting %s, reason %s
+---STRINGEND
+
+---STRING failed undeleting attachment %s, reason %s
+Failed undeleting attachment %s, reason %s
+---STRINGEND
+
+---STRING file contents
+File contents
+---STRINGEND
+
+---STRING file information
+File information
+---STRINGEND
+
+---STRING filename
+Filename
+---STRINGEND
+
+---STRING filter
+Filter
+---STRINGEND
+
+---STRING global
+Global
+---STRINGEND
+
+---STRING global value
+Global value
+---STRINGEND
+
+---STRING group %s
+Group %s
+---STRINGEND
+
+---STRING guid
+Unique identifier
+---STRINGEND
+
+---STRING html
+HTML
+---STRINGEND
+
+---STRING in %s
+in %s
+---STRINGEND
+
+---STRING in total %s purged
+In total %s purged
+---STRINGEND
+
+---STRING in total %s undeleted
+In total %s undeleted
+---STRINGEND
+
+---STRING include
+Include
+---STRINGEND
+
+---STRING info
+Info
+---STRINGEND
+
+---STRING inherited
+Inherited
+---STRINGEND
+
+---STRING interface language
+Interface language
+---STRINGEND
+
+---STRING invert selection
+Invert selection
+---STRINGEND
+
+---STRING items in trash
+Items in trash
+---STRINGEND
+
+---STRING javascript
+JavaScript
+---STRINGEND
+
+---STRING last edited by %s on %s (revision %s)
+Last edited by %s on %s (revision %s)
+---STRINGEND
+
+---STRING libraries
+Libraries
+---STRINGEND
+
+---STRING local
+Local
+---STRINGEND
+
+---STRING localisation settings
+Localisation settings
+---STRINGEND
+
+---STRING manage object
+Manage object
+---STRINGEND
+
+---STRING metadata of %s %s
+Metadata of %s "%s"
+---STRINGEND
+
+---STRING mgdschema type visibility in navigation
+MgdSchema type visibility in navigation
+---STRINGEND
+
+---STRING midcom:approve
+Approve
+---STRINGEND
+
+---STRING midcom:component_config
+Configuration
+---STRINGEND
+
+---STRING midcom:urlname
+URL name editing
+---STRINGEND
+
+---STRING midgard objects
+Midgard objects
+---STRINGEND
+
+---STRING midgard.admin.asgard
+Midgard Administration UI
+---STRINGEND
+
+---STRING midgard:attachments
+Attachments
+---STRINGEND
+
+---STRING midgard:create
+Create
+---STRINGEND
+
+---STRING midgard:delete
+Delete
+---STRINGEND
+
+---STRING midgard:owner
+Owner
+---STRINGEND
+
+---STRING midgard:parameters
+Parameters
+---STRINGEND
+
+---STRING midgard:read
+Read
+---STRINGEND
+
+---STRING midgard:update
+Update
+---STRINGEND
+
+---STRING midgard:privileges
+Privileges
+---STRINGEND
+
+---STRING mimetype
+MIME type
+---STRINGEND
+
+---STRING model for selecting navigation types
+Model for selecting navigation types
+---STRINGEND
+
+---STRING navigation options
+Navigation options
+---STRINGEND
+
+---STRING navigation type
+Navigation type
+---STRINGEND
+
+---STRING navigation width
+Navigation width
+---STRINGEND
+
+---STRING navigation width (in pixels)
+Navigation width (in pixels)
+---STRINGEND
+
+---STRING no files
+No files
+---STRINGEND
+
+---STRING no title
+No title
+---STRINGEND
+
+---STRING not approved
+Not approved
+---STRINGEND
+
+---STRING not inherited
+Not inherited
+---STRINGEND
+
+---STRING object %s approved
+Object %s approved
+---STRINGEND
+
+---STRING object %s removed
+Object %s removed
+---STRINGEND
+
+---STRING object deleted
+Object deleted
+---STRINGEND
+
+---STRING objects revised within
+Objects changed within
+---STRINGEND
+
+---STRING only mine
+Only mine
+---STRINGEND
+
+---STRING owner
+Owner
+---STRINGEND
+
+---STRING parameter
+Parameter
+---STRINGEND
+
+---STRING parameters of %s %s
+Parameters of %s "%s"
+---STRINGEND
+
+---STRING permissions for %s %s
+Permissions for %s %s
+---STRINGEND
+
+---STRING plain text
+Plain text
+---STRINGEND
+
+---STRING preferences saved
+Preferences saved
+---STRINGEND
+
+---STRING privilege reserve
+Reserve
+---STRINGEND
+
+---STRING privileges
+Permissions
+---STRINGEND
+
+---STRING purge
+Purge
+---STRINGEND
+
+---STRING recent changes
+Recent Changes
+---STRINGEND
+
+---STRING regular expression for selecting mgdschema types
+Regular expression for selecting MgdSchema types
+---STRINGEND
+
+---STRING require authentication
+Require authentication
+---STRINGEND
+
+---STRING restore from browser
+Restore from browser
+---STRINGEND
+
+---STRING revised by
+Revised by
+---STRINGEND
+
+---STRING revised on
+Revised on
+---STRINGEND
+
+---STRING revision
+Revision
+---STRINGEND
+
+---STRING revision comment
+Revision comment
+---STRINGEND
+
+---STRING run
+Run
+---STRINGEND
+
+---STRING save in browser
+Save in browser
+---STRINGEND
+
+---STRING script output
+Script Output
+---STRINGEND
+
+---STRING search
+Search
+---STRINGEND
+
+---STRING select all
+Select all
+---STRINGEND
+
+---STRING select the types
+Select the types
+---STRINGEND
+
+---STRING show all %s %s entries
+Show all %s %s entries
+---STRINGEND
+
+---STRING show %s %s children
+Show %s %s children
+---STRINGEND
+
+---STRING shell
+Shell
+---STRINGEND
+
+---STRING size
+Size
+---STRINGEND
+
+---STRING this is a midgard core type
+This is a Midgard CMS core type.
+---STRINGEND
+
+---STRING this type belongs to %s component
+This type belongs to %s component.
+---STRINGEND
+
+---STRING trash
+Trash
+---STRINGEND
+
+---STRING trash is empty
+Trash is empty
+---STRINGEND
+
+---STRING type
+Type
+---STRINGEND
+
+---STRING type documentation
+Type documentation
+---STRINGEND
+
+---STRING undelete
+Undelete
+---STRINGEND
+
+---STRING under %s
+Under %s
+---STRINGEND
+
+---STRING unknown person
+Unknown person
+---STRINGEND
+
+---STRING upload file
+Upload file
+---STRINGEND
+
+---STRING url
+URL
+---STRINGEND
+
+---STRING use edit mode instead of view mode as the primary object management page
+Use edit mode instead of view mode as the primary object management page
+---STRINGEND
+
+---STRING use codemirror editor for editing code snippets
+Use CodeMirror editor for editing code snippets
+---STRINGEND
+
+---STRING use tinymce editor for editing content
+Use TinyMCE editor for editing content
+---STRINGEND
+
+---STRING user preferences
+User preferences
+---STRINGEND
+
+---STRING value
+Value
+---STRINGEND
+
+---STRING view on site
+View on-site
+---STRINGEND
+
+---STRING xml
+XML
+---STRINGEND
+

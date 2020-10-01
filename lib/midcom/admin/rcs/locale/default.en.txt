@@ -1,0 +1,80 @@
+---# MidCOM String Database
+---VERSION 2.1.0
+---LANGUAGE en
+
+---STRING back to %s
+Back to page "%s"
+---STRINGEND
+
+---STRING changes done in revision %s to %s
+Changes done in revision %s to %s
+---STRINGEND
+
+---STRING date
+Date
+---STRINGEND
+
+---STRING differences between %s and %s
+Differences between %s and %s
+---STRINGEND
+
+---STRING lines
+Lines
+---STRINGEND
+
+---STRING message
+Message
+---STRINGEND
+
+---STRING no changes in content
+No changes in content
+---STRINGEND
+
+---STRING midcom.admin.rcs
+Revision control
+---STRINGEND
+
+---STRING no revisions exist
+No revisions exist
+---STRINGEND
+
+---STRING restore to version %s failed, reason %s
+Restore to version %s failed, reason %s
+---STRINGEND
+
+---STRING restore to version %s successful
+Restore to version %s was successful
+---STRINGEND
+
+---STRING restore version %s
+Restore version %s
+---STRINGEND
+
+---STRING revision
+Revision
+---STRINGEND
+
+---STRING revision history of %s
+Revision history of %s
+---STRINGEND
+
+---STRING show differences
+Show differences
+---STRINGEND
+
+---STRING show history
+Show revision history
+---STRINGEND
+
+---STRING user
+User
+---STRINGEND
+
+---STRING version %s
+Version %s
+---STRINGEND
+
+---STRING viewing version %s of %s
+Version %s of %s
+---STRINGEND
+

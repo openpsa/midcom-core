@@ -1,0 +1,54 @@
+#midcom_admin_folder_order_form .fa-spinner
+{
+	font-size: 32px;
+	text-align: center;
+	padding: 1em;
+	color: orange;
+	display: none;
+}
+#midcom_admin_folder_order_form.loading > div
+{
+	display: none;
+}
+#midcom_admin_folder_order_form.loading .fa-spinner
+{
+	display: block
+}
+
+#midcom_admin_folder_order_form li
+{
+  display: block;
+  white-space: nowrap;
+}
+
+#midcom_admin_folder_order_form ul.sortable
+{
+  padding: 0.5em 0;
+  margin: 1em 0;
+}
+
+#midcom_admin_folder_order_form ul.sortable li
+{
+  list-style: none;
+  cursor: move;
+  font-weight: normal;
+  height: 18px;
+}
+
+#midcom_admin_folder_order_form ul.sortable li:hover
+{
+  font-weight: bold;
+}
+
+#midcom_admin_folder_order_form ul.sortable li i
+{
+    width: 16px;
+    text-align: center;
+    font-size: 14px;
+    opacity: .7;
+    transition: opacity .2s
+}
+#midcom_admin_folder_order_form ul.sortable li:hover i
+{
+    opacity: 1;
+}

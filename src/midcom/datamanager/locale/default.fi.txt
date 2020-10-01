@@ -1,0 +1,119 @@
+---# MidCOM String Database
+---VERSION 2.1.0
+---LANGUAGE fi
+
+---STRING (confirm)
+(vahvista)
+---STRINGEND
+
+---STRING break the lock
+Murra lukko
+---STRINGEND
+
+---STRING add new file
+Lisää uusi tiedosto
+---STRINGEND
+
+---STRING archived image
+Arkistoitu kuva
+---STRINGEND
+
+---STRING captcha image alt text
+Tämä on Captcha-kuva (http://en.wikipedia.org/wiki/Captcha). Sen näyttämiseen tarvitaan graafinen selain.
+---STRINGEND
+
+---STRING captcha message
+Tämä on <a target='_new' href="http://en.wikipedia.org/wiki/Captcha">Captcha</a>. Sinun täytyy syöttää kuvassa näkyvät merkit <em>ottaen isot ja pienet kirjaimet huomioon</em>.
+---STRINGEND
+
+---STRING captcha validation failed
+Syötetyt merkit eivät vastaa kuvaa.
+---STRINGEND
+
+---STRING could not figure out which image to show, listing files
+Ei kyetty päättelemään mikä kuva näytetään, listataan kaikki tiedostot:
+---STRINGEND
+
+---STRING delete photo
+Poistaa
+---STRINGEND
+
+---STRING failed to unlock, reason %s
+Kohteen vapauttaminen epäonnistui, syy %s.
+---STRINGEND
+
+---STRING form submit: cancel
+Peruuta
+---STRINGEND
+
+---STRING form submit: next
+Seuraava
+---STRINGEND
+
+---STRING form submit: previous
+Edellinen
+---STRINGEND
+
+---STRING form submit: save
+Tallenna
+---STRINGEND
+
+---STRING lock will expire on %s
+Lukko avautuu ajalla %s
+---STRINGEND
+
+---STRING object locked
+Kohde lukittu
+---STRINGEND
+
+---STRING passwords do not match
+Salasanat eivät täsmää
+---STRINGEND
+
+---STRING this object was locked by %s
+Tämän kohteen lukitsi %s
+---STRINGEND
+
+---STRING type php: parse error in line %s
+Jäsennysvirhe rivillä %s
+---STRINGEND
+
+---STRING type select: no selection
+Ei valintaa
+---STRINGEND
+
+---STRING type text: value contains an expression that is not allowed: "%s". %s
+Kentän arvo sisältää kielletyn ilmauksen: "%s". %s
+---STRINGEND
+
+---STRING type urlname: name is already taken, try "%s"
+Annettu nimi on varattu, kokeile nimeä '%s'
+---STRINGEND
+
+---STRING type urlname: name is not "URL-safe", try "%s"
+Annettu nimi ei ole "URL-safe", kokeile nimeä '%s'
+---STRINGEND
+
+---STRING type urlname: name is not "clean", try "%s"
+Annettu nimi ei ole "siisti", kokeile nimellä '%s'
+---STRINGEND
+
+---STRING widget privilege: allow
+Salli
+---STRINGEND
+
+---STRING widget privilege: deny
+Estä
+---STRINGEND
+
+---STRING widget privilege: inherit
+Ei asetettu (peritty)
+---STRINGEND
+
+---STRING widget privilege: inherit %s
+Peritty (%s)
+---STRINGEND
+
+---STRING widget select: other value
+Muu
+---STRINGEND

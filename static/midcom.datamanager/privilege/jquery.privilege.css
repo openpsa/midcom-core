@@ -1,0 +1,35 @@
+.privilege_val
+{
+    width: 16px;
+    height: 16px;
+    overflow: hidden;
+    cursor: pointer;
+    display: none;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.privilege_val a
+{
+    font-size: 14px;
+    width: 16px;
+    height: 16px;
+    display: block;
+}
+
+.privilege_val a .fa-check-square,
+.privilege_val a .fa-check-square-o
+{
+    color: green;
+}
+
+.privilege_val a .fa-minus-square,
+.privilege_val a .fa-minus-square-o
+{
+    color: red;
+}
+
+.privilege_val a.ineffectual
+{
+    opacity: 0.5;
+}

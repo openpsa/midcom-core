@@ -1,0 +1,223 @@
+---# MidCOM String Database
+---VERSION 2.1.0
+---LANGUAGE en
+
+---STRING author
+Author
+---STRINGEND
+
+---STRING authors
+Authors
+---STRINGEND
+
+---STRING by score
+Manually ordered
+---STRINGEND
+
+---STRING cancelled
+Cancelled
+---STRINGEND
+
+---STRING could not save folder: %s
+Could not save folder. Reason: %s
+---STRINGEND
+
+---STRING create folder
+Create folder
+---STRINGEND
+
+---STRING create subfolder
+Create subfolder
+---STRINGEND
+
+---STRING created
+Created
+---STRINGEND
+
+---STRING creator
+Creator
+---STRINGEND
+
+---STRING default
+Default
+---STRINGEND
+
+---STRING default sort order
+Default sort order
+---STRINGEND
+
+---STRING delete folder
+Delete folder
+---STRINGEND
+
+---STRING edit folder
+Edit folder
+---STRINGEND
+
+---STRING edit folder %s
+Edit folder "%s"
+---STRINGEND
+
+---STRING edit folder metadata
+Edit folder metadata
+---STRINGEND
+
+---STRING edit layout template
+Edit layout template
+---STRINGEND
+
+---STRING edit metadata
+Edit metadata
+---STRINGEND
+
+---STRING edit metadata of %s
+Edit metadata of '%s'
+---STRINGEND
+
+---STRING exported
+Exported
+---STRINGEND
+
+---STRING failed to create a new style template: %s
+Failed to create a new style template: %s
+---STRINGEND
+
+---STRING folder created
+Folder created
+---STRINGEND
+
+---STRING folder page class
+Folder's class
+---STRINGEND
+
+---STRING folder saved
+Folder saved
+---STRINGEND
+
+---STRING folder type
+Folder type
+---STRINGEND
+
+---STRING folders first
+Folder first
+---STRINGEND
+
+---STRING hide from navigation
+Hide from navigation
+---STRINGEND
+
+---STRING imported
+Imported
+---STRINGEND
+
+---STRING inherit style
+Inherit template to subfolders
+---STRINGEND
+
+---STRING midcom.admin.folder
+Folder management
+---STRINGEND
+
+---STRING move
+Move
+---STRINGEND
+
+---STRING move %s
+Move %s
+---STRINGEND
+
+---STRING moved %s to %s
+moved %s to %s
+---STRINGEND
+
+---STRING nav order
+Order of navigation items
+---STRINGEND
+
+---STRING new layout template
+[New layout template]
+---STRINGEND
+
+---STRING new style created
+New style created
+---STRINGEND
+
+---STRING no sortable elements found
+No sortable elements found
+---STRINGEND
+
+---STRING order navigation
+Arrange navigation items
+---STRINGEND
+
+---STRING order navigation in folder %s
+Arrange navigation under folder "%s"
+---STRINGEND
+
+---STRING owner
+Owner
+---STRINGEND
+
+---STRING pages first
+Pages first
+---STRINGEND
+
+---STRING prevent entering
+Prevent entering
+---STRINGEND
+
+---STRING privilege template_management
+Layout template management
+---STRINGEND
+
+---STRING privilege topic_management
+Folder management
+---STRINGEND
+
+---STRING published
+Published
+---STRINGEND
+
+---STRING revised
+Revised
+---STRINGEND
+
+---STRING revision
+Revision
+---STRINGEND
+
+---STRING revisor
+Revisor
+---STRINGEND
+
+---STRING schedule end
+Display until (leave empty for unlimited display)
+---STRINGEND
+
+---STRING schedule start
+Publish at (leave empty for immediate publication)
+---STRINGEND
+
+---STRING scheduling
+Scheduling
+---STRINGEND
+
+---STRING select the ordering method first to sort the pages
+Select the ordering method first to sort the pages
+---STRINGEND
+
+---STRING size
+Size
+---STRINGEND
+
+---STRING style
+Style template
+---STRINGEND
+
+---STRING style template
+Style template
+---STRINGEND
+
+---STRING objects with no navigation entry are still accessible on-site if the url is known
+Objects that are hidden from navigation are still accessible on-site if the URL is known
+---STRINGEND
