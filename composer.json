@@ -1,0 +1,93 @@
+{
+    "name": "openpsa/midcom.core",
+    "type": "midcom-package",
+    "description": "Content-oriented Model-View-Controller framework for PHP",
+    "keywords": ["mvc", "midgard", "framework"],
+    "homepage": "http://midgard-project.org/midcom/",
+    "license": "LGPL-2.1-or-later",
+    "authors": [
+        {
+            "name": "Andreas Flack",
+            "email": "flack@contentcontrol-berlin.de",
+            "homepage": "http://www.contentcontrol-berlin.de/"
+        },
+        {
+            "name": "Henri Bergius",
+            "email": "henri.bergius@iki.fi",
+            "homepage": "http://bergie.iki.fi/"
+        }
+    ],
+    "require": {
+        "php": ">=7.1.3",
+        "ext-mbstring": "*",
+        "ext-iconv": "*",
+        "doctrine/cache": "^1.6.0",
+        "gregwar/captcha": "^1.0",
+        "guzzlehttp/guzzle": "^6.3",
+        "michelf/php-markdown": "^1.9.0",
+        "monolog/monolog": "^1.9.1",
+        "openpsa/installer": "^1.0",
+        "openpsa/midgard-portable": "^1.4.0",
+        "openpsa/ranger": ">=0.3.0",
+        "phpspec/php-diff": "^1.1.0",
+        "swiftmailer/swiftmailer": "^6.2",
+        "symfony/config": ">=4.4",
+        "symfony/console" : ">=2.6.0",
+        "symfony/css-selector": ">=4.4",
+        "symfony/dependency-injection": ">=4.4",
+        "symfony/dom-crawler": ">=4.4",
+        "symfony/event-dispatcher": ">=4.4",
+        "symfony/finder": ">=4.4",
+        "symfony/form": ">=4.4",
+        "symfony/http-foundation": ">=4.4",
+        "symfony/intl": ">=4.4",
+        "symfony/mime": ">=4.4",
+        "symfony/options-resolver": ">=4.4",
+        "symfony/polyfill-php80": ">=1.16",
+        "symfony/routing": ">=4.4",
+        "symfony/security-csrf": ">=4.4",
+        "symfony/translation": ">=4.4",
+        "symfony/validator": ">=4.4",
+        "symfony/var-dumper": ">=4.4",
+        "symfony/yaml": ">=4.4",
+        "symfony/http-kernel": ">=4.4",
+        "cocur/slugify": "^4.0"
+    },
+    "conflict": {
+        "symfony/form": "4.4.9 || 5.0.9 || 5.1.0"
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "openpsa\\installer\\installer::setup_root_package"
+        ],
+        "post-update-cmd": [
+            "openpsa\\installer\\installer::setup_root_package"
+        ]
+    },
+    "prefer-stable": true,
+    "minimum-stability": "dev",
+    "suggest": {
+        "ezyang/htmlpurifier": "^4.7"
+    },
+    "provide": {
+        "openpsa/midcom": "*"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "9.7.x-dev"
+        }
+    },
+    "bin" : [
+        "bin/midcom"
+    ],
+    "autoload": {
+        "classmap": ["lib"],
+        "psr-0": {
+            "midcom": "src/"
+        },
+        "files": ["lib/constants.php", "lib/compat/ragnaroek.php"]
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.5.15 || ^8.5.8"
+    }
+}
