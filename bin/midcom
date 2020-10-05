@@ -1,0 +1,17 @@
+#!/usr/bin/env php
+<?php
+
+//Some fiddling to get autoloader...
+$path = dirname(__DIR__, 3) . '/autoload.php'; // installed as dependency
+if (!file_exists($path)) {
+    $path = dirname(__DIR__) . '/vendor/autoload.php'; // installed as root package
+}
+if (!file_exists($path)) {
+    throw new \Exception('Composer autoloader could not be found');
+}
+require_once $path;
+
+use midcom\console\application;
+
+$console = new application();
+$console->run();
