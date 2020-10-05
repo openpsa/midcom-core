@@ -1,5 +1,5 @@
 {
-    "name": "openpsa/midcom.core",
+    "name": "openpsa/midcom-core",
     "type": "midcom-package",
     "description": "Content-oriented Model-View-Controller framework for PHP",
     "keywords": ["mvc", "midgard", "framework"],
