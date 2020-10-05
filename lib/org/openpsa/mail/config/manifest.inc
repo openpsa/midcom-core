@@ -1,0 +1,6 @@
+'name' => 'org.openpsa.mail',
+'icon' => 'envelope-o',
+'purecode' => true,
+'privileges' => [],
+'class_mapping' => [],
+'description' => 'Library for handling outgoing and incoming emails, including HTML emails and attachments',

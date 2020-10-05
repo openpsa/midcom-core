@@ -1,0 +1,24 @@
+---# MidCOM String Database
+---VERSION 2.1.0
+---LANGUAGE de
+
+---STRING first
+Anfang
+---STRINGEND
+
+---STRING last
+Ende
+---STRINGEND
+
+---STRING next
+Weiter
+---STRINGEND
+
+---STRING org.openpsa.qbpager
+Seitenweise Ausgabe von Abfragen
+---STRINGEND
+
+---STRING previous
+Zurück
+---STRINGEND
+

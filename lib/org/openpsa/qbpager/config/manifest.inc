@@ -1,0 +1,6 @@
+'name' => 'org.openpsa.qbpager',
+'icon' => 'list-ol',
+'purecode' => true,
+'privileges' => [],
+'class_mapping' => [],
+'description' => 'Library for automatically splitting query builder results to multiple pages',
