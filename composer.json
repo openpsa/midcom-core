@@ -23,7 +23,7 @@
         "ext-iconv": "*",
         "doctrine/cache": "^1.6.0",
         "gregwar/captcha": "^1.0",
-        "guzzlehttp/guzzle": "^6.3",
+        "guzzlehttp/guzzle": "^7.2",
         "michelf/php-markdown": "^1.9.0",
         "monolog/monolog": "^1.9.1",
         "openpsa/installer": "^1.0",
