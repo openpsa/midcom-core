@@ -6,6 +6,8 @@
  */
 
 use Symfony\Component\HttpFoundation\Request;
+use midcom\datamanager\schemabuilder;
+use midcom\datamanager\datamanager;
 
 /**
  * @package midcom.services.rcs
@@ -34,7 +36,7 @@ abstract class midcom_services_rcs_handler extends midcom_baseclasses_components
 
     abstract protected function handler_callback(string $handler_id);
 
-    abstract protected function get_breadcrumbs();
+    abstract protected function get_breadcrumbs() : array;
 
     protected function resolve_object_title()
     {
@@ -144,11 +146,8 @@ abstract class midcom_services_rcs_handler extends midcom_baseclasses_components
 
     private function prepare_request_data(string $view_title)
     {
-        $breadcrumbs = $this->get_breadcrumbs();
-        if (!empty($breadcrumbs)) {
-            foreach ($breadcrumbs as $item) {
-                $this->add_breadcrumb($item[MIDCOM_NAV_URL], $item[MIDCOM_NAV_NAME]);
-            }
+        foreach ($this->get_breadcrumbs() as $item) {
+            $this->add_breadcrumb($item[MIDCOM_NAV_URL], $item[MIDCOM_NAV_NAME]);
         }
         $this->add_breadcrumb($this->url_prefix . "{$this->object->guid}/", $this->_l10n->get('show history'));
 
@@ -268,9 +267,14 @@ abstract class midcom_services_rcs_handler extends midcom_baseclasses_components
                 && midcom_services_rcs::is_field_showable($key);
         }, ARRAY_FILTER_USE_BOTH);
 
+        $schemadb = (new schemabuilder($this->object))->create(null);
+        $data['datamanager'] = (new datamanager($schemadb))
+            ->set_defaults($data['preview'])
+            ->set_storage(new $this->object->__midcom_class_name__);
+
         $this->_view_toolbar->hide_item($this->url_prefix . "preview/{$this->object->guid}/{$revision}/");
 
-        $view_title = sprintf($this->_l10n->get('viewing version %s of %s'), $metadata['version'], $this->resolve_object_title());
+        $view_title = sprintf($this->_l10n->get('viewing version %s from %s'), $metadata['version'], $this->_l10n->get_formatter()->datetime($metadata['date']));
         // Load the toolbars
         $this->rcs_toolbar($metadata);
         $this->prepare_request_data($view_title);
