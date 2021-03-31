@@ -112,7 +112,7 @@ abstract class openpsa_testcase extends TestCase
         $request = Request::createFromGlobals();
         $request->attributes->set('context', $context);
 
-        $result = $GLOBALS['kernel']->handle($request, KernelInterface::SUB_REQUEST);
+        $result = midcom::get()->handle($request, KernelInterface::SUB_REQUEST);
 
         $this->assertTrue($result !== false, $component . ' handle returned false on ./' . implode('/', $args) . '/');
         $data = $context->get_custom_key('request_data');
@@ -124,85 +124,11 @@ abstract class openpsa_testcase extends TestCase
         return $data;
     }
 
-    /**
-     * @deprecated This is redundant, since styles are evaluated when the response is constructed
-     * @param array $data
-     * @return string
-     */
-    public function show_handler($data)
-    {
-        $context = midcom_core_context::get();
-        $show_handler = $context->get_key(MIDCOM_CONTEXT_SHOWCALLBACK);
-
-        midcom::get()->style->enter_context($context);
-        ob_start();
-        call_user_func($show_handler, $context->id);
-        $output = ob_get_contents();
-        ob_end_clean();
-        midcom::get()->style->leave_context();
-        return $output;
-    }
-
     public function set_post_data(array $post_data)
     {
         $_SERVER['REQUEST_METHOD'] = 'POST';
         $_POST = $post_data;
         $_REQUEST = $_POST;
-    }
-
-    public function set_get_data(array $get_data)
-    {
-        $_SERVER['REQUEST_METHOD'] = 'GET';
-        $_GET = $get_data;
-        $_REQUEST = $_GET;
-    }
-
-    public function set_dm2_formdata(midcom_helper_datamanager2_controller $controller, array $formdata)
-    {
-        $formname = substr($controller->formmanager->namespace, 0, -1);
-        $_SERVER['REQUEST_METHOD'] = 'POST';
-
-        $form_values = $controller->formmanager->form->exportValues();
-        $_POST = array_merge($form_values, $formdata);
-
-        $_POST['_qf__' . $formname] = '';
-        $_POST['midcom_helper_datamanager2_save'] = [''];
-        $_REQUEST = $_POST;
-    }
-
-    public function submit_dm2_form($controller_key, array $formdata, $component, array $args = [])
-    {
-        $this->reset_server_vars();
-        $data = $this->run_handler($component, $args);
-        $this->set_dm2_formdata($data[$controller_key], $formdata);
-
-        try {
-            $data = $this->run_handler($component, $args);
-            if (array_key_exists($controller_key, $data)) {
-                $this->assertEquals([], $data[$controller_key]->formmanager->form->_errors, 'Form validation failed');
-            }
-            $this->assertInstanceOf(midcom_response_relocate::class, $data['__openpsa_testcase_response'], 'Form did not relocate');
-            return $data['__openpsa_testcase_response']->getTargetUrl();
-        } catch (openpsa_test_relocate $e) {
-            $url = $e->getMessage();
-            $url = preg_replace('/^\//', '', $url);
-            return $url;
-        }
-    }
-
-    /**
-     * same logic as submit_dm2_form, but this method does not expect a relocate
-     */
-    public function submit_dm2_no_relocate_form($controller_key, array $formdata, $component, array $args = [])
-    {
-        $this->reset_server_vars();
-        $data = $this->run_handler($component, $args);
-        $this->set_dm2_formdata($data[$controller_key], $formdata);
-        $data = $this->run_handler($component, $args);
-
-        $this->assertEquals([], $data[$controller_key]->formmanager->form->_errors, 'Form validation failed');
-
-        return $data;
     }
 
     public function set_dm_formdata(controller $controller, array $formdata, $button = 'save')
@@ -374,11 +300,6 @@ abstract class openpsa_testcase extends TestCase
         $object = self::_create_object($classname, $data);
         self::$_class_objects[$object->guid] = $object;
         return $object;
-    }
-
-    public static function create_persisted_object($classname, array $data = [])
-    {
-        return self::_create_object($classname, $data);
     }
 
     public static function delete_linked_objects($classname, $link_field, $id)
