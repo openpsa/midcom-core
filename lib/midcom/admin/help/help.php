@@ -73,7 +73,7 @@ class midcom_admin_help_help extends midcom_baseclasses_components_plugin
             }
         }
 
-        return midcom::get()->i18n->get_string("help_" . $help_id, 'midcom.admin.help');
+        return $this->_l10n->get("help_" . $help_id);
     }
 
     /**
@@ -175,7 +175,7 @@ class midcom_admin_help_help extends midcom_baseclasses_components_plugin
         }
 
         $files = [];
-        $pattern = $component_dir . '*.{' . midcom::get()->i18n->get_current_language() . ',' . midcom::get()->config->get('i18n_fallback_language') . '}.txt';
+        $pattern = $component_dir . '*.{' . $this->_i18n->get_current_language() . ',' . midcom::get()->config->get('i18n_fallback_language') . '}.txt';
 
         foreach (glob($pattern, GLOB_NOSORT|GLOB_BRACE) as $path) {
             $entry = basename($path);
@@ -295,22 +295,19 @@ class midcom_admin_help_help extends midcom_baseclasses_components_plugin
         ];
     }
 
-    private function _load_component_data(string $name) : array
+    private function _load_component_data(midcom_core_manifest $manifest) : array
     {
-        $component_array = [];
-        $component_array['name'] = $name;
-        $component_array['title'] = '';
-        if (midcom::get()->i18n->get_l10n($name)->string_exists($name)) {
-            $component_array['title'] = midcom::get()->i18n->get_string($name, $name);
+        $data = [
+            'name' => $manifest->name,
+            'title' => $manifest->get_name_translated(),
+            'icon' => midcom::get()->componentloader->get_component_icon($manifest->name),
+            'purecode' => $manifest->purecode,
+            'description' => $manifest->description,
+        ];
+        if ($data['title'] == $data['name']) {
+            $data['title'] = '';
         }
-        $component_array['icon'] = midcom::get()->componentloader->get_component_icon($name);
-
-        if (midcom::get()->componentloader->is_installed($name)) {
-            $manifest = midcom::get()->componentloader->get_manifest($name);
-            $component_array['purecode'] = $manifest->purecode;
-            $component_array['description'] = $manifest->description;
-        }
-        return $component_array;
+        return $data;
     }
 
     private function _list_components()
@@ -318,12 +315,10 @@ class midcom_admin_help_help extends midcom_baseclasses_components_plugin
         $this->_request_data['components'] = [];
         $this->_request_data['libraries'] = [];
 
-        foreach (midcom::get()->componentloader->get_manifests() as $name => $manifest) {
+        foreach (midcom::get()->componentloader->get_manifests() as $manifest) {
             $type = $manifest->purecode ? 'libraries' : 'components';
 
-            $component_array = $this->_load_component_data($name);
-
-            $this->_request_data[$type][$name] = $component_array;
+            $this->_request_data[$type][$manifest->name] = $this->_load_component_data($manifest);
         }
 
         asort($this->_request_data['components']);
@@ -337,7 +332,7 @@ class midcom_admin_help_help extends midcom_baseclasses_components_plugin
         if (in_array($handler_id, ['help', 'component'])) {
             $this->add_breadcrumb(
                 $this->router->generate('component', ['component' => $this->_request_data['component']]),
-                sprintf($this->_l10n->get('help for %s'), midcom::get()->i18n->get_string($this->_request_data['component'], $this->_request_data['component']))
+                sprintf($this->_l10n->get('help for %s'), $this->_i18n->get_string($this->_request_data['component'], $this->_request_data['component']))
             );
         }
 
