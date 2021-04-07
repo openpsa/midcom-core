@@ -30,6 +30,8 @@ class midcom_admin_help_help extends midcom_baseclasses_components_plugin
 
     public function _on_initialize()
     {
+        midcom::get()->auth->require_valid_user();
+
         midcom::get()->skip_page_style = true;
         // doing this here as this component most probably will not be called by itself.
         midcom::get()->style->prepend_component_styledir('midcom.admin.help');
@@ -238,15 +240,15 @@ class midcom_admin_help_help extends midcom_baseclasses_components_plugin
 
         foreach (glob($exec_path . '/*.php', GLOB_NOSORT) as $path) {
             $file = basename($path);
-            $data[$file] = [];
-
             $info_id = "urlmethod_" . str_replace('.php', '', $file);
 
-            $data[$file]['url'] = '/midcom-exec-' . $component . '/' . $file;
-            $data[$file]['description'] = $this->get_help_contents($info_id, $component);
+            $data[$file] = [
+                'url' => '/midcom-exec-' . $component . '/' . $file,
+            ];
 
             if (self::generate_file_path($info_id, $component)) {
                 $data[$file]['handler_help_url'] = $info_id;
+                $data[$file]['description'] = $this->get_help_contents($info_id, $component);
             }
         }
 
@@ -295,36 +297,6 @@ class midcom_admin_help_help extends midcom_baseclasses_components_plugin
         ];
     }
 
-    private function _load_component_data(midcom_core_manifest $manifest) : array
-    {
-        $data = [
-            'name' => $manifest->name,
-            'title' => $manifest->get_name_translated(),
-            'icon' => midcom::get()->componentloader->get_component_icon($manifest->name),
-            'purecode' => $manifest->purecode,
-            'description' => $manifest->description,
-        ];
-        if ($data['title'] == $data['name']) {
-            $data['title'] = '';
-        }
-        return $data;
-    }
-
-    private function _list_components()
-    {
-        $this->_request_data['components'] = [];
-        $this->_request_data['libraries'] = [];
-
-        foreach (midcom::get()->componentloader->get_manifests() as $manifest) {
-            $type = $manifest->purecode ? 'libraries' : 'components';
-
-            $this->_request_data[$type][$manifest->name] = $this->_load_component_data($manifest);
-        }
-
-        asort($this->_request_data['components']);
-        asort($this->_request_data['libraries']);
-    }
-
     private function _prepare_breadcrumb(string $handler_id)
     {
         $this->add_breadcrumb($this->router->generate('welcome'), $this->_l10n->get('midcom.admin.help'));
@@ -335,24 +307,34 @@ class midcom_admin_help_help extends midcom_baseclasses_components_plugin
                 sprintf($this->_l10n->get('help for %s'), $this->_i18n->get_string($this->_request_data['component'], $this->_request_data['component']))
             );
         }
-
-        if ($handler_id == 'help') {
-            if (in_array($this->_request_data['help_id'], ['handlers', 'urlmethods', 'mgdschemas'])) {
-                $this->add_breadcrumb("", $this->_l10n->get($this->_request_data['help_id']));
-            } else {
-                $this->add_breadcrumb("", $this->get_help_title($this->_request_data['help_id'], $this->_request_data['component']));
-            }
-        }
     }
 
     public function _handler_welcome(string $handler_id, array &$data)
     {
-        midcom::get()->auth->require_valid_user();
-
         $data['view_title'] = $this->_l10n->get($this->_component);
         midcom::get()->head->set_pagetitle($data['view_title']);
 
-        $this->_list_components();
+        $data['components'] = [];
+        $data['libraries'] = [];
+
+        foreach (midcom::get()->componentloader->get_manifests() as $manifest) {
+            $type = $manifest->purecode ? 'libraries' : 'components';
+            $title = $manifest->get_name_translated();
+            if ($title == $manifest->name) {
+                $title = '';
+            }
+
+            $data[$type][$manifest->name] = [
+                'name' => $manifest->name,
+                'title' => $title,
+                'icon' => midcom::get()->componentloader->get_component_icon($manifest->name),
+                'purecode' => $manifest->purecode,
+                'description' => $manifest->description,
+            ];
+        }
+
+        asort($data['components']);
+        asort($data['libraries']);
 
         $this->_prepare_breadcrumb($handler_id);
     }
@@ -383,14 +365,12 @@ class midcom_admin_help_help extends midcom_baseclasses_components_plugin
 
     public function _handler_component(string $handler_id, string $component, array &$data)
     {
-        midcom::get()->auth->require_valid_user();
-
         $data['component'] = $component;
-        $data['view_title'] = sprintf($this->_l10n->get('help for %s'), $this->_i18n->get_string($data['component'], $data['component']));
+        $data['view_title'] = sprintf($this->_l10n->get('help for %s'), $this->_i18n->get_string($component, $component));
         midcom::get()->head->set_pagetitle($data['view_title']);
 
-        $data['help_files'] = $this->list_files($data['component']);
-        $data['html'] = $this->get_help_contents('index', $data['component']);
+        $data['help_files'] = $this->list_files($component);
+        $data['html'] = $this->get_help_contents('index', $component);
         $this->_prepare_breadcrumb($handler_id);
     }
 
@@ -411,25 +391,28 @@ class midcom_admin_help_help extends midcom_baseclasses_components_plugin
 
     public function _handler_help(string $handler_id, string $component, string $help_id, array &$data)
     {
-        midcom::get()->auth->require_valid_user();
-
         $data['help_id'] = $help_id;
         $data['component'] = $component;
-        $data['help_files'] = $this->list_files($data['component']);
+        $data['help_files'] = $this->list_files($component);
 
-        if ($data['help_id'] == 'mgdschemas') {
+        if ($help_id == 'mgdschemas') {
             $this->read_schema_properties();
         }
-        $data['html'] = $this->get_help_contents($data['help_id'], $data['component']);
+        $data['html'] = $this->get_help_contents($help_id, $component);
 
         // Table of contents navi
         $data['view_title'] = sprintf(
             $this->_l10n->get('help for %s in %s'),
-            $this->get_help_title($data['help_id'], $data['component']),
-            $this->_i18n->get_string($data['component'], $data['component'])
+            $this->get_help_title($help_id, $component),
+            $this->_i18n->get_string($component, $component)
         );
         midcom::get()->head->set_pagetitle($data['view_title']);
         $this->_prepare_breadcrumb($handler_id);
+        if (in_array($help_id, ['handlers', 'urlmethods', 'mgdschemas'])) {
+            $this->add_breadcrumb("", $this->_l10n->get($help_id));
+        } else {
+            $this->add_breadcrumb("", $this->get_help_title($help_id, $component));
+        }
     }
 
     /**
@@ -440,26 +423,13 @@ class midcom_admin_help_help extends midcom_baseclasses_components_plugin
     public function _show_help(string $handler_id, array &$data)
     {
         midcom_show_style('midcom_admin_help_header');
-        switch ($this->_request_data['help_id']) {
-            case 'handlers':
-                midcom_show_style('midcom_admin_help_handlers');
-                break;
-            case 'mgdschemas':
-                midcom_show_style('midcom_admin_help_show');
-                midcom_show_style('midcom_admin_help_mgdschemas');
-                break;
-            case 'urlmethods':
-                midcom_show_style('midcom_admin_help_show');
-                midcom_show_style('midcom_admin_help_urlmethods');
-                break;
-            default:
-                midcom_show_style('midcom_admin_help_show');
-
-                if (!$this->_request_data['html']) {
-                    $this->_request_data['html'] = $this->get_help_contents('notfound', 'midcom.admin.help');
-                    midcom_show_style('midcom_admin_help_show');
-                    midcom_show_style('midcom_admin_help_component');
-                }
+        midcom_show_style('midcom_admin_help_show');
+        if (in_array($data['help_id'], ['handlers', 'mgdschemas', 'urlmethods'])) {
+            midcom_show_style('midcom_admin_help_' . $data['help_id']);
+        } elseif (!$data['html']) {
+            $data['html'] = $this->get_help_contents('notfound', $this->_component);
+            midcom_show_style('midcom_admin_help_show');
+            midcom_show_style('midcom_admin_help_component');
         }
         midcom_show_style('midcom_admin_help_footer');
     }
