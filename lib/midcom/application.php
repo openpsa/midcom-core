@@ -39,22 +39,6 @@ use midcom\bundle\midcomBundle;
 class midcom_application extends Kernel
 {
     /**
-     * Host prefix cache to avoid computing it each time.
-     *
-     * @var string
-     * @see get_host_prefix()
-     */
-    private $_cached_host_prefix = '';
-
-    /**
-     * Page prefix cache to avoid computing it each time.
-     *
-     * @var string
-     * @see get_page_prefix()
-     */
-    private $_cached_page_prefix = '';
-
-    /**
      * @var Request
      */
     private $request;
@@ -287,12 +271,7 @@ class midcom_application extends Kernel
      */
     function get_page_prefix() : string
     {
-        if (!$this->_cached_page_prefix) {
-            $host_name = $this->get_host_name();
-            $this->_cached_page_prefix = $host_name . midcom_connection::get_url('self');
-        }
-
-        return $this->_cached_page_prefix;
+        return $this->get_host_name() . midcom_connection::get_url('self');
     }
 
     /**
@@ -305,19 +284,14 @@ class midcom_application extends Kernel
      */
     function get_host_prefix() : string
     {
-        if (!$this->_cached_host_prefix) {
-            $host_name = $this->get_host_name();
-            $host_prefix = midcom_connection::get_url('prefix');
-            if (!str_starts_with($host_prefix, '/')) {
-                $host_prefix = "/{$host_prefix}";
-            }
-            if (!str_ends_with($host_prefix, '/')) {
-                $host_prefix .= '/';
-            }
-            $this->_cached_host_prefix = "{$host_name}{$host_prefix}";
+        $host_prefix = midcom_connection::get_url('prefix');
+        if (!str_starts_with($host_prefix, '/')) {
+            $host_prefix = '/' . $host_prefix;
         }
-
-        return $this->_cached_host_prefix;
+        if (!str_ends_with($host_prefix, '/')) {
+            $host_prefix .= '/';
+        }
+        return $this->get_host_name() . $host_prefix;
     }
 
     /* *************************************************************************
@@ -359,11 +333,11 @@ class midcom_application extends Kernel
      */
     public function disable_limits()
     {
-        $stat = @ini_set('max_execution_time', $this->config->get('midcom_max_execution_time'));
+        $stat = ini_set('max_execution_time', $this->config->get('midcom_max_execution_time'));
         if (false === $stat) {
             debug_add('ini_set("max_execution_time", ' . $this->config->get('midcom_max_execution_time') . ') returned false', MIDCOM_LOG_WARN);
         }
-        $stat = @ini_set('memory_limit', $this->config->get('midcom_max_memory'));
+        $stat = ini_set('memory_limit', $this->config->get('midcom_max_memory'));
         if (false === $stat) {
             debug_add('ini_set("memory_limit", ' . $this->config->get('midcom_max_memory') . ') returned false', MIDCOM_LOG_WARN);
         }
