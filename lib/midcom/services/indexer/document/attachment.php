@@ -141,30 +141,12 @@ class midcom_services_indexer_document_attachment extends midcom_services_indexe
         }
 
         debug_add("Converting Word-Attachment to plain text");
-        $wordfile = $this->write_attachment_tmpfile();
+        $wordfile = $this->attachment->get_path();
         $txtfile = "{$wordfile}.txt";
         $encoding = (strtoupper($this->_i18n->get_current_charset()) == 'UTF-8') ? 'utf-8' : '8859-1';
 
         $command = midcom::get()->config->get('utility_catdoc') . " -d{$encoding} -a $wordfile > $txtfile";
-        debug_add("Executing: {$command}");
-        exec($command, $result, $returncode);
-        debug_print_r("Execution returned {$returncode}: ", $result);
-
-        unlink($wordfile);
-
-        if (!file_exists($txtfile)) {
-            // We were unable to read the document into text
-            $this->process_mime_binary();
-            return;
-        }
-
-        $handle = fopen($txtfile, "r");
-        $this->content = $this->get_attachment_content($handle);
-        // Kill all ^L (FF) characters
-        $this->content = str_replace("\x0C", '', $this->content);
-        fclose($handle);
-
-        unlink($txtfile);
+        $this->process_command($command, $txtfile);
     }
 
     /**
@@ -179,28 +161,12 @@ class midcom_services_indexer_document_attachment extends midcom_services_indexe
         }
 
         debug_add("Converting PDF-Attachment to plain text");
-        $pdffile = $this->write_attachment_tmpfile();
+        $pdffile = $this->attachment->get_path();
         $txtfile = "{$pdffile}.txt";
         $encoding = (strtoupper($this->_i18n->get_current_charset()) == 'UTF-8') ? 'UTF-8' : 'Latin1';
 
         $command = midcom::get()->config->get('utility_pdftotext') . " -enc {$encoding} -nopgbrk -eol unix $pdffile $txtfile 2>&1";
-        debug_add("Executing: {$command}");
-        exec($command, $result, $returncode);
-        debug_print_r("Execution returned {$returncode}: ", $result);
-
-        unlink($pdffile);
-
-        if (!file_exists($txtfile)) {
-            // We were unable to read the document into text
-            $this->process_mime_binary();
-            return;
-        }
-
-        $handle = fopen($txtfile, 'r');
-        $this->content = $this->get_attachment_content($handle);
-        fclose($handle);
-
-        unlink($txtfile);
+        $this->process_command($command, $txtfile);
     }
 
     /**
@@ -215,16 +181,20 @@ class midcom_services_indexer_document_attachment extends midcom_services_indexe
         }
 
         debug_add("Converting RTF-Attachment to plain text");
-        $rtffile = $this->write_attachment_tmpfile();
+        $rtffile = $this->attachment->get_path();
         $txtfile = "{$rtffile}.txt";
 
         // Kill the first five lines, they are crap from the converter.
         $command = midcom::get()->config->get('utility_unrtf') . " --nopict --text $rtffile | sed '1,5d' > $txtfile";
+
+        $this->process_command($command, $txtfile);
+    }
+
+    private function process_command(string $command, string $txtfile)
+    {
         debug_add("Executing: {$command}");
         exec($command, $result, $returncode);
         debug_print_r("Execution returned {$returncode}: ", $result);
-
-        unlink($rtffile);
 
         if (!file_exists($txtfile)) {
             // We were unable to read the document into text
@@ -232,10 +202,11 @@ class midcom_services_indexer_document_attachment extends midcom_services_indexe
             return;
         }
 
-        $handle = fopen($txtfile, 'r');
-        $this->content = $this->_i18n->convert_to_current_charset($this->get_attachment_content($handle));
+        $handle = fopen($txtfile, "r");
+        $this->content = $this->get_content($handle);
+        // Kill all ^L (FF) characters
+        $this->content = str_replace("\x0C", '', $this->content);
         fclose($handle);
-
         unlink($txtfile);
     }
 
@@ -244,7 +215,7 @@ class midcom_services_indexer_document_attachment extends midcom_services_indexe
      */
     private function process_mime_plaintext()
     {
-        $this->content = $this->_i18n->convert_to_current_charset($this->get_attachment_content());
+        $this->content = $this->get_content();
     }
 
     /**
@@ -253,7 +224,7 @@ class midcom_services_indexer_document_attachment extends midcom_services_indexe
      */
     private function process_mime_html()
     {
-        $this->content = $this->_i18n->convert_to_current_charset($this->html2text($this->get_attachment_content()));
+        $this->content = $this->html2text($this->get_content());
     }
 
     /**
@@ -281,10 +252,9 @@ class midcom_services_indexer_document_attachment extends midcom_services_indexe
      * @param resource $handle A valid file-handle to read from, or null to automatically create a
      *        handle to the current attachment.
      */
-    private function get_attachment_content($handle = null)
+    private function get_content($handle = null) : string
     {
         // Read a max of 4 MB
-        debug_add("Returning File content of handle {$handle}");
         $max = 4194304;
         $close = false;
         if ($handle === null) {
@@ -295,25 +265,6 @@ class midcom_services_indexer_document_attachment extends midcom_services_indexe
         if ($close) {
             $this->attachment->close();
         }
-        return $content;
-    }
-
-    /**
-     * Creates a temporary copy of the attachment, the caller must delete it manually
-     * after completing processing.
-     *
-     * @return string The name of the temporary file.
-     */
-    private function write_attachment_tmpfile()
-    {
-        $tmpname = tempnam(midcom::get()->config->get('midcom_tempdir'), 'midcom-indexer');
-        debug_add("Creating an attachment copy as {$tmpname}");
-
-        $in = $this->attachment->open('r');
-        $out = fopen($tmpname, 'w');
-        stream_copy_to_stream($in, $out);
-        fclose($out);
-        $this->attachment->close();
-        return $tmpname;
+        return $this->_i18n->convert_to_current_charset($content);
     }
 }
