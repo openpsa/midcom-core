@@ -32,7 +32,7 @@ class midcom_helper_reflector extends midcom_baseclasses_components_purecode
         'name' => [],
         'fieldnames' => [],
         'object_icon_map' => null,
-        'create_icon_map' => null
+        'create_type_map' => null
     ];
 
     /**
@@ -177,8 +177,8 @@ class midcom_helper_reflector extends midcom_baseclasses_components_purecode
         if (midcom::get()->dbfactory->is_a($obj, midcom_db_person::class)) {
             return ['rname', 'id'];
         }
-        return $this->get_title_property_nonstatic($obj) ??
-            $this->get_name_property_nonstatic($obj) ??
+        return $this->get_property('title', $obj) ??
+            $this->get_property('name', $obj) ??
             'guid';
     }
 
@@ -222,39 +222,49 @@ class midcom_helper_reflector extends midcom_baseclasses_components_purecode
      */
     public static function get_create_icon(string $type) : string
     {
-        if (null === self::$_cache['create_icon_map']) {
-            self::$_cache['create_icon_map'] = self::_get_icon_map('create_type_magic', 'file-o');
-        }
-
-        $icon_callback = [$type, 'get_create_icon'];
-        switch (true) {
+        if (is_callable([$type, 'get_create_icon'])) {
             // class has static method to tell us the answer ? great !
-            case (is_callable($icon_callback)):
-                $icon = call_user_func($icon_callback);
-                break;
-            // configuration icon
-            case (isset(self::$_cache['create_icon_map'][$type])):
-                $icon = self::$_cache['create_icon_map'][$type];
-                break;
-
-            // heuristics magic (instead of adding something here, take a look at config key "create_type_magic")
-            case (str_contains($type, 'member')):
-            case (str_contains($type, 'organization')):
-                $icon = 'users';
-                break;
-            case (str_contains($type, 'person')):
-                $icon = 'user-o';
-                break;
-            case (str_contains($type, 'event')):
-                $icon = 'calendar-o';
-                break;
-
-            // Fallback default value
-            default:
-                $icon = self::$_cache['create_icon_map']['__default__'];
-                break;
+            return $type::get_create_icon();
         }
-        return $icon;
+        return self::get_icon($type, 'create_type');
+    }
+
+    /**
+     * heuristics magic (instead of adding something here, take a look at
+     * config keys "create_type_magic" and "object_icon_magic")
+     */
+    private static function get_icon(string $object_class, string $mode) : string
+    {
+        $object_baseclass = self::resolve_baseclass($object_class);
+        if (null === self::$_cache[$mode . '_map']) {
+            self::$_cache[$mode . '_map'] = self::_get_icon_map($mode . '_magic', $mode === 'create_type' ? 'file-o' : 'file');
+        }
+        $map = self::$_cache[$mode . '_map'];
+
+        switch (true) {
+            case (isset($map[$object_class])):
+                return $map[$object_class];
+
+            case (isset($map[$object_baseclass])):
+                return $map[$object_baseclass];
+
+            case (str_contains($object_class, 'person')):
+                return $mode === 'create_type' ? 'user-o' : 'user';
+
+            case (str_contains($object_class, 'event')):
+                return 'calendar-o';
+
+            case (str_contains($object_class, 'member')):
+            case (str_contains($object_class, 'organization')):
+            case (str_contains($object_class, 'group')):
+                return 'users';
+
+            case (str_contains($object_class, 'element')):
+                return 'file-code-o';
+
+            default:
+                return $map['__default__'];
+        }
     }
 
     /**
@@ -262,47 +272,11 @@ class midcom_helper_reflector extends midcom_baseclasses_components_purecode
      */
     public static function get_object_icon(object $obj) : string
     {
-        if (null === self::$_cache['object_icon_map']) {
-            self::$_cache['object_icon_map'] = self::_get_icon_map('object_icon_magic', 'file');
-        }
-
-        $object_class = get_class($obj);
-        $object_baseclass = self::resolve_baseclass($obj);
-
-        switch (true) {
+        if (method_exists($obj, 'get_icon')) {
             // object knows it's icon, how handy!
-            case (method_exists($obj, 'get_icon')):
-                $icon = $obj->get_icon();
-                break;
-
-            // configuration icon
-            case (isset(self::$_cache['object_icon_map'][$object_class])):
-                $icon = self::$_cache['object_icon_map'][$object_class];
-                break;
-            case (isset(self::$_cache['object_icon_map'][$object_baseclass])):
-                $icon = self::$_cache['object_icon_map'][$object_baseclass];
-                break;
-
-            // heuristics magic (instead of adding something here, take a look at config key "object_icon_magic")
-            case (str_contains($object_class, 'person')):
-                $icon = 'user';
-                break;
-            case (str_contains($object_class, 'event')):
-                $icon = 'calendar-o';
-                break;
-            case (str_contains($object_class, 'member')):
-            case (str_contains($object_class, 'organization')):
-            case (str_contains($object_class, 'group')):
-                $icon = 'users';
-                break;
-            case (str_contains($object_class, 'element')):
-                $icon = 'file-code-o';
-                break;
-
-            // Fallback default value
-            default:
-                $icon = self::$_cache['object_icon_map']['__default__'];
-                break;
+            $icon = $obj->get_icon();
+        } else {
+            $icon = self::get_icon(get_class($obj), 'object_icon');
         }
 
         return '<i class="fa fa-' . $icon . '"></i>';
@@ -392,8 +366,6 @@ class midcom_helper_reflector extends midcom_baseclasses_components_purecode
      * Link info key specification
      *     'class' string link target class name
      *     'target' string link target property (of target class)
-     *     'parent' boolean link is link to "parent" in object tree
-     *     'up' boolean link is link to "up" in object tree
      *
      * @return array multidimensional array keyed by property, values are arrays with link info (or false in case of failure)
      */
@@ -411,12 +383,8 @@ class midcom_helper_reflector extends midcom_baseclasses_components_purecode
         $obj = $this->_dummy_object;
 
         // Get property list and start checking (or abort on error)
-        $properties = self::get_object_fieldnames($obj);
-
         $links = [];
-        $parent_property = midgard_object_class::get_property_parent($this->mgdschema_class);
-        $up_property = midgard_object_class::get_property_up($this->mgdschema_class);
-        foreach ($properties as $property) {
+        foreach (self::get_object_fieldnames($obj) as $property) {
             if ($property == 'guid') {
                 // GUID, even though of type MGD_TYPE_GUID, is never a link
                 continue;
@@ -428,33 +396,12 @@ class midcom_helper_reflector extends midcom_baseclasses_components_purecode
             }
             debug_add("Processing property '{$property}'");
             $linkinfo = [
-                'class' => null,
-                'target' => null,
-                'parent' => false,
-                'up' => false,
+                'class' => $ref->get_link_name($property),
+                'target' => $ref->get_link_target($property),
                 'type' => $ref->get_midgard_type($property),
             ];
-            if ($parent_property === $property) {
-                debug_add("Is 'parent' property");
-                $linkinfo['parent'] = true;
-            }
-            if ($up_property === $property) {
-                debug_add("Is 'up' property");
-                $linkinfo['up'] = true;
-            }
 
-            $type = $ref->get_link_name($property);
-            debug_add("get_link_name returned '{$type}'");
-            if (!empty($type)) {
-                $linkinfo['class'] = $type;
-            }
-
-            $target = $ref->get_link_target($property);
-
-            debug_add("get_link_target returned '{$target}'");
-            if (!empty($target)) {
-                $linkinfo['target'] = $target;
-            } elseif ($linkinfo['type'] == MGD_TYPE_GUID) {
+            if (!$linkinfo['target'] && $linkinfo['type'] == MGD_TYPE_GUID) {
                 $linkinfo['target'] = 'guid';
             }
 
@@ -537,11 +484,6 @@ class midcom_helper_reflector extends midcom_baseclasses_components_purecode
         // Check for decorators first
         if (!empty($class_instance->__mgdschema_class_name__)) {
             $parent_class = $class_instance->__mgdschema_class_name__;
-            if (   !empty($class_instance->__object)
-                && !$class_instance->__object instanceof $class_instance->__mgdschema_class_name__) {
-                $parent_class = get_class($class_instance->__object);
-                debug_add('mgdschema object class ' . $parent_class . ' is not an instance of ' . $class_instance->__mgdschema_class_name__, MIDCOM_LOG_INFO);
-            }
         } else {
             $parent_class = $classname;
         }
@@ -549,18 +491,6 @@ class midcom_helper_reflector extends midcom_baseclasses_components_purecode
         $cached[$classname] = self::class_rewrite($parent_class);
 
         return $cached[$classname];
-    }
-
-    /**
-     * Resolve the "name" property of given object
-     *
-     * @see midcom_helper_reflector::get_name_property()
-     * @param object $object the object to get the name property for
-     * @todo when midgard_reflection_property supports flagging name fields use that instead of heuristics
-     */
-    public function get_name_property_nonstatic(object $object) : ?string
-    {
-        return $this->get_property('name', $object);
     }
 
     private function get_property(string $type, object $object) : ?string
@@ -595,12 +525,11 @@ class midcom_helper_reflector extends midcom_baseclasses_components_purecode
     /**
      * Resolve the "name" property of given object
      *
-     * @see midcom_helper_reflector::get_name_property_nonstatic()
      * @param object $object the object to get the name property for
      */
     public static function get_name_property(object $object) : ?string
     {
-        return self::get($object)->get_name_property_nonstatic($object);
+        return self::get($object)->get_property('name', $object);
     }
 
     /**
@@ -636,20 +565,6 @@ class midcom_helper_reflector extends midcom_baseclasses_components_purecode
      */
     public static function get_title_property(object $object) : ?string
     {
-        return self::get($object)->get_title_property_nonstatic($object);
-    }
-
-    /**
-     * Resolve the "title" property of given object
-     *
-     * NOTE: This is distinctly different from get_label_property, which will always return something
-     * even if it's just the guid
-     *
-     * @see midcom_helper_reflector::get_object_title()
-     * @param object $object the object to get the title property for
-     */
-    public function get_title_property_nonstatic(object $object) : ?string
-    {
-        return $this->get_property('title', $object);
+        return self::get($object)->get_property('title', $object);
     }
 }
