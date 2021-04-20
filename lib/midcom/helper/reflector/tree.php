@@ -158,10 +158,10 @@ class midcom_helper_reflector_tree extends midcom_helper_reflector
     /**
      * Figure out constraint(s) to use to get child objects
      */
-    private function _get_link_fields(string $schema_type, $classname) : array
+    private function _get_link_fields(string $schema_type, string $target_class) : array
     {
         static $cache = [];
-        $cache_key = $schema_type . '-' . $classname;
+        $cache_key = $schema_type . '-' . $target_class;
         if (empty($cache[$cache_key])) {
             $ref = new midgard_reflection_property($schema_type);
 
@@ -176,16 +176,15 @@ class midcom_helper_reflector_tree extends midcom_helper_reflector
                     'type' => $ref->get_midgard_type($field),
                     'target' => $ref->get_link_target($field)
                 ];
-                $linked_class = $ref->get_link_name($field);
-                if (   empty($linked_class)
-                    && $info['type'] === MGD_TYPE_GUID) {
-                    // Guid link without class specification, valid for all classes
-                    if (empty($info['target'])) {
-                        $info['target'] = 'guid';
+
+                if ($linked_class = $ref->get_link_name($field)) {
+                    if (!self::is_same_class($linked_class, $target_class)) {
+                        // This link points elsewhere
+                        continue;
                     }
-                } elseif (!self::is_same_class($linked_class, $classname)) {
-                    // This link points elsewhere
-                    continue;
+                } elseif ($info['type'] === MGD_TYPE_GUID && empty($info['target'])) {
+                    // Guid link without class specification, valid for all classes
+                    $info['target'] = 'guid';
                 }
                 $data[$link_type] = $info;
             }
@@ -283,58 +282,24 @@ class midcom_helper_reflector_tree extends midcom_helper_reflector
      */
     public function get_child_classes() : array
     {
-        static $child_classes_all = [];
-        if (!isset($child_classes_all[$this->mgdschema_class])) {
-            $child_classes_all[$this->mgdschema_class] = $this->_resolve_child_classes();
-        }
-        return $child_classes_all[$this->mgdschema_class];
-    }
+        static $cache = [];
+        if (!isset($cache[$this->mgdschema_class])) {
+            $cache[$this->mgdschema_class] = [];
 
-    /**
-     * Resolve the child classes of the class this reflector was instantiated for, used by get_child_classes()
-     */
-    private function _resolve_child_classes() : array
-    {
-        $child_class_exceptions_neverchild = $this->_config->get('child_class_exceptions_neverchild');
+            $types = array_diff(midcom_connection::get_schema_types(), $this->_config->get_array('child_class_exceptions_neverchild'));
+            foreach ($types as $schema_type) {
+                if ($this->_get_link_fields($schema_type, $this->mgdschema_class)) {
+                    $cache[$this->mgdschema_class][] = $schema_type;
+                }
+            }
 
-        // Safety against misconfiguration
-        if (!is_array($child_class_exceptions_neverchild)) {
-            debug_add("config->get('child_class_exceptions_neverchild') did not return array, invalid configuration ??", MIDCOM_LOG_ERROR);
-            $child_class_exceptions_neverchild = [];
-        }
-        $child_classes = [];
-        $types = array_diff(midcom_connection::get_schema_types(), $child_class_exceptions_neverchild);
-        foreach ($types as $schema_type) {
-            $parent_property = midgard_object_class::get_property_parent($schema_type);
-            $up_property = midgard_object_class::get_property_up($schema_type);
-
-            if (   $this->is_link_to_current_class($parent_property, $schema_type)
-                || $this->is_link_to_current_class($up_property, $schema_type)) {
-                $child_classes[] = $schema_type;
+            //make sure children of the same type come out on top
+            if ($key = array_search($this->mgdschema_class, $cache[$this->mgdschema_class])) {
+                unset($cache[$this->mgdschema_class][$key]);
+                array_unshift($cache[$this->mgdschema_class], $this->mgdschema_class);
             }
         }
-
-        //make sure children of the same type come out on top
-        if ($key = array_search($this->mgdschema_class, $child_classes)) {
-            unset($child_classes[$key]);
-            array_unshift($child_classes, $this->mgdschema_class);
-        }
-        return $child_classes;
-    }
-
-    private function is_link_to_current_class($property, string $prospect_type) : bool
-    {
-        if (empty($property)) {
-            return false;
-        }
-
-        $ref = new midgard_reflection_property($prospect_type);
-        $link_class = $ref->get_link_name($property);
-        if (   empty($link_class)
-            && $ref->get_midgard_type($property) === MGD_TYPE_GUID) {
-            return true;
-        }
-        return self::is_same_class($link_class, $this->mgdschema_class);
+        return $cache[$this->mgdschema_class];
     }
 
     /**
@@ -354,12 +319,7 @@ class midcom_helper_reflector_tree extends midcom_helper_reflector
      */
     private static function _resolve_root_classes() : array
     {
-        $root_exceptions_notroot = midcom_baseclasses_components_configuration::get('midcom.helper.reflector', 'config')->get('root_class_exceptions_notroot');
-        // Safety against misconfiguration
-        if (!is_array($root_exceptions_notroot)) {
-            debug_add("config->get('root_class_exceptions_notroot') did not return array, invalid configuration ??", MIDCOM_LOG_ERROR);
-            $root_exceptions_notroot = [];
-        }
+        $root_exceptions_notroot = midcom_baseclasses_components_configuration::get('midcom.helper.reflector', 'config')->get_array('root_class_exceptions_notroot');
         $root_classes = [];
         $types = array_diff(midcom_connection::get_schema_types(), $root_exceptions_notroot);
         foreach ($types as $schema_type) {

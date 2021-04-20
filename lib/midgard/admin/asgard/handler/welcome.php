@@ -25,9 +25,7 @@ class midgard_admin_asgard_handler_welcome extends midcom_baseclasses_components
 
         // List installed MgdSchema types and convert to DBA classes
         foreach ($types as $schema_type) {
-            $mgdschema_class = midcom_helper_reflector::class_rewrite($schema_type);
-            $dummy_object = new $mgdschema_class();
-            $midcom_dba_classname = midcom::get()->dbclassloader->get_midcom_class_name_for_mgdschema_object($dummy_object);
+            $midcom_dba_classname = midcom::get()->dbclassloader->get_midcom_class_name_for_mgdschema_object(new $schema_type);
             if (!empty($midcom_dba_classname)) {
                 // List all revised objects
                 $qb = new midcom_core_querybuilder($midcom_dba_classname);
@@ -37,8 +35,6 @@ class midgard_admin_asgard_handler_welcome extends midcom_baseclasses_components
                     && midcom::get()->auth->user) {
                     $qb->add_constraint('metadata.authors', 'LIKE', '|' . midcom::get()->auth->user->guid . '|');
                 }
-
-                $qb->add_order('metadata.revision', 'DESC');
 
                 foreach ($qb->execute() as $object) {
                     $revised["{$object->metadata->revised}_{$object->guid}_{$object->metadata->revision}"] = [
@@ -58,7 +54,7 @@ class midgard_admin_asgard_handler_welcome extends midcom_baseclasses_components
      */
     public function _handler_welcome(Request $request, array &$data)
     {
-        $data['schema_types'] = array_diff(midcom_connection::get_schema_types(), $this->_config->get('skip_in_filter'));
+        $data['schema_types'] = array_diff(midcom_connection::get_schema_types(), $this->_config->get_array('skip_in_filter'));
 
         $data['view_title'] = $this->_l10n->get('asgard');
 

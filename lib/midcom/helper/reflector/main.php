@@ -163,19 +163,14 @@ class midcom_helper_reflector extends midcom_baseclasses_components_purecode
 
     /**
      * Get property name to use as label
-     *
-     * @return string name of property to use as label (or false on failure)
      */
-    public function get_label_property()
+    public function get_label_property() : string
     {
         $midcom_class = midcom::get()->dbclassloader->get_midcom_class_name_for_mgdschema_object($this->mgdschema_class);
         $obj = ($midcom_class) ? new $midcom_class : new $this->mgdschema_class;
 
         if (method_exists($obj, 'get_label_property')) {
             return $obj->get_label_property();
-        }
-        if (midcom::get()->dbfactory->is_a($obj, midcom_db_person::class)) {
-            return ['rname', 'id'];
         }
         return $this->get_property('title', $obj) ??
             $this->get_property('name', $obj) ??
@@ -285,13 +280,9 @@ class midcom_helper_reflector extends midcom_baseclasses_components_purecode
     private static function _get_icon_map(string $config_key, string $fallback) : array
     {
         $config = midcom_baseclasses_components_configuration::get('midcom.helper.reflector', 'config');
-        $icons2classes = $config->get($config_key);
         $icon_map = [];
-        //sanity
-        if (!is_array($icons2classes)) {
-            throw new midcom_error('Config key "' . $config_key . '" is not an array');
-        }
-        foreach ($icons2classes as $icon => $classes) {
+
+        foreach ($config->get_array($config_key) as $icon => $classes) {
             $icon_map = array_merge($icon_map, array_fill_keys($classes, $icon));
         }
         if (!isset($icon_map['__default__'])) {
@@ -335,21 +326,20 @@ class midcom_helper_reflector extends midcom_baseclasses_components_purecode
 
         $label_prop = $this->get_label_property();
 
-        if (    is_string($label_prop)
-             && $label_prop != 'guid'
+        if (    $label_prop != 'guid'
              && $this->_mgd_reflector->property_exists($label_prop)) {
             $search_properties[$label_prop] = true;
         }
 
         // Exceptions - always search these fields
-        $always_search_all = $this->_config->get('always_search_fields') ?: [];
+        $always_search_all = $this->_config->get_array('always_search_fields');
         if (!empty($always_search_all[$this->mgdschema_class])) {
             $fields = array_intersect($always_search_all[$this->mgdschema_class], $properties);
             $search_properties += array_flip($fields);
         }
 
         // Exceptions - never search these fields
-        $never_search_all = $this->_config->get('never_search_fields') ?: [];
+        $never_search_all = $this->_config->get_array('never_search_fields');
         if (!empty($never_search_all[$this->mgdschema_class])) {
             $search_properties = array_diff_key($search_properties, array_flip($never_search_all[$this->mgdschema_class]));
         }
@@ -422,16 +412,9 @@ class midcom_helper_reflector extends midcom_baseclasses_components_purecode
      * @param string $schema_type classname to check rewriting for
      * @return string new classname (or original in case no rewriting is to be done)
      */
-    public static function class_rewrite(string $schema_type) : string
+    protected static function class_rewrite(string $schema_type) : string
     {
-        static $extends = false;
-        if ($extends === false) {
-            $extends = midcom_baseclasses_components_configuration::get('midcom.helper.reflector', 'config')->get('class_extends');
-            // Safety against misconfiguration
-            if (!is_array($extends)) {
-                throw new midcom_error("config->get('class_extends') did not return array, invalid configuration ??");
-            }
-        }
+        $extends = midcom_baseclasses_components_configuration::get('midcom.helper.reflector', 'config')->get_array('class_extends');
         if (   isset($extends[$schema_type])
             && class_exists($extends[$schema_type])) {
             return $extends[$schema_type];
@@ -443,11 +426,8 @@ class midcom_helper_reflector extends midcom_baseclasses_components_purecode
      * See if two MgdSchema classes are the same
      *
      * NOTE: also takes into account the various extended class scenarios
-     *
-     * @param string $class_one first class to compare
-     * @param string $class_two second class to compare
      */
-    public static function is_same_class($class_one, $class_two) : bool
+    public static function is_same_class(string $class_one, string $class_two) : bool
     {
         $one = self::resolve_baseclass($class_one);
         $two = self::resolve_baseclass($class_two);
@@ -503,8 +483,7 @@ class midcom_helper_reflector extends midcom_baseclasses_components_purecode
         self::$_cache[$type][$key] = null;
 
         // Configured properties
-        $exceptions = $this->_config->get($type . '_exceptions');
-        foreach ($exceptions as $class => $property) {
+        foreach ($this->_config->get_array($type . '_exceptions') as $class => $property) {
             if (midcom::get()->dbfactory->is_a($object, $class)) {
                 if (   $property !== false
                     && !$this->_mgd_reflector->property_exists($property)) {
@@ -540,19 +519,14 @@ class midcom_helper_reflector extends midcom_baseclasses_components_purecode
      * which we do not want here.
      *
      * @param object $object the object to get the name property for
-     * @param string $title_property property to use as "name", if left to default (null), will be reflected
      */
-    public static function get_object_title(object $object, ?string $title_property = null) : ?string
+    public static function get_object_title(object $object) : ?string
     {
-        if ($title_property === null) {
-            $title_property = self::get_title_property($object);
+        if ($title_property = self::get_title_property($object)) {
+            return (string) $object->{$title_property};
         }
-        if (empty($title_property)) {
-            // Could not resolve valid property
-            return null;
-        }
-
-        return (string) $object->{$title_property};
+        // Could not resolve valid property
+        return null;
     }
 
     /**
