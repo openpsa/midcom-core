@@ -24,8 +24,6 @@ class midcom_baseclasses_core_dbobject
      * "Pre-flight" checks for update method
      *
      * Separated so that dbfactory->import() can reuse the code
-     *
-     * @param midcom_core_dbaobject $object The DBA object we're working on
      */
     public static function update_pre_checks(midcom_core_dbaobject $object) : bool
     {
@@ -52,9 +50,6 @@ class midcom_baseclasses_core_dbobject
      * 3. bool $object->__object->update() is executed to do the actual DB update. This has to execute parent::update()
      *    and return its value, nothing else.
      * 4. void $object->_on_updated() is executed to notify the class from a successful DB update.
-     *
-     * @param midcom_core_dbaobject $object The DBA object we're working on
-     * @return bool Indicating success.
      */
     public static function update(midcom_core_dbaobject $object) : bool
     {
@@ -77,8 +72,6 @@ class midcom_baseclasses_core_dbobject
      * Post object creation operations for create
      *
      * Separated so that dbfactory->import() can reuse the code
-     *
-     * @param midcom_core_dbaobject $object The DBA object we're working on
      */
     public static function update_post_ops(midcom_core_dbaobject $object)
     {
@@ -94,8 +87,6 @@ class midcom_baseclasses_core_dbobject
     /**
      * Add full privileges to the owner of the object.
      * This is essentially sets the midgard:owner privilege for the current user.
-     *
-     * @param midcom_core_dbaobject $object The DBA object we're working on
      */
     private static function _set_owner_privileges(midcom_core_dbaobject $object)
     {
@@ -123,8 +114,6 @@ class midcom_baseclasses_core_dbobject
      * "Pre-flight" checks for create method
      *
      * Separated so that dbfactory->import() can reuse the code
-     *
-     * @param midcom_core_dbaobject $object The DBA object we're working on
      */
     public static function create_pre_checks(midcom_core_dbaobject $object) : bool
     {
@@ -175,9 +164,6 @@ class midcom_baseclasses_core_dbobject
      *      3. if name is empty unique name is generated from title property (unless title is empty too)
      *      4. if name is not URL-safe false is returned
      * </pre>
-     *
-     * @param midcom_core_dbaobject $object The DBA object we're working on
-     * @return boolean indicating whether from our point of view everything is ok
      *
      * @see midcom_helper_reflector_nameresolver::name_is_safe()
      * @see midcom_helper_reflector_nameresolver::name_is_unique()
@@ -240,9 +226,6 @@ class midcom_baseclasses_core_dbobject
      * 3. bool $object->__object->create() is executed to do the actual DB create. This has to execute parent::create()
      *    and return its value, nothing else.
      * 4. void $object->_on_created() is executed to notify the class from a successful DB creation.
-     *
-     * @param midcom_core_dbaobject $object The DBA object we're working on
-     * @return bool Indicating success.
      */
     public static function create(midcom_core_dbaobject $object) : bool
     {
@@ -282,14 +265,9 @@ class midcom_baseclasses_core_dbobject
      * Post object creation operations for create
      *
      * Separated so that dbfactory->import() can reuse the code
-     *
-     * @param midcom_core_dbaobject $object The DBA object we're working on
      */
     public static function create_post_ops(midcom_core_dbaobject $object)
     {
-        // Now assign all midgard privileges to the creator, this is necessary to get
-        // an owner like scheme to work by default.
-        // TODO: Check if there is a better solution like this.
         self::_set_owner_privileges($object);
 
         $object->_on_created();
@@ -310,9 +288,6 @@ class midcom_baseclasses_core_dbobject
      * 4. bool $object->__object->delete() is executed to do the actual DB delete. This has to execute parent::delete()
      *    and return its value, nothing else.
      * 5. void $object->_on_deleted() is executed to notify the class from a successful DB deletion.
-     *
-     * @param midcom_core_dbaobject $object The DBA object we're working on
-     * @return bool Indicating success.
      */
     public static function delete(midcom_core_dbaobject $object) : bool
     {
@@ -361,8 +336,6 @@ class midcom_baseclasses_core_dbobject
     /**
      * Unconditionally drop all privileges assigned to the given object.
      * Called upon successful delete
-     *
-     * @return bool Indicating Success.
      */
     private static function _delete_privileges(midcom_core_dbaobject $object) : bool
     {
@@ -384,30 +357,20 @@ class midcom_baseclasses_core_dbobject
      * 1. Get all of the child objects
      * 2. Delete them recursively starting from the top, working towards the root
      * 3. Finally delete the root object
-     *
-     * @param midcom_core_dbaobject $object The DBA object we're working on
-     * @return boolean Indicating success.
      */
     public static function delete_tree(midcom_core_dbaobject $object) : bool
     {
-        $reflector = midcom_helper_reflector_tree::get($object);
-        $child_classes = $reflector->get_child_classes();
-
-        foreach ($child_classes as $class) {
-            if ($qb = $reflector->_child_objects_type_qb($class, $object, false)) {
-                $children = $qb->execute();
-                // Delete first the descendants
-                while ($child = array_pop($children)) {
-                    //Inherit RCS status (so that f.x. large tree deletions can run faster)
-                    $child->_use_rcs = $object->_use_rcs;
-                    if (!self::delete_tree($child)) {
-                        debug_print_r('Failed to delete the children of this object:', $object, MIDCOM_LOG_INFO);
-                        return false;
-                    }
+        foreach (midcom_helper_reflector_tree::get_child_objects($object) as $children) {
+            // Delete first the descendants
+            foreach ($children as $child) {
+                //Inherit RCS status (so that f.x. large tree deletions can run faster)
+                $child->_use_rcs = $object->_use_rcs;
+                if (!self::delete_tree($child)) {
+                    debug_print_r('Failed to delete the children of this object:', $object, MIDCOM_LOG_INFO);
+                    return false;
                 }
             }
         }
-
         if (!self::delete($object)) {
             debug_print_r('Failed to delete the object', $object, MIDCOM_LOG_ERROR);
             return false;
@@ -420,8 +383,6 @@ class midcom_baseclasses_core_dbobject
      * Post object creation operations for delete
      *
      * Separated so that dbfactory->import() can reuse the code
-     *
-     * @param midcom_core_dbaobject $object The DBA object we're working on
      */
     public static function delete_post_ops(midcom_core_dbaobject $object)
     {
@@ -433,191 +394,8 @@ class midcom_baseclasses_core_dbobject
     }
 
     /**
-     * Undelete objects
-     *
-     * @param array $guids
-     * @return integer Size of undeleted objects
-     * @todo We should only undelete parameters & attachments deleted inside some small window of the main objects delete
-     */
-    public static function undelete($guids) : int
-    {
-        $undeleted_size = 0;
-
-        foreach ((array) $guids as $guid) {
-            if (!mgdobject::undelete($guid)) {
-                debug_add("Failed to undelete object with GUID {$guid} errstr: " . midcom_connection::get_error_string(), MIDCOM_LOG_ERROR);
-                continue;
-            }
-            // refresh
-            $object = midcom::get()->dbfactory->get_object_by_guid($guid);
-            $undeleted_size += $object->metadata->size;
-            $parent = $object->get_parent();
-            if (!empty($parent->guid)) {
-                // Invalidate parent from cache so content caches have chance to react
-                midcom::get()->cache->invalidate($parent->guid);
-            }
-
-            // FIXME: We should only undelete parameters & attachments deleted inside some small window of the main objects delete
-            $undeleted_size += self::undelete_parameters($guid);
-            $undeleted_size += self::undelete_attachments($guid);
-
-            //FIXME: are we sure we want to undelete all children here unconditionally, shouldn't it be left as UI decision ??
-            // List all deleted children
-            $children_types = midcom_helper_reflector_tree::get_child_objects($object, true);
-
-            foreach ($children_types as $children) {
-                $child_guids = array_column($children, 'guid');
-                $undeleted_size += self::undelete($child_guids);
-            }
-        }
-
-        return $undeleted_size;
-    }
-
-    /**
-     * Recover the parameters related to a deleted object
-     *
-     * @param string $guid
-     * @return integer Size of undeleted objects
-     * @todo We should only undelete parameters & attachments deleted inside some small window of the main objects delete
-     */
-    public static function undelete_parameters(string $guid) : int
-    {
-        $undeleted_size = 0;
-
-        $qb = new midgard_query_builder('midgard_parameter');
-        $qb->include_deleted();
-        $qb->add_constraint('parentguid', '=', $guid);
-        $qb->add_constraint('metadata.deleted', '=', true);
-        foreach ($qb->execute() as $param) {
-            if ($param->undelete($param->guid)) {
-                $undeleted_size += $param->metadata->size;
-            }
-        }
-
-        return $undeleted_size;
-    }
-
-    /**
-     * Recover the attachments related to a deleted object
-     *
-     * @param string $guid
-     * @return integer Size of undeleted objects
-     * @todo We should only undelete parameters & attachments deleted inside some small window of the main objects delete
-     */
-    public static function undelete_attachments(string $guid) : int
-    {
-        $undeleted_size = 0;
-
-        $qb = new midgard_query_builder('midgard_attachment');
-        $qb->include_deleted();
-        $qb->add_constraint('parentguid', '=', $guid);
-        $qb->add_constraint('metadata.deleted', '=', true);
-        foreach ($qb->execute() as $att) {
-            if ($att->undelete($att->guid)) {
-                midcom::get()->uimessages->add(midcom::get()->i18n->get_string('midgard.admin.asgard', 'midgard.admin.asgard'), sprintf(midcom::get()->i18n->get_string('attachment %s undeleted', 'midgard.admin.asgard'), $att->name, midcom_connection::get_error_string()));
-                $undeleted_size += $att->metadata->size;
-                $undeleted_size += self::undelete_parameters($att->guid);
-            } else {
-                midcom::get()->uimessages->add(midcom::get()->i18n->get_string('midgard.admin.asgard', 'midgard.admin.asgard'), sprintf(midcom::get()->i18n->get_string('failed undeleting attachment %s, reason %s', 'midgard.admin.asgard'), $att->name, midcom_connection::get_error_string()), 'error');
-            }
-        }
-
-        return $undeleted_size;
-    }
-
-    /**
-     * Purge objects
-     *
-     * @return integer Size of purged objects
-     */
-    public static function purge(array $guids, string $type) : int
-    {
-        $purged_size = 0;
-        $qb = new midgard_query_builder($type);
-        $qb->add_constraint('guid', 'IN', $guids);
-        $qb->include_deleted();
-
-        foreach ($qb->execute() as $object) {
-            // first kill your children
-            $children_types = midcom_helper_reflector_tree::get_child_objects($object, true);
-            foreach ($children_types as $child_type => $children) {
-                $child_guids = array_column($children, 'guid');
-                self::purge($child_guids, $child_type);
-            }
-
-            // then shoot your dogs
-            $purged_size += self::purge_parameters($object->guid);
-            $purged_size += self::purge_attachments($object->guid);
-
-            // now shoot yourself
-            if (!$object->purge()) {
-                debug_add("Failed to purge object " . get_class($object) . " {$object->guid}", MIDCOM_LOG_INFO);
-            } else {
-                $purged_size += $object->metadata->size;
-            }
-        }
-
-        return $purged_size;
-    }
-
-    /**
-     * Purge the parameters related to a deleted object
-     *
-     * @param string $guid
-     * @return integer Size of purged objects
-     */
-    public static function purge_parameters(string $guid) : int
-    {
-        $purged_size = 0;
-
-        $qb = new midgard_query_builder('midgard_parameter');
-        $qb->include_deleted();
-        $qb->add_constraint('parentguid', '=', $guid);
-        foreach ($qb->execute() as $param) {
-            if ($param->purge()) {
-                $purged_size += $param->metadata->size;
-            } else {
-                midcom::get()->uimessages->add(
-                    midcom::get()->i18n->get_string('midgard.admin.asgard', 'midgard.admin.asgard'),
-                    sprintf(midcom::get()->i18n->get_string('failed purging parameter %s => %s, reason %s', 'midgard.admin.asgard'), $param->domain, $param->name, midcom_connection::get_error_string()),
-                    'error'
-                );
-            }
-        }
-
-        return $purged_size;
-    }
-
-    /**
-     * Purge the attachments related to a deleted object
-     *
-     * @param string $guid
-     * @return integer Size of purged objects
-     */
-    public static function purge_attachments(string $guid) : int
-    {
-        $purged_size = 0;
-
-        $qb = new midgard_query_builder('midgard_attachment');
-        $qb->include_deleted();
-        $qb->add_constraint('parentguid', '=', $guid);
-        foreach ($qb->execute() as $att) {
-            if ($att->purge()) {
-                $purged_size += $att->metadata->size;
-                self::purge_parameters($att->guid);
-            } else {
-                midcom::get()->uimessages->add(midcom::get()->i18n->get_string('midgard.admin.asgard', 'midgard.admin.asgard'), sprintf(midcom::get()->i18n->get_string('failed purging attachment %s => %s, reason %s', 'midgard.admin.asgard'), $att->guid, $att->name, midcom_connection::get_error_string()), 'error');
-            }
-        }
-
-        return $purged_size;
-    }
-
-    /**
      * After we instantiated the midgard object do some post processing and ACL checks
      *
-     * @param midcom_core_dbaobject $object The DBA object we're working on
      * @see load()
      */
     public static function post_db_load_checks(midcom_core_dbaobject $object)
@@ -641,9 +419,6 @@ class midcom_baseclasses_core_dbobject
      * access control.
      *
      * On any failure, the object is cleared.
-     *
-     * @param midcom_core_dbaobject $object The DBA object we're working on
-     * @return bool Indicating Success
      */
     public static function refresh(midcom_core_dbaobject $object) : bool
     {
@@ -661,10 +436,6 @@ class midcom_baseclasses_core_dbobject
     /**
      * This call wraps the original get_by_id call to provide access control.
      * The calling sequence is as with the corresponding constructor.
-     *
-     * @param midcom_core_dbaobject $object The DBA object we're working on
-     * @param int $id The id of the object to load from the database.
-     * @return bool Indicating Success
      */
     public static function get_by_id(midcom_core_dbaobject $object, int $id) : bool
     {
@@ -673,7 +444,7 @@ class midcom_baseclasses_core_dbobject
             return false;
         }
 
-        $object->__object->get_by_id((int) $id);
+        $object->__object->get_by_id($id);
 
         if ($object->id != 0) {
             if (!$object->can_do('midgard:read')) {
@@ -693,10 +464,6 @@ class midcom_baseclasses_core_dbobject
     /**
      * This call wraps the original get_by_guid call to provide access control.
      * The calling sequence is as with the corresponding constructor.
-     *
-     * @param midcom_core_dbaobject $object The DBA object we're working on
-     * @param string $guid The guid of the object to load from the database.
-     * @return bool Indicating Success
      */
     public static function get_by_guid(midcom_core_dbaobject $object, string $guid) : bool
     {
@@ -739,8 +506,6 @@ class midcom_baseclasses_core_dbobject
      * "Pre-flight" checks for delete method
      *
      * Separated so that dbfactory->import() can reuse the code
-     *
-     * @param midcom_core_dbaobject $object The DBA object we're working on
      */
     public static function delete_pre_checks(midcom_core_dbaobject $object) : bool
     {

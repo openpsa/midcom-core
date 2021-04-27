@@ -229,21 +229,21 @@ class midcom_helper_reflector_tree extends midcom_helper_reflector
             switch ($field_type) {
                 case MGD_TYPE_STRING:
                 case MGD_TYPE_GUID:
-                    $qb->add_constraint($field, '=', (string) $for_object->$field_target);
+                    $qb->add_constraint($field, '=', $for_object->$field_target);
                     break;
                 case MGD_TYPE_INT:
                 case MGD_TYPE_UINT:
                     if ($link_type == 'up') {
-                        $qb->add_constraint($field, '=', (int) $for_object->$field_target);
+                        $qb->add_constraint($field, '=', $for_object->$field_target);
                     } else {
                         if (!empty($linkfields['up']['name'])) {
                             //we only return direct children (otherwise they would turn up twice in recursive queries)
                             $qb->begin_group('AND');
-                            $qb->add_constraint($field, '=', (int) $for_object->$field_target);
+                            $qb->add_constraint($field, '=', $for_object->$field_target);
                             $qb->add_constraint($linkfields['up']['name'], '=', 0);
                             $qb->end_group();
                         } else {
-                            $qb->add_constraint($field, '=', (int) $for_object->$field_target);
+                            $qb->add_constraint($field, '=', $for_object->$field_target);
                         }
                     }
                     break;
@@ -353,37 +353,28 @@ class midcom_helper_reflector_tree extends midcom_helper_reflector
      * Add default ("title" and "name") sorts to a QB instance
      *
      * @param midgard_query_builder $qb QB instance
-     * @param string $schema_type valid mgdschema class name
      */
     public static function add_schema_sorts_to_qb($qb, string $schema_type)
     {
         // Sort by "title" and "name" if available
-        $ref = self::get($schema_type);
         $dummy = new $schema_type();
-        if ($title_property = $ref->get_title_property($dummy)) {
+        if ($title_property = self::get_title_property($dummy)) {
             $qb->add_order($title_property);
         }
-        if ($name_property = $ref->get_name_property($dummy)) {
+        if ($name_property = self::get_name_property($dummy)) {
             $qb->add_order($name_property);
         }
     }
 
     /**
      * List object children
-     *
-     * @param midcom_core_dbaobject $parent
      */
     public static function get_tree(midcom_core_dbaobject $parent) : array
     {
         static $shown_guids = [];
         $tree = [];
-        try {
-            $children = self::get_child_objects($parent);
-        } catch (midcom_error $e) {
-            return $tree;
-        }
 
-        foreach ($children as $class => $objects) {
+        foreach (self::get_child_objects($parent) as $class => $objects) {
             $reflector = parent::get($class);
 
             foreach ($objects as $object) {
@@ -398,8 +389,7 @@ class midcom_helper_reflector_tree extends midcom_helper_reflector
                     'icon' => $reflector->get_object_icon($object),
                     'class' => $class
                 ];
-                $grandchildren = self::get_tree($object);
-                if (!empty($grandchildren)) {
+                if ($grandchildren = self::get_tree($object)) {
                     $leaf['children'] = $grandchildren;
                 }
                 $tree[] = $leaf;

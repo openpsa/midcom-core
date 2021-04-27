@@ -136,7 +136,7 @@ class midgard_admin_asgard_handler_type extends midcom_baseclasses_components_ha
         return $this->get_response();
     }
 
-    private function _prepare_toolbar(array &$data)
+    private function _prepare_toolbar(array $data)
     {
         $buttons = [];
         if (midcom::get()->auth->can_user_do('midgard:create', null, $this->type)) {
@@ -189,8 +189,6 @@ class midgard_admin_asgard_handler_type extends midcom_baseclasses_components_ha
 
     /**
      * Shows the loaded object in editor.
-     *
-     * @param array $data The local request data.
      */
     public function _show_type(string $handler_id, array &$data)
     {
@@ -206,9 +204,7 @@ class midgard_admin_asgard_handler_type extends midcom_baseclasses_components_ha
 
         midcom_show_style('midgard_admin_asgard_type');
 
-        $types = $reflector->get_child_classes();
-
-        if (!empty($types)) {
+        if ($types = $reflector->get_child_classes()) {
             midcom_show_style('midgard_admin_asgard_type_children_start');
             $this->show_child_types($types, $data);
             midcom_show_style('midgard_admin_asgard_type_children_end');

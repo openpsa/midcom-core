@@ -208,10 +208,6 @@ class midcom_helper_toolbar
         return $this->label;
     }
 
-    /**
-     *
-     * @param string $label
-     */
     public function set_label(string $label)
     {
         $this->label = $label;
@@ -240,7 +236,6 @@ class midcom_helper_toolbar
             MIDCOM_TOOLBAR_URL => $uri,
             MIDCOM_TOOLBAR_LABEL => $label,
             MIDCOM_TOOLBAR_GLYPHICON => 'question',
-            MIDCOM_TOOLBAR_ACCESSKEY => 'h',
             MIDCOM_TOOLBAR_OPTIONS => [
                 'target' => '_blank',
             ]],
@@ -289,7 +284,6 @@ class midcom_helper_toolbar
     /**
      * Convenience shortcut to add multiple buttons at the same item
      *
-     * @param array $items The items to add.
      * @param mixed $before The index before which the item should be inserted.
      *     Use -1 for appending at the end, use a string to insert
      *     it before a URL, an integer will insert it before a
@@ -602,7 +596,6 @@ class midcom_helper_toolbar
      */
     private function _render_link_item(array $item) : string
     {
-        $output = '';
         $attributes = $this->get_item_attributes($item);
 
         if ($item[MIDCOM_TOOLBAR_ENABLED]) {
@@ -612,7 +605,7 @@ class midcom_helper_toolbar
             $tagname = !empty($attributes['title']) ? 'abbr' : 'span';
         }
 
-        $output .= '<' . $tagname;
+        $output = '<' . $tagname;
         foreach ($attributes as $key => $val) {
             $output .= ' ' . $key . '="' . htmlspecialchars($val) . '"';
         }

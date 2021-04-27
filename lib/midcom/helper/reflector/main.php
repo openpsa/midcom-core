@@ -46,12 +46,6 @@ class midcom_helper_reflector extends midcom_baseclasses_components_purecode
 
         // Resolve root class name
         $this->mgdschema_class = self::resolve_baseclass($src);
-        // Could not resolve root class name
-        if (empty($this->mgdschema_class)) {
-            // Handle object vs string
-            $original_class = (is_object($src)) ? get_class($src) : $src;
-            throw new midcom_error("Could not determine MgdSchema baseclass for '{$original_class}'");
-        }
 
         // Instantiate midgard reflector
         $this->_mgd_reflector = new midgard_reflection_property($this->mgdschema_class);
@@ -66,7 +60,7 @@ class midcom_helper_reflector extends midcom_baseclasses_components_purecode
      * @param mixed $src Object or classname
      * @return static
      */
-    public static function &get($src)
+    public static function get($src)
     {
         $identifier = get_called_class() . (is_object($src) ? get_class($src) : $src);
 
@@ -78,8 +72,6 @@ class midcom_helper_reflector extends midcom_baseclasses_components_purecode
 
     /**
      * Get object's (mgdschema) fieldnames.
-     *
-     * @param object $object Object The object to query
      */
     public static function get_object_fieldnames(object $object) : array
     {
@@ -408,7 +400,6 @@ class midcom_helper_reflector extends midcom_baseclasses_components_purecode
      * For example org.openpsa.* components often expand core objects,
      * in config we specify which classes we wish to substitute with which
      *
-     * @param string $schema_type classname to check rewriting for
      * @return string new classname (or original in case no rewriting is to be done)
      */
     protected static function class_rewrite(string $schema_type) : string
@@ -426,20 +417,17 @@ class midcom_helper_reflector extends midcom_baseclasses_components_purecode
      *
      * NOTE: also takes into account the various extended class scenarios
      */
-    public static function is_same_class(string $class_one, string $class_two) : bool
+    public static function is_same_class(string $class1, string $class2) : bool
     {
-        $one = self::resolve_baseclass($class_one);
-        $two = self::resolve_baseclass($class_two);
-        return $one == $two;
+        return self::resolve_baseclass($class1) == self::resolve_baseclass($class2);
     }
 
     /**
      * Get the MgdSchema classname for given class
      *
-     * @param mixed $classname either string (class name) or object
-     * @return string the base class name
+     * @param string|object $classname either string (class name) or object
      */
-    public static function resolve_baseclass($classname) : ?string
+    public static function resolve_baseclass($classname) : string
     {
         static $cached = [];
 
@@ -448,8 +436,8 @@ class midcom_helper_reflector extends midcom_baseclasses_components_purecode
             $classname = get_class($classname);
         }
 
-        if (empty($classname)) {
-            return null;
+        if (!$classname) {
+            throw new midcom_error('Class name must not be empty');
         }
 
         if (isset($cached[$classname])) {
@@ -502,8 +490,6 @@ class midcom_helper_reflector extends midcom_baseclasses_components_purecode
 
     /**
      * Resolve the "name" property of given object
-     *
-     * @param object $object the object to get the name property for
      */
     public static function get_name_property(object $object) : ?string
     {
@@ -516,8 +502,6 @@ class midcom_helper_reflector extends midcom_baseclasses_components_purecode
      * NOTE: This is distinctly different from get_object_label, which will always return something
      * even if it's just the class name and GUID, also it will for some classes include extra info (like datetimes)
      * which we do not want here.
-     *
-     * @param object $object the object to get the name property for
      */
     public static function get_object_title(object $object) : ?string
     {
@@ -533,8 +517,6 @@ class midcom_helper_reflector extends midcom_baseclasses_components_purecode
      *
      * NOTE: This is distinctly different from get_label_property, which will always return something
      * even if it's just the guid
-     *
-     * @param object $object The object to get the title property for
      */
     public static function get_title_property(object $object) : ?string
     {

@@ -27,9 +27,6 @@
  * through NAP. If this fails, you have to set the members $topic_guid, $topic_url and
  * $component manually.
  *
- * @todo More DBA stuff: use DBA classes, which allow you to implicitly load the parent
- *     object using get_parent.
- *
  * @package midcom.services
  * @see midcom_services_indexer
  * @see midcom_helper_metadata
@@ -40,8 +37,6 @@ class midcom_services_indexer_document_attachment extends midcom_services_indexe
 
     /**
      * Create a new attachment document
-     *
-     * @param midcom_db_attachment $attachment The Attachment to index.
      */
     public function __construct(midcom_db_attachment $attachment)
     {

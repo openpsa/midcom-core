@@ -299,12 +299,12 @@ class midcom_admin_help_help extends midcom_baseclasses_components_plugin
 
     private function _prepare_breadcrumb(string $handler_id)
     {
-        $this->add_breadcrumb($this->router->generate('welcome'), $this->_l10n->get('midcom.admin.help'));
+        $this->add_breadcrumb($this->router->generate('welcome'), $this->_l10n->get('help'));
 
         if (in_array($handler_id, ['help', 'component'])) {
             $this->add_breadcrumb(
                 $this->router->generate('component', ['component' => $this->_request_data['component']]),
-                sprintf($this->_l10n->get('help for %s'), $this->_i18n->get_string($this->_request_data['component'], $this->_request_data['component']))
+                $this->_i18n->get_string($this->_request_data['component'], $this->_request_data['component'])
             );
         }
     }
@@ -341,8 +341,6 @@ class midcom_admin_help_help extends midcom_baseclasses_components_plugin
 
     /**
      * Shows the help system main screen
-     *
-     * @param array $data The local request data.
      */
     public function _show_welcome(string $handler_id, array &$data)
     {
@@ -376,8 +374,6 @@ class midcom_admin_help_help extends midcom_baseclasses_components_plugin
 
     /**
      * Shows the component help ToC.
-     *
-     * @param array $data The local request data.
      */
     public function _show_component(string $handler_id, array &$data)
     {
@@ -417,8 +413,6 @@ class midcom_admin_help_help extends midcom_baseclasses_components_plugin
 
     /**
      * Shows the help page.
-     *
-     * @param array $data The local request data.
      */
     public function _show_help(string $handler_id, array &$data)
     {

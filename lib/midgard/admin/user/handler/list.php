@@ -24,7 +24,7 @@ class midgard_admin_user_handler_list extends midcom_baseclasses_components_hand
         midcom::get()->head->add_jsfile(MIDCOM_STATIC_URL . '/midgard.admin.user/jquery.midgard_admin_user.js');
     }
 
-    private function _prepare_toolbar(array &$data)
+    private function _prepare_toolbar(array $data)
     {
         $buttons = [
             [
@@ -104,11 +104,6 @@ class midgard_admin_user_handler_list extends midcom_baseclasses_components_hand
         // Get the results
         $groupdata = $mc->get_rows(['name', 'official', 'id', 'guid']);
 
-        // Hide empty groups
-        if (empty($groupdata)) {
-            return;
-        }
-
         foreach ($groupdata as $group) {
             $group['title'] = ($group['official'] ?: $group['name']) ?: "#{$group['id']}";
             $group['level'] = $level;
@@ -118,9 +113,6 @@ class midgard_admin_user_handler_list extends midcom_baseclasses_components_hand
         }
     }
 
-    /**
-     * @param array $data Data passed to the show method
-     */
     public function _show_list(string $handler_id, array &$data)
     {
         $data['persons'] = $this->_persons;
@@ -134,7 +126,7 @@ class midgard_admin_user_handler_list extends midcom_baseclasses_components_hand
         midcom_show_style('midgard-admin-user-personlist-footer');
     }
 
-    public function _handler_batch(Request $request, string $action, array &$data)
+    public function _handler_batch(Request $request, string $action)
     {
         $relocate_url = $this->router->generate('user_list');
         if ($request->query->count() > 0) {
@@ -182,8 +174,6 @@ class midgard_admin_user_handler_list extends midcom_baseclasses_components_hand
 
     /**
      * Internal helper for processing the batch change of passwords
-     *
-     * @param Request $request The request object
      */
     private function _batch_passwords(Request $request, midcom_db_person $person)
     {
@@ -279,8 +269,6 @@ class midgard_admin_user_handler_list extends midcom_baseclasses_components_hand
 
     /**
      * Show the batch password change form
-     *
-     * @param array $data The local request data.
      */
     public function _show_password_email(string $handler_id, array &$data)
     {
