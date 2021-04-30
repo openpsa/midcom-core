@@ -35,8 +35,6 @@ abstract class midcom_services_indexer_client
     protected $_l10n;
 
     /**
-     * The indexer service
-     *
      * @var midcom_services_indexer
      */
     private $_indexer;
@@ -50,21 +48,16 @@ abstract class midcom_services_indexer_client
     private $_queries = [];
 
     /**
-     * Constructor
-     *
      * @param midcom_db_topic $topic The current topic
      */
     public function __construct($topic, midcom_services_indexer $indexer = null)
     {
         $this->_topic = $topic;
         $this->_l10n = midcom::get()->i18n->get_l10n($topic->component);
-        if (null === $indexer) {
-            $indexer = midcom::get()->indexer;
-        }
-        $this->_indexer = $indexer;
+        $this->_indexer = $indexer ?? midcom::get()->indexer;
 
         $nav = new midcom_helper_nav();
-        $this->_node = $nav->get_node($this->_topic->id);
+        $this->_node = $nav->get_node($topic->id);
     }
 
     /**

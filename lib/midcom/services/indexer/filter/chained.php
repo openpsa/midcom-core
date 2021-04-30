@@ -10,20 +10,13 @@
  * This class provides a chained query filter
  *
  * @package midcom.services
- * @see midcom_services_indexer
  */
-class midcom_services_indexer_filter_chained extends midcom_services_indexer_filter
+class midcom_services_indexer_filter_chained implements midcom_services_indexer_filter
 {
     /**
-     * The string we're working with
-     *
      * @var midcom_services_indexer_filter[]
      */
     private $filters = [];
-
-    public function __construct()
-    {
-    }
 
     public function add_filter(midcom_services_indexer_filter $filter)
     {

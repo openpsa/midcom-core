@@ -31,7 +31,7 @@ class org_openpsa_qbpager extends midcom_baseclasses_components_purecode
         parent::__construct();
 
         $this->_pager_id = $pager_id;
-        $this->_prefix = 'org_openpsa_qbpager_' . $this->_pager_id . '_';
+        $this->_prefix = 'org_openpsa_qbpager_' . $pager_id . '_';
         $this->_prepare_qbs($classname);
     }
 
@@ -89,7 +89,7 @@ class org_openpsa_qbpager extends midcom_baseclasses_components_purecode
         $query = [$page_var => $page_number];
 
         foreach ($_GET as $key => $value) {
-            if ($key != $page_var && $key != '') {
+            if (!in_array($key, [$page_var, ''])) {
                 $query[$key] = $value;
             }
         }

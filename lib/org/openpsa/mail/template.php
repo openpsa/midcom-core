@@ -83,8 +83,6 @@
 class org_openpsa_mail_template
 {
     /**
-     * The parameters to use for the Mail template.
-     *
      * @var array
      */
     private $_parameters = [];
@@ -100,7 +98,7 @@ class org_openpsa_mail_template
     {
         $this->_parameters = $parameters;
 
-        foreach ($this->_parameters as $key => $value) {
+        foreach ($parameters as $key => $value) {
             $this->_patterns[] = "/__({$key})__/";
 
             if (   is_array($value)

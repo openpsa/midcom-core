@@ -24,7 +24,7 @@ abstract class midcom_services_auth_backend
     /**
      * Internal cache of all loaded users, indexed by their identifiers.
      *
-     * @var Array
+     * @var array
      */
     private $_user_cache = [];
 
@@ -156,8 +156,7 @@ abstract class midcom_services_auth_backend
         $user = midcom_connection::login($username, $password, $trusted);
 
         if (!$user) {
-            debug_add("Failed to authenticate the given user: ". midcom_connection::get_error_string(),
-                    MIDCOM_LOG_INFO);
+            debug_add("Failed to authenticate the given user: " . midcom_connection::get_error_string(), MIDCOM_LOG_INFO);
             return null;
         }
 

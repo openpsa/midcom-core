@@ -14,8 +14,6 @@
 class midcom_helper_reflector_nameresolver
 {
     /**
-     * The object we're working with
-     *
      * @var midcom_core_dbaobject
      */
     private $_object;
@@ -88,13 +86,12 @@ class midcom_helper_reflector_nameresolver
 
         // Start the magic
         midcom::get()->auth->request_sudo('midcom.helper.reflector');
-        $parent = $this->_object->get_parent();
-        $stat = $this->check_sibling_classes($name, $this->get_sibling_classes($parent), $parent);
+        $stat = $this->check_sibling_classes($name);
         midcom::get()->auth->drop_sudo();
         return $stat;
     }
 
-    private function get_sibling_classes($parent = null) : array
+    private function get_sibling_classes(?object $parent) : array
     {
         if (!empty($parent->guid)) {
             // We have parent, check siblings
@@ -117,9 +114,10 @@ class midcom_helper_reflector_nameresolver
         return [];
     }
 
-    private function check_sibling_classes(string $name, array $schema_types, $parent = null) : bool
+    private function check_sibling_classes(string $name) : bool
     {
-        foreach ($schema_types as $schema_type) {
+        $parent = $this->_object->get_parent();
+        foreach ($this->get_sibling_classes($parent) as $schema_type) {
             $qb = $this->get_sibling_qb($schema_type, $parent);
             if (!$qb) {
                 continue;
@@ -209,17 +207,17 @@ class midcom_helper_reflector_nameresolver
         return $ret;
     }
 
-    private function get_sibling_qb(string $schema_type, $parent = null)
+    private function get_sibling_qb(string $schema_type, ?object $parent)
     {
         $child_name_property = midcom_helper_reflector::get_name_property(new $schema_type);
         if (empty($child_name_property)) {
             // This sibling class does not use names
             return false;
         }
+        $resolver = midcom_helper_reflector_tree::get($schema_type);
         if ($parent === null) {
-            $qb = midcom_helper_reflector_tree::get($schema_type)->_root_objects_qb();
+            $qb = $resolver->_root_objects_qb();
         } else {
-            $resolver = midcom_helper_reflector_tree::get($schema_type);
             $qb = $resolver->_child_objects_type_qb($schema_type, $parent, false);
         }
         if (!$qb) {

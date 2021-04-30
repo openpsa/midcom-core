@@ -46,21 +46,21 @@ class midcom_helper_configuration
     /**
      * Globally assigned configuration data.
      *
-     * @var Array
+     * @var array
      */
     public $_global = [];
 
     /**
      * Locally overridden configuration data.
      *
-     * @var Array
+     * @var array
      */
     public $_local = [];
 
     /**
      * Merged, current configuration state.
      *
-     * @var Array
+     * @var array
      */
     private $_merged = [];
 
@@ -139,8 +139,7 @@ class midcom_helper_configuration
     private function _update_cache()
     {
         $this->_merged = $this->_global;
-        if (   !empty($this->_local)
-            && is_array($this->_local)) {
+        if (!empty($this->_local)) {
             $this->_merged = array_merge($this->_merged, $this->_local);
         }
     }

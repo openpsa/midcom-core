@@ -92,14 +92,14 @@ class midcom_services_i18n_l10n
      * Global string table cache, it stores the string tables
      * loaded during runtime.
      *
-     * @var Array
+     * @var array
      */
     private static $_localedb = [];
 
     /**
      * The string database, a reference into the global cache.
      *
-     * @var Array
+     * @var array
      */
     private $_stringdb;
 
@@ -161,7 +161,7 @@ class midcom_services_i18n_l10n
         $data = $this->parse_data(file($filename), $lang, $filename);
 
         // get site-specific l10n
-        $component_locale = midcom_helper_misc::get_snippet_content_graceful("conf:/" . $this->_component_name . '/l10n/'. $this->database . '.' . $lang . '.txt');
+        $component_locale = midcom_helper_misc::get_snippet_content_graceful("conf:/" . $this->_component_name . '/l10n/' . $this->database . '.' . $lang . '.txt');
         if (!empty($component_locale)) {
             $data = array_merge($data, $this->parse_data(explode("\n", $component_locale), $lang, $component_locale));
         }
