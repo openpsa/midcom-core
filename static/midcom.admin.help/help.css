@@ -41,17 +41,14 @@ blockquote
     border: 1px solid #826647;
     border-radius: 8px;
     font-style: italic;
-    padding-left: 70px;
-    padding-top: 8px;
-    padding-right: 8px;
-    padding-bottom: 4px;
+    padding: 8px 8px 4px 70px;
     background: url(note-area.png) no-repeat 8px 8px;
     min-height: 55px;
 }
 
 pre code
 {
-    padding: 0px;
+    padding: 0;
 }
 .navi
 {
@@ -96,7 +93,7 @@ dd td.property
 }
 dd td p
 {
-    margin: 0px;
+    margin: 0;
 }
 
 dd td.mgdtype
@@ -119,7 +116,7 @@ dd td.description div.proplink
 div.components h2
 {
     font-size: 1.2em;
-    margin-bottom: 0px;
+    margin-bottom: 0;
     background-color: #eeeeef;
     padding: 0.4em 1em;
     line-height: 22px;
@@ -136,9 +133,9 @@ div.components hr
 
 div.components ul
 {
-    margin: 0px;
+    margin: 0;
     margin-left: 8px;
-    padding: 0px;
+    padding: 0;
     background-color: #EEEEEC;
 }
 

@@ -22,7 +22,6 @@ use midcom\events\dbaevent;
  * @see midcom_services_indexer_backend
  * @see midcom_services_indexer_filter
  *
- * @todo Batch indexing support
  * @todo Write code examples
  * @todo More elaborate class introduction.
  * @package midcom.services
@@ -232,54 +231,25 @@ class midcom_services_indexer implements EventSubscriberInterface
     /**
      * Try to instantiate the most specific document class for the object given in the parameter.
      *
-     * This class will not return empty document base class instances if nothing
-     * specific can be found. If you are in this situation, you need to instantiate
-     * an appropriate document manually and populate it.
-     *
-     * The checking sequence is like this right now:
-     *
-     * 1. If a datamanager instance is passed, it is transformed into a datamanager document.
-     * 2. If a Metadata object is passed, it is transformed into a midcom_services_indexer_document_midcom.
-     * 3. Next, the method tries to retrieve a MidCOM Metadata object using the parameter directly. If successful,
-     *    again, a midcom_services_indexer_document_midcom is returned.
-     *
      * This factory method will work even if the indexer is disabled. You can check this
      * with the enabled() method of this class.
      *
      * @todo Move to a full factory pattern here to save document php file parsings where possible.
      *     This means that all document creations will in the future be handled by this method.
-     *
-     * @param object $object The object for which a document instance is required
-     * @return midcom_services_indexer_document A valid document class as specific as possible. Returns
-     *     false on error or if no specific class match could be found.
      */
-    function new_document($object)
+    public function new_document(object $object) : midcom_services_indexer_document
     {
         // Scan for datamanager instances.
         if (is_a($object, 'midcom\datamanager\datamanager')) {
-            debug_add('This is a datamanager document');
             return new midcom\datamanager\indexer\document($object);
         }
         if (is_a($object, 'midcom_helper_datamanager2_datamanager')) {
-            debug_add('This is a datamanager2 document');
             return new midcom_helper_datamanager2_indexer_document($object);
         }
 
-        // Maybe we have a metadata object...
-        if (is_a($object, midcom_helper_metadata::class)) {
-            debug_add('This is a metadata document, built from a metadata object.');
+        if ($object instanceof midcom_core_dbaobject) {
             return new midcom_services_indexer_document_midcom($object);
         }
-
-        // Try to get a metadata object for the argument passed
-        // This should catch all DBA objects as well.
-        if ($metadata = midcom_helper_metadata::retrieve($object)) {
-            debug_add('Successfully fetched a Metadata object for the argument.');
-            return new midcom_services_indexer_document_midcom($metadata);
-        }
-
-        // No specific match found.
-        debug_print_r('No match found for this type:', $object);
-        return false;
+        throw new midcom_error('Unsupported object type');
     }
 }

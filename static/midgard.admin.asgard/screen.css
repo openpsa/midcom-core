@@ -40,7 +40,7 @@ p
 #navigation,
 #content
 {
-    margin: 0em;
+    margin: 0;
 }
 
 #navigation
@@ -52,7 +52,6 @@ p
   padding-top: 16px;
   overflow: auto;
   position: fixed !important;
-  position: absolute;
   top: 10px;
   bottom: 58px
 }
@@ -80,7 +79,7 @@ p
 #navigation ul li .metadata
 {
     position: absolute;
-    right: 0px;
+    right: 0;
     font-size: smaller;
     color: #000000;
 }
@@ -126,8 +125,8 @@ p
 }
 #navigation div.section ul.midgard_admin_asgard_navigation li
 {
-    margin: 0px;
-    padding: 0px;
+    margin: 0;
+    padding: 0;
     line-height: 18px;
     white-space: nowrap;
 }
@@ -547,7 +546,6 @@ p
 
 #container #toolbar ul
 {
-  padding: 0;
   margin: 0;
   display: block;
   list-style: none;
@@ -586,10 +584,8 @@ p
   display: inline-block;
   border-radius: 6px;
   padding: 4px;
-  margin: 0;
-  white-space: nowrap;
-  margin-bottom: .4em;
-  margin-right: .2em
+    white-space: nowrap;
+    margin: 0 .2em .4em 0;
 }
 
 #container #toolbar ul li abbr
@@ -657,7 +653,6 @@ p
   vertical-align: middle;
   overflow: hidden;
   position: fixed !important;
-  position: absolute;
   bottom: 0;
   width: 100%;
   clear: both;
@@ -771,7 +766,6 @@ p
   bottom: 0;
   left: 230px;
   width: 10px;
-  cursor: w-resize;
   cursor: col-resize;
 }
 
@@ -828,8 +822,8 @@ p
 #midcom_services_uimessages_wrapper
 {
     position: static !important;
-    margin: 0px !important;
-    padding: 0px !important;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
 #midcom_services_uimessages_wrapper div.midcom_services_uimessages_message
@@ -969,13 +963,13 @@ table.midgard_admin_asgard_object_parameters li
 {
     display: inline;
     list-style: none;
-    padding-left: 0px;
+    padding-left: 0;
 }
 
 #content-text ul.midcom_toolbar
 {
     list-style: none;
-    padding-left: 0px;
+    padding-left: 0;
 }
 
 #content-text ul.midcom_toolbar a img
@@ -1000,7 +994,7 @@ table.midgard_admin_asgard_object_parameters li span.toolbar_label
     color: #333;
     background: #d3d7cf;
     border: none;
-    margin: 0px;
+    margin: 0;
     padding: 0;
     padding-left: 1.8em;
 }
@@ -1029,8 +1023,8 @@ table.midgard_admin_asgard_object_parameters li span.toolbar_label
 {
      display: inline;
      font-weight: normal;
-     margin-left: 0px;
-     padding-left: 0px;
+     margin-left: 0;
+     padding-left: 0;
      margin-right: 1em;
 }
 #content div.midgard_admin_asgard_stylehelper_help div ul li.component ul li a
@@ -1077,7 +1071,7 @@ table.midgard_admin_asgard_object_parameters li span.toolbar_label
     background-position: 4px center;
     position: fixed;
     top: 15px;
-    right: 0px;
+    right: 0;
     color: white;
     background-color: rgba(0, 0, 0, .5);
     border-radius: 3px 0 0 3px;

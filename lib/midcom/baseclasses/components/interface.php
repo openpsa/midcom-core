@@ -81,7 +81,7 @@
  * <code>
  * class net_nehmer_static_interface extends midcom_baseclasses_components_interface
  * {
- *     public function _on_reindex($topic, $config, &$indexer)
+ *     public function _on_reindex($topic, midcom_helper_configuration $config, midcom_services_indexer $indexer)
  *     {
  *         $qb = midcom::get()->dbfactory->new_query_builder('midcom_db_article');
  *         $qb->add_constraint('topic', '=', $topic->id);
@@ -100,7 +100,6 @@
  *             $document = $indexer->new_document($datamanager);
  *             $document->topic_guid = $topic->guid;
  *             $document->topic_url = $node[MIDCOM_NAV_FULLURL];
- *             $document->read_metadata_from_object($datamanager->storage->object);
  *             $document->component = $topic->component;
  *             $indexer->index($document);
  *         }
@@ -314,10 +313,10 @@ class midcom_baseclasses_components_interface extends midcom_baseclasses_compone
      *
      * @param midcom_db_topic $topic The topic to reindex.
      * @param midcom_helper_configuration $config The configuration associated with this topic.
-     * @param midcom_services_indexer $indexer The indexer object to use for indexing. (Passed by reference!)
+     * @param midcom_services_indexer $indexer The indexer object to use for indexing.
      * @return boolean Indicating success.
      */
-    public function _on_reindex($topic, midcom_helper_configuration $config, midcom_services_indexer &$indexer)
+    public function _on_reindex($topic, midcom_helper_configuration $config, midcom_services_indexer $indexer)
     {
         return true;
     }

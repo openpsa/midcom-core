@@ -7,13 +7,10 @@ fieldset
 }
 fieldset legend
 {
-    margin-left: 0px;
-    padding-left: 0px;
+    margin-left: 0;
+    padding-left: 0;
     font-weight: bold;
-    background-repeat: no-repeat;
-    background-position: middle left;
     cursor: pointer;
-    cursor: hand;
     margin-top: -20px;
 }
 
