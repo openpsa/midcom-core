@@ -9,7 +9,7 @@
 use midcom\workflow\dialog;
 
 /**
- * Base class for components. Provides some common functionality that should be available
+ * Base trait for components. Provides some common functionality that should be available
  * in all parts of the component's environment.
  *
  * @property midcom_services_i18n $_i18n A handle to the i18n service.
@@ -18,7 +18,7 @@ use midcom\workflow\dialog;
  * @property midcom_helper_configuration $_config The current configuration.
  * @package midcom.baseclasses
  */
-abstract class midcom_baseclasses_components_base
+trait midcom_baseclasses_components_base
 {
     /**
      * The name of the component, e.g. net.nehmer.static. Should be used whenever the
@@ -29,15 +29,7 @@ abstract class midcom_baseclasses_components_base
     public $_component = '';
 
     /**
-     * Array that holds the already instantiated services
-     *
-     * @var array
-     */
-    private $_services = [];
-
-    /**
-     * Initialize all member variables, remember to set $_component before calling
-     * this constructor from your derived classes.
+     * Initialize $_component (unless already set)
      */
     public function __construct()
     {
@@ -48,29 +40,20 @@ abstract class midcom_baseclasses_components_base
 
     public function __get($field)
     {
-        if (array_key_exists($field, $this->_services)) {
-            return $this->_services[$field];
-        }
-
         switch ($field) {
             case '_i18n':
-                $this->_services[$field] = midcom::get()->i18n;
-                break;
+                return midcom::get()->i18n;
             case '_l10n':
-                $this->_services[$field] = midcom::get()->i18n->get_l10n($this->_component);
-                break;
+                return midcom::get()->i18n->get_l10n($this->_component);
             case '_l10n_midcom':
-                $this->_services[$field] = midcom::get()->i18n->get_l10n('midcom');
-                break;
+                return midcom::get()->i18n->get_l10n('midcom');
             case '_config':
-                $this->_services[$field] = midcom_baseclasses_components_configuration::get($this->_component, 'config');
-                break;
+                return midcom_baseclasses_components_configuration::get($this->_component, 'config');
             default:
                 debug_add('Component ' . $this->_component . ' tried to access nonexistent service "' . $field . '"', MIDCOM_LOG_ERROR);
                 debug_print_function_stack('Called from here:');
                 return false;
         }
-        return $this->_services[$field];
     }
 
     public function __isset($field)
