@@ -14,14 +14,11 @@ use midgard\portable\api\mgdobject;
  *
  * @package midcom.helper.reflector
  */
-class midcom_helper_reflector extends midcom_baseclasses_components_purecode
+class midcom_helper_reflector extends midgard_reflection_property
 {
-    public $mgdschema_class = '';
+    use midcom_baseclasses_components_base;
 
-    /**
-     * @var midgard_reflection_property
-     */
-    protected $_mgd_reflector;
+    public $mgdschema_class = '';
 
     private static $_cache = [
         'l10n' => [],
@@ -40,13 +37,13 @@ class midcom_helper_reflector extends midcom_baseclasses_components_purecode
      */
     public function __construct($src)
     {
-        parent::__construct();
+        $this->_component = 'midcom.helper.reflector';
 
         // Resolve root class name
         $this->mgdschema_class = self::resolve_baseclass($src);
 
         // Instantiate midgard reflector
-        $this->_mgd_reflector = new midgard_reflection_property($this->mgdschema_class);
+        parent::__construct($this->mgdschema_class);
     }
 
     /**
@@ -85,11 +82,6 @@ class midcom_helper_reflector extends midcom_baseclasses_components_purecode
             return $cm->get_schema_properties($metadata);
         }
         return array_keys(get_object_vars($object));
-    }
-
-    public function property_exists(string $property, bool $metadata = false) : bool
-    {
-        return $this->_mgd_reflector->property_exists($property, $metadata);
     }
 
     /**
@@ -313,7 +305,7 @@ class midcom_helper_reflector extends midcom_baseclasses_components_purecode
         $label_prop = $this->get_label_property();
 
         if (    $label_prop != 'guid'
-             && $this->_mgd_reflector->property_exists($label_prop)) {
+             && $this->property_exists($label_prop)) {
             $search_properties[$label_prop] = true;
         }
 
@@ -354,9 +346,6 @@ class midcom_helper_reflector extends midcom_baseclasses_components_purecode
         }
         debug_add("Starting analysis for class {$this->mgdschema_class}");
 
-        // Shorthands
-        $ref = $this->_mgd_reflector;
-
         // Get property list and start checking (or abort on error)
         $links = [];
         foreach (self::get_object_fieldnames(new $this->mgdschema_class) as $property) {
@@ -365,15 +354,15 @@ class midcom_helper_reflector extends midcom_baseclasses_components_purecode
                 continue;
             }
 
-            if (   !$ref->is_link($property)
-                && $ref->get_midgard_type($property) != MGD_TYPE_GUID) {
+            if (   !$this->is_link($property)
+                && $this->get_midgard_type($property) != MGD_TYPE_GUID) {
                 continue;
             }
             debug_add("Processing property '{$property}'");
             $linkinfo = [
-                'class' => $ref->get_link_name($property),
-                'target' => $ref->get_link_target($property),
-                'type' => $ref->get_midgard_type($property),
+                'class' => $this->get_link_name($property),
+                'target' => $this->get_link_target($property),
+                'type' => $this->get_midgard_type($property),
             ];
 
             if (!$linkinfo['target'] && $linkinfo['type'] == MGD_TYPE_GUID) {
@@ -467,7 +456,7 @@ class midcom_helper_reflector extends midcom_baseclasses_components_purecode
         foreach ($this->_config->get_array($type . '_exceptions') as $class => $property) {
             if (midcom::get()->dbfactory->is_a($object, $class)) {
                 if ($property !== false) {
-                    if ($this->_mgd_reflector->property_exists($property)) {
+                    if ($this->property_exists($property)) {
                         self::$_cache[$type][$key] = $property;
                     } else {
                         debug_add("Matched class '{$key}' to '{$class}' via is_a but property '{$property}' does not exist", MIDCOM_LOG_ERROR);
@@ -477,7 +466,7 @@ class midcom_helper_reflector extends midcom_baseclasses_components_purecode
             }
         }
         // The simple heuristic
-        if ($this->_mgd_reflector->property_exists($type)) {
+        if ($this->property_exists($type)) {
             self::$_cache[$type][$key] = $type;
         }
         return self::$_cache[$type][$key];
