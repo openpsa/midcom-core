@@ -111,29 +111,6 @@ class form extends base
         return $string . '</div></div>';
     }
 
-    public function autocomplete_row(FormView $view, array $data)
-    {
-        $class = 'element element_' . $view->vars['block_prefixes'][count($view->vars['block_prefixes']) - 2];
-
-        if ($view->vars['required']) {
-            $class .= ' required';
-        }
-
-        if ($data['errors']->count() > 0) {
-            $class .= ' error';
-        }
-
-        $string = '<div class="' . $class . '">';
-        $string .= $this->renderer->label($view);
-        $string .= '<div class="input">';
-
-        if ($data['errors']->count() > 0) {
-            $string .= $this->renderer->errors($view) . '<br>';
-        }
-        $string .= $this->renderer->widget($view);
-        return $string . '</div></div>';
-    }
-
     public function button_row(FormView $view, array $data)
     {
         $string = '<div>';
@@ -203,7 +180,7 @@ class form extends base
 
         $string = '<fieldset ' . $this->renderer->block($view, 'widget_container_attributes') . '>';
         $string .= '<legend>';
-        $string .= (!empty($data['value']['objects']['main']['filename'])) ? preg_replace('/^.+?\-/', '', $data['value']['objects']['main']['filename']) : $this->renderer->humanize('add new file');
+        $string .= (!empty($data['value']['objects']['main']['filename'])) ? preg_replace('/^.+?-/', '', $data['value']['objects']['main']['filename']) : $this->renderer->humanize('add new file');
         $string .= '</legend>';
 
         $string .= $this->renderer->widget($view);
@@ -281,7 +258,7 @@ class form extends base
         return $string . $this->jsinit($jsinit);
     }
 
-    protected function prepare_widget_attributes(string $type, FormView $view, array &$data)
+    protected function prepare_widget_attributes(string $type, array &$data)
     {
         $data['attr']['type'] = $type;
         if (isset($data['value'])) {
@@ -294,7 +271,7 @@ class form extends base
 
     public function radio_widget(FormView $view, array $data)
     {
-        $this->prepare_widget_attributes('radio', $view, $data);
+        $this->prepare_widget_attributes('radio', $data);
         if ($view->vars['readonly']) {
             $data['attr']['disabled'] = true;
         }
@@ -311,7 +288,7 @@ class form extends base
             }
             return $string;
         }
-        $this->prepare_widget_attributes('checkbox', $view, $data);
+        $this->prepare_widget_attributes('checkbox', $data);
 
         return '<input ' . $this->renderer->block($view, 'widget_attributes', $data) . ' />';
     }
@@ -424,7 +401,7 @@ class form extends base
     {
         $alt = $this->renderer->humanize('captcha image alt text');
         $string = '<fieldset class="captcha">';
-        $string .= "<img src='{$view->vars['captcha_url']}' alt='{$alt}' text='{$alt}' class='captcha'><br>";
+        $string .= "<img src='{$view->vars['captcha_url']}' alt='{$alt}' title='{$alt}' class='captcha'><br>";
         $string .= $this->renderer->humanize('captcha message');
         $data['attr']['class'] = 'captcha';
         $data['value'] = '';

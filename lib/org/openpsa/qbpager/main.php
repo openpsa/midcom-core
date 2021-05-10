@@ -8,7 +8,7 @@
  *
  * @package org.openpsa.qbpager
  */
-class org_openpsa_qbpager
+class org_openpsa_qbpager extends midcom_core_querybuilder
 {
     use midcom_baseclasses_components_base;
 
@@ -16,16 +16,18 @@ class org_openpsa_qbpager
     public $display_pages = 10;
     public $string_next = 'next';
     public $string_previous = 'previous';
-    protected $_midcom_qb;
-    protected $_midcom_qb_count;
     protected $_pager_id;
     protected $_prefix = '';
-    private $_offset = 0;
-    private $count;
-    private $_count_mode;
     private $_current_page = 1;
+    private $total;
 
     public function __construct(string $classname, string $pager_id)
+    {
+        $this->initialize($pager_id);
+        parent::__construct($classname);
+    }
+
+    protected function initialize(string $pager_id)
     {
         $this->_component = 'org.openpsa.qbpager';
         if (empty($pager_id)) {
@@ -34,45 +36,6 @@ class org_openpsa_qbpager
 
         $this->_pager_id = $pager_id;
         $this->_prefix = 'org_openpsa_qbpager_' . $pager_id . '_';
-        $this->_prepare_qbs($classname);
-    }
-
-    protected function _prepare_qbs(string $classname)
-    {
-        $this->_midcom_qb = midcom::get()->dbfactory->new_query_builder($classname);
-        // Make another QB for counting, we need to do this to avoid trouble with core internal references system
-        $this->_midcom_qb_count = midcom::get()->dbfactory->new_query_builder($classname);
-    }
-
-    /**
-     * Makes sure we have some absolutely required things properly set
-     */
-    protected function _sanity_check()
-    {
-        if ($this->results_per_page < 1) {
-            throw new LogicException('results_per_page is set to ' . $this->results_per_page);
-        }
-    }
-
-    /**
-     * Check $_REQUEST for variables and sets internal status accordingly
-     */
-    private function _check_page_vars()
-    {
-        $page_var = $this->_prefix . 'page';
-        $results_var = $this->_prefix . 'results';
-        if (!empty($_REQUEST[$page_var])) {
-            debug_add("{$page_var} has value: {$_REQUEST[$page_var]}");
-            $this->_current_page = (int) $_REQUEST[$page_var];
-        }
-        if (!empty($_REQUEST[$results_var])) {
-            debug_add("{$results_var} has value: {$_REQUEST[$results_var]}");
-            $this->results_per_page = (int) $_REQUEST[$results_var];
-        }
-        $this->_offset = ($this->_current_page - 1) * $this->results_per_page;
-        if ($this->_offset < 0) {
-            $this->_offset = 0;
-        }
     }
 
     /**
@@ -86,7 +49,7 @@ class org_openpsa_qbpager
     /**
      * Fetch all $_GET variables
      */
-    private function _get_query_string(string $page_var, int $page_number) : string
+    private function get_query_string(string $page_var, int $page_number) : string
     {
         $query = [$page_var => $page_number];
 
@@ -102,7 +65,7 @@ class org_openpsa_qbpager
     /**
      * Displays previous/next selector
      */
-    function show_previousnext()
+    public function show_previousnext()
     {
         $page_count = $this->count_pages();
         //Skip the header in case we only have one page
@@ -116,12 +79,12 @@ class org_openpsa_qbpager
 
         if ($this->_current_page > 1) {
             $previous = $this->_current_page - 1;
-            echo "\n<a class=\"previous_page\" href=\"" . $this->_get_query_string($page_var, $previous) . "\" rel=\"prev\">" . $this->_l10n->get($this->string_previous) . "</a>";
+            echo "\n<a class=\"previous_page\" href=\"" . $this->get_query_string($page_var, $previous) . "\" rel=\"prev\">" . $this->_l10n->get($this->string_previous) . "</a>";
         }
 
         if ($this->_current_page < $page_count) {
             $next = $this->_current_page + 1;
-            echo "\n<a class=\"next_page\" href=\"" . $this->_get_query_string($page_var, $next) . "\" rel=\"next\">" . $this->_l10n->get($this->string_next) . "</a>";
+            echo "\n<a class=\"next_page\" href=\"" . $this->get_query_string($page_var, $next) . "\" rel=\"next\">" . $this->_l10n->get($this->string_next) . "</a>";
         }
 
         echo "\n</div>\n";
@@ -145,7 +108,7 @@ class org_openpsa_qbpager
             if ($previous > 1) {
                 $pages[] = [
                     'class' => 'first',
-                    'href' => $this->_get_query_string($page_var, 1),
+                    'href' => $this->get_query_string($page_var, 1),
                     'rel' => 'prev',
                     'label' => $this->_l10n->get('first'),
                     'number' => 1
@@ -153,7 +116,7 @@ class org_openpsa_qbpager
             }
             $pages[] = [
                 'class' => 'previous',
-                'href' => $this->_get_query_string($page_var, $previous),
+                'href' => $this->get_query_string($page_var, $previous),
                 'rel' => 'prev',
                 'label' => $this->_l10n->get($this->string_previous),
                 'number' => $previous
@@ -163,7 +126,7 @@ class org_openpsa_qbpager
         while ($page++ < $display_end) {
             $href = false;
             if ($page != $this->_current_page) {
-                $href = $this->_get_query_string($page_var, $page);
+                $href = $this->get_query_string($page_var, $page);
             }
             $pages[] = [
                 'class' => 'current',
@@ -178,7 +141,7 @@ class org_openpsa_qbpager
             $next = $this->_current_page + 1;
             $pages[] = [
                 'class' => 'next',
-                'href' => $this->_get_query_string($page_var, $next),
+                'href' => $this->get_query_string($page_var, $next),
                 'rel' => 'next',
                 'label' => $this->_l10n->get($this->string_next),
                 'number' => $next
@@ -187,7 +150,7 @@ class org_openpsa_qbpager
             if ($next < $page_count) {
                 $pages[] = [
                     'class' => 'last',
-                    'href' => $this->_get_query_string($page_var, $page_count),
+                    'href' => $this->get_query_string($page_var, $page_count),
                     'rel' => 'next',
                     'label' => $this->_l10n->get('last'),
                     'number' => $page_count
@@ -198,62 +161,41 @@ class org_openpsa_qbpager
         return $pages;
     }
 
-    private function show(string $name, array $data)
-    {
-        $context = midcom_core_context::enter();
-        $context->set_custom_key('request_data', $data);
-        midcom::get()->style->prepend_component_styledir($this->_component);
-        midcom::get()->style->enter_context($context);
-        midcom_show_style('show_' . $name);
-        midcom::get()->style->leave_context();
-        midcom_core_context::leave();
-    }
-
     /**
      * Displays page selector
      */
     public function show_pages()
     {
-        $this->show('pages', ['pages' => $this->get_pages()]);
+        $data = ['pages' => $this->get_pages()];
+        $context = midcom_core_context::enter();
+        $context->set_custom_key('request_data', $data);
+        midcom::get()->style->prepend_component_styledir($this->_component);
+        midcom::get()->style->enter_context($context);
+        midcom_show_style('show_pages');
+        midcom::get()->style->leave_context();
+        midcom_core_context::leave();
     }
 
     /**
-     * Displays page selector as list
+     * Check $_REQUEST for variables and sets LIMIT and OFFSET for requested page
      */
-    function show_pages_as_list()
+    protected function parse_variables()
     {
-        $this->show('pages_as_list', ['pages' => $this->get_pages()]);
-    }
-
-    /**
-     * sets LIMIT and OFFSET for requested page
-     */
-    protected function _qb_limits($qb)
-    {
-        $this->_check_page_vars();
-
-        if ($this->_current_page == 'all') {
-            debug_add("displaying all results");
-            return;
+        $page_var = $this->_prefix . 'page';
+        if (!empty($_REQUEST[$page_var])) {
+            debug_add("{$page_var} has value: {$_REQUEST[$page_var]}");
+            $this->_current_page = max(1, (int) $_REQUEST[$page_var]);
         }
-
-        $qb->set_limit($this->results_per_page);
-        $qb->set_offset($this->_offset);
+        $results_var = $this->_prefix . 'results';
+        if (!empty($_REQUEST[$results_var])) {
+            debug_add("{$results_var} has value: {$_REQUEST[$results_var]}");
+            $this->results_per_page = max(1, (int) $_REQUEST[$results_var]);
+        }
+        if ($this->results_per_page < 1) {
+            throw new LogicException('results_per_page is set to ' . $this->results_per_page);
+        }
+        $this->_offset = ($this->_current_page - 1) * $this->results_per_page;
         debug_add("set offset to {$this->_offset} and limit to {$this->results_per_page}");
-    }
-
-    public function execute() : array
-    {
-        $this->_sanity_check();
-        $this->_qb_limits($this->_midcom_qb);
-        return $this->_midcom_qb->execute();
-    }
-
-    public function execute_unchecked() : array
-    {
-        $this->_sanity_check();
-        $this->_qb_limits($this->_midcom_qb);
-        return $this->_midcom_qb->execute_unchecked();
     }
 
     /**
@@ -263,60 +205,33 @@ class org_openpsa_qbpager
      */
     public function count_pages()
     {
-        $this->_sanity_check();
-        $this->count_unchecked();
-        return ceil($this->count / $this->results_per_page);
+        $this->parse_variables();
+        return ceil($this->count_unchecked() / $this->results_per_page);
     }
 
-    //Rest of supported methods wrapped with extra sanity check
-    public function add_constraint(string $param, string $op, $val) : bool
+    public function execute() : array
     {
-        $this->_midcom_qb_count->add_constraint($param, $op, $val);
-        return $this->_midcom_qb->add_constraint($param, $op, $val);
+        $this->parse_variables();
+        $this->set_limit($this->results_per_page);
+        $this->set_offset($this->_offset);
+        return parent::execute();
     }
 
-    public function add_order(string $param, string $sort = 'ASC') : bool
-    {
-        return $this->_midcom_qb->add_order($param, $sort);
-    }
-
-    public function begin_group(string $type)
-    {
-        $this->_midcom_qb_count->begin_group($type);
-        $this->_midcom_qb->begin_group($type);
-    }
-
-    public function end_group()
-    {
-        $this->_midcom_qb_count->end_group();
-        $this->_midcom_qb->end_group();
-    }
-
-    public function include_deleted()
-    {
-        $this->_midcom_qb_count->include_deleted();
-        $this->_midcom_qb->include_deleted();
-    }
-
-    public function count() : int
-    {
-        $this->_sanity_check();
-        if (   !$this->count
-            || $this->_count_mode != 'count') {
-            $this->count = $this->_midcom_qb_count->count();
-        }
-        $this->_count_mode = 'count';
-        return $this->count;
-    }
-
+    /**
+     * Returns total count before pagination
+     */
     public function count_unchecked() : int
     {
-        $this->_sanity_check();
-        if (   !$this->count
-            || $this->_count_mode != 'count_unchecked') {
-            $this->count = $this->_midcom_qb_count->count_unchecked();
+        if (!$this->total) {
+            $doctrine_qb = $this->_query->get_doctrine();
+            $offset = $doctrine_qb->getFirstResult();
+            $limit = $doctrine_qb->getMaxResults();
+            $doctrine_qb->setFirstResult(null);
+            $doctrine_qb->setMaxResults(null);
+            $this->total = $this->_query->count();
+            $doctrine_qb->setFirstResult($offset);
+            $doctrine_qb->setMaxResults($limit);
         }
-        $this->_count_mode = 'count_unchecked';
-        return $this->count;
+        return $this->total;
     }
 }
