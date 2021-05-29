@@ -134,9 +134,10 @@ class midcom_services_i18n_l10n
     {
         $this->_stringdb[$lang] = [];
         $filename = "{$this->_library_filename}.{$lang}.txt";
+        $identifier = str_replace('/', '-', $filename);
 
         if (midcom::get()->config->get('cache_module_memcache_backend') != 'flatfile') {
-            $stringtable = midcom::get()->cache->memcache->get('L10N', $filename);
+            $stringtable = midcom::get()->cache->memcache->get('L10N', $identifier);
             if (is_array($stringtable)) {
                 $this->_stringdb[$lang] = $stringtable;
                 return;
@@ -158,7 +159,7 @@ class midcom_services_i18n_l10n
         $this->_stringdb[$lang] = array_merge($this->_stringdb[$lang], $data);
 
         if (midcom::get()->config->get('cache_module_memcache_backend') != 'flatfile') {
-            midcom::get()->cache->memcache->put('L10N', $filename, $this->_stringdb[$lang]);
+            midcom::get()->cache->memcache->put('L10N', $identifier, $this->_stringdb[$lang]);
         }
     }
 
@@ -309,11 +310,8 @@ class midcom_services_i18n_l10n
      */
     function string_available(string $string)
     {
-        return
-        (
-               $this->string_exists($string, $this->_language)
-            || $this->string_exists($string, $this->_fallback_language)
-        );
+        return $this->string_exists($string, $this->_language)
+            || $this->string_exists($string, $this->_fallback_language);
     }
 
     /**
@@ -358,17 +356,5 @@ class midcom_services_i18n_l10n
     public function show(string $string, $language = null)
     {
         echo $this->get($string, $language);
-    }
-
-    /**
-     * Returns the entire translation table for the given language
-     */
-    public function get_stringdb(string $language) : array
-    {
-        $this->_check_for_language($language);
-        if (empty($this->_stringdb[$language])) {
-            return [];
-        }
-        return $this->_stringdb[$language];
     }
 }

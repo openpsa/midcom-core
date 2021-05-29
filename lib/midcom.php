@@ -39,12 +39,10 @@ class midcom
         self::$_application = new midcom_application($environment, $debug);
 
         // Define default constants
-        define('MIDCOM_ROOT', __DIR__);
         if (!defined('MIDCOM_STATIC_URL')) {
             define('MIDCOM_STATIC_URL', '/midcom-static');
         }
         define('MIDCOM_STATIC_ROOT', self::$_application->getProjectDir() . '/web' . MIDCOM_STATIC_URL);
-        define('OPENPSA2_THEME_ROOT', self::$_application->getProjectDir() . '/var/themes/');
         return self::$_application;
     }
 
