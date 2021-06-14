@@ -54,6 +54,17 @@ abstract class openpsa_testcase extends TestCase
         return $person;
     }
 
+    protected function sudo(callable $function)
+    {
+        if (!midcom::get()->auth->request_sudo('org.openpsa.projects')) {
+            $this->fail('Could not get sudo');
+        }
+
+        $function();
+
+        midcom::get()->auth->drop_sudo();
+    }
+
     public static function get_component_node($component)
     {
         if (!isset(self::$nodes[$component])) {
@@ -142,6 +153,10 @@ abstract class openpsa_testcase extends TestCase
         $flags = defined('JSON_THROW_ON_ERROR') ? JSON_THROW_ON_ERROR : null;
         try {
             $data = json_decode($rendered, true, 32, $flags);
+            // php72 compat:
+            if ($data === null) {
+                throw new RuntimeException(json_last_error_msg());
+            }
         } catch (Exception $e) {
             dump('Rendered JSON:' . $rendered);
             throw $e;
