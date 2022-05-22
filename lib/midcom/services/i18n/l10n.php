@@ -82,19 +82,11 @@ class midcom_services_i18n_l10n
     private $_language;
 
     /**
-     * Global string table cache, it stores the string tables
-     * loaded during runtime.
+     * The string database
      *
      * @var array
      */
-    private static $_localedb = [];
-
-    /**
-     * The string database, a reference into the global cache.
-     *
-     * @var array
-     */
-    private $_stringdb;
+    private $_stringdb = [];
 
     /**
      * The current L10n DB file format number
@@ -108,21 +100,12 @@ class midcom_services_i18n_l10n
      * path $component and initializes the system completely. The output character
      * set will be initialized to the language's default.
      */
-    public function __construct(string $component)
+    public function __construct(string $component, string $language, string $fallback_language)
     {
-        $path = midcom::get()->componentloader->path_to_snippetpath($component) . "/locale/default";
-        $this->_library_filename = $path;
         $this->_library = $component;
-
-        $this->_fallback_language = midcom::get()->i18n->get_fallback_language();
-
-        if (!isset(self::$_localedb[$this->_library])) {
-            self::$_localedb[$this->_library] = [];
-        }
-
-        $this->_stringdb =& self::$_localedb[$this->_library];
-
-        $this->set_language(midcom::get()->i18n->get_current_language());
+        $this->_fallback_language = $fallback_language;
+        $this->_language = $language;
+        $this->_library_filename = midcom::get()->componentloader->path_to_snippetpath($component) . "/locale/default";
     }
 
     /**
@@ -130,37 +113,34 @@ class midcom_services_i18n_l10n
      *
      * - Leading and trailing whitespace will be eliminated
      */
-    private function _load_language(string $lang)
+    private function _load_language(string $lang) : array
     {
-        $this->_stringdb[$lang] = [];
         $filename = "{$this->_library_filename}.{$lang}.txt";
         $identifier = str_replace('/', '-', $filename);
 
         if (midcom::get()->config->get('cache_module_memcache_backend') != 'flatfile') {
             $stringtable = midcom::get()->cache->memcache->get('L10N', $identifier);
             if (is_array($stringtable)) {
-                $this->_stringdb[$lang] = $stringtable;
-                return;
+                return $stringtable;
             }
         }
 
         if (!file_exists($filename)) {
-            return;
+            return [];
         }
 
         $data = $this->parse_data(file($filename), $lang, $filename);
 
         // get site-specific l10n
-        $component_locale = midcom_helper_misc::get_snippet_content_graceful("conf:/" . $this->_library . '/l10n/default.' . $lang . '.txt');
-        if (!empty($component_locale)) {
-            $data = array_merge($data, $this->parse_data(explode("\n", $component_locale), $lang, $component_locale));
+        $snippet_path = "conf:/" . $this->_library . '/l10n/default.' . $lang . '.txt';
+        if ($snippet_data = midcom_helper_misc::get_snippet_content_graceful($snippet_path)) {
+            $data = array_merge($data, $this->parse_data(explode("\n", $snippet_data), $lang, $snippet_path));
         }
-
-        $this->_stringdb[$lang] = array_merge($this->_stringdb[$lang], $data);
 
         if (midcom::get()->config->get('cache_module_memcache_backend') != 'flatfile') {
-            midcom::get()->cache->memcache->put('L10N', $identifier, $this->_stringdb[$lang]);
+            midcom::get()->cache->memcache->put('L10N', $identifier, $data);
         }
+        return $data;
     }
 
     private function parse_data(array $data, string $lang, string $filename) : array
@@ -256,7 +236,7 @@ class midcom_services_i18n_l10n
     private function _check_for_language(string $lang)
     {
         if (!array_key_exists($lang, $this->_stringdb)) {
-            $this->_load_language($lang);
+            $this->_stringdb[$lang] = $this->_load_language($lang);
         }
     }
 
