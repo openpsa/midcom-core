@@ -37,7 +37,7 @@ class midcom_exception_handler
      *
      * The error pages can be customized by creating style elements named midcom_error_$httpcode.
      *
-     * For a list of the allowed HTTP codes see the MIDCOM_ERR... constants
+     * For a list of the allowed HTTP codes see the Response::HTTP_... constants
      */
     public function render()
     {
@@ -45,9 +45,9 @@ class midcom_exception_handler
         $message = $this->error->getMessage();
         debug_print_r('Exception occurred: ' . $httpcode . ', Message: ' . $message . ', exception trace:', $this->error->getTraceAsString());
 
-        if (!in_array($httpcode, [MIDCOM_ERROK, MIDCOM_ERRNOTFOUND, MIDCOM_ERRFORBIDDEN, MIDCOM_ERRAUTH, MIDCOM_ERRCRIT])) {
+        if (!array_key_exists($httpcode, Response::$statusTexts)) {
             debug_add("Unknown Errorcode {$httpcode} encountered, assuming 500");
-            $httpcode = MIDCOM_ERRCRIT;
+            $httpcode = Response::HTTP_INTERNAL_SERVER_ERROR;
         }
 
         // Send error to special log or recipient as per configuration.
@@ -57,10 +57,10 @@ class midcom_exception_handler
             throw $this->error;
         }
 
-        if ($httpcode == MIDCOM_ERRFORBIDDEN) {
+        if ($httpcode == Response::HTTP_FORBIDDEN) {
             return new midcom_response_accessdenied($message);
         }
-        if ($httpcode == MIDCOM_ERRAUTH) {
+        if ($httpcode == Response::HTTP_UNAUTHORIZED) {
             if ($this->error instanceof midcom_error_forbidden) {
                 return new midcom_response_login($this->error->get_method());
             }
@@ -68,23 +68,9 @@ class midcom_exception_handler
             return new midcom_response_login;
         }
 
-        switch ($httpcode) {
-            case MIDCOM_ERROK:
-                $title = "OK";
-                break;
-
-            case MIDCOM_ERRNOTFOUND:
-                $title = "Not Found";
-                break;
-
-            case MIDCOM_ERRCRIT:
-                $title = "Server Error";
-                break;
-        }
-
         $style = midcom::get()->style;
 
-        $style->data['error_title'] = $title;
+        $style->data['error_title'] = Response::$statusTexts[$httpcode];
         $style->data['error_message'] = $message;
         $style->data['error_code'] = $httpcode;
         $style->data['error_exception'] = $this->error;
