@@ -181,21 +181,20 @@ class midcom_admin_help_help extends midcom_baseclasses_components_plugin
     {
         $data = [];
 
-        $handler = midcom::get()->componentloader->get_interface_class($component);
-        $viewer = $handler->get_viewer(new midcom_db_topic);
+        $viewer = midcom::get()->componentloader->get_interface_class($component)->get_viewer(new midcom_db_topic);
         $routes = $viewer->get_router()->getRouteCollection()->all();
-        foreach ($routes as $request_handler_id => $route) {
+        foreach ($routes as $handler_id => $route) {
             $details = [
                 'route' => preg_replace('/args_(\d+)/', 'args[\1]', $route->getPath())
             ];
 
-            list ($details['controller'], $details['action']) = explode('::', $route->getDefault('_controller'), 2);
+            [$details['controller'], $details['action']] = explode('::', $route->getDefault('_controller'), 2);
 
-            if (self::generate_file_path('handlers_' . $request_handler_id, $component)) {
-                $details['info'] = $this->get_help_contents('handlers_' . $request_handler_id, $component);
-                $details['handler_help_url'] = 'handlers_' . $request_handler_id;
+            if (self::generate_file_path('handlers_' . $handler_id, $component)) {
+                $details['info'] = $this->get_help_contents('handlers_' . $handler_id, $component);
+                $details['handler_help_url'] = 'handlers_' . $handler_id;
             }
-            $data[$request_handler_id] = $details;
+            $data[$handler_id] = $details;
         }
 
         return $data;
@@ -232,43 +231,20 @@ class midcom_admin_help_help extends midcom_baseclasses_components_plugin
     private function read_schema_properties()
     {
         foreach (array_keys($this->_request_data['mgdschemas']) as $mgdschema_class) {
+            $this->_request_data['properties'][$mgdschema_class] = [];
             $mrp = new midgard_reflection_property($mgdschema_class);
             $class_props = connection::get_em()->getClassMetadata($mgdschema_class)->get_schema_properties();
 
-            unset($class_props['metadata']);
-            $default_properties = [];
-            $additional_properties = [];
-
-            foreach ($class_props as $prop) {
-                switch ($prop) {
-                    case 'action':
-                        // Midgard-internal properties, skip
-                        break;
-                    case 'guid':
-                    case 'id':
-                        $default_properties[$prop] = $this->_get_property_data($mrp, $prop);
-                        break;
-                    default:
-                        $additional_properties[$prop] = $this->_get_property_data($mrp, $prop);
-                        break;
-                }
+            foreach (array_diff($class_props, ['action', 'metadata']) as $prop) {
+                $this->_request_data['properties'][$mgdschema_class][$prop] = [
+                    'value' => $mrp->description($prop) ?? '',
+                    'link' => $mrp->is_link($prop),
+                    'link_name' => $mrp->get_link_name($prop),
+                    'link_target' => $mrp->get_link_target($prop),
+                    'midgard_type' => $this->mgdtypes[$mrp->get_midgard_type($prop)]
+                ];
             }
-            ksort($default_properties);
-            ksort($additional_properties);
-
-            $this->_request_data['properties'][$mgdschema_class] = array_merge($default_properties, $additional_properties);
         }
-    }
-
-    private function _get_property_data(midgard_reflection_property $mrp, string $prop) : array
-    {
-        return [
-            'value' => $mrp->description($prop) ?? '',
-            'link' => $mrp->is_link($prop),
-            'link_name' => $mrp->get_link_name($prop),
-            'link_target' => $mrp->get_link_target($prop),
-            'midgard_type' => $this->mgdtypes[$mrp->get_midgard_type($prop)]
-        ];
     }
 
     private function _prepare_breadcrumb(string $handler_id)
