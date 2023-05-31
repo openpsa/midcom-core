@@ -204,34 +204,6 @@ class midcom_helper_toolbar
     }
 
     /**
-     * Add a help item to the toolbar.
-     */
-    public function add_help_item(string $help_id, string $component = null, string $label = null, string $anchor = null, $before = -1)
-    {
-        $uri = "__ais/help/";
-        if ($component !== null) {
-            $uri .= $component . '/';
-        }
-        $uri .= $help_id . '/';
-
-        if ($anchor !== null) {
-            $uri .= "#{$anchor}";
-        }
-
-        $label ??= midcom::get()->i18n->get_string('help', 'midcom.admin.help');
-
-        $this->add_item([
-            MIDCOM_TOOLBAR_URL => $uri,
-            MIDCOM_TOOLBAR_LABEL => $label,
-            MIDCOM_TOOLBAR_GLYPHICON => 'question',
-            MIDCOM_TOOLBAR_OPTIONS => [
-                'target' => '_blank',
-            ]],
-            $before
-        );
-    }
-
-    /**
      * Add an item to the toolbar.
      *
      * Set before to the index of the element before which you want to insert
@@ -282,24 +254,6 @@ class midcom_helper_toolbar
         foreach ($items as $item) {
             $this->add_item($item, $before);
         }
-    }
-
-    /**
-     * Add an item to another item by either adding the item to the MIDCOM_TOOLBAR_SUBMENU
-     * or creating a new subtoolbar and adding the item there.
-     */
-    public function add_item_to_index(array $item, int $index) : bool
-    {
-        $item = $this->clean_item($item);
-        if (!array_key_exists($index, $this->items)) {
-            debug_add("Insert of item {$item[MIDCOM_TOOLBAR_LABEL]} into index $index failed");
-            return false;
-        }
-
-        $this->items[$index][MIDCOM_TOOLBAR_SUBMENU] ??= new midcom_helper_toolbar($this->class_style, $this->id_style);
-        $this->items[$index][MIDCOM_TOOLBAR_SUBMENU]->items[] = $item;
-
-        return true;
     }
 
     /**
@@ -389,44 +343,6 @@ class midcom_helper_toolbar
     public function remove_all_items()
     {
         $this->items = [];
-    }
-
-    /**
-     * Moves an item on place upwards in the list.
-     *
-     * This will only work, of course, if you are not working with the top element.
-     *
-     * @param mixed $index The integer index or URL of the item to move upwards.
-     */
-    public function move_item_up($index)
-    {
-        if ($index == 0) {
-            throw new midcom_error('Cannot move the top element upwards.');
-        }
-        $index = $this->_check_index($index);
-
-        $tmp = $this->items[$index];
-        $this->items[$index] = $this->items[$index - 1];
-        $this->items[$index - 1] = $tmp;
-    }
-
-    /**
-     * Moves an item on place downwards in the list.
-     *
-     * This will only work, of course, if you are not working with the bottom element.
-     *
-     * @param mixed $index The integer index or URL of the item to move downwards.
-     */
-    public function move_item_down($index)
-    {
-        if ($index == (count($this->items) - 1)) {
-            throw new midcom_error('Cannot move the bottom element downwards.');
-        }
-        $index = $this->_check_index($index);
-
-        $tmp = $this->items[$index];
-        $this->items[$index] = $this->items[$index + 1];
-        $this->items[$index + 1] = $tmp;
     }
 
     /**
@@ -540,6 +456,9 @@ class midcom_helper_toolbar
             } else {
                 $output .= $this->_render_link_item($item);
             }
+            if (!empty($item[MIDCOM_TOOLBAR_SUBMENU])) {
+                $output .= $item[MIDCOM_TOOLBAR_SUBMENU]->render();
+            }
 
             $output .= '</li>';
         }
@@ -595,22 +514,22 @@ class midcom_helper_toolbar
         }
         $output .= '>';
 
+        $output .= $this->render_icon($item);
+        $output .= '&nbsp;<span class="toolbar_label">' . $this->_generate_item_label($item) . "</span>";
+        return $output . '</' . $tagname . '>';
+    }
+
+    private function render_icon(array $item) : string
+    {
         if ($item[MIDCOM_TOOLBAR_GLYPHICON] !== null) {
             $class = 'fa fa-' . $item[MIDCOM_TOOLBAR_GLYPHICON];
-            $output .= "<i class='{$class}'></i>";
-        } elseif ($item[MIDCOM_TOOLBAR_ICON] !== null) {
+            return "<i class='{$class}'></i>";
+        }
+        if ($item[MIDCOM_TOOLBAR_ICON] !== null) {
             $url = MIDCOM_STATIC_URL . '/' . $item[MIDCOM_TOOLBAR_ICON];
-            $output .= "<img src='{$url}' alt=\"{$item[MIDCOM_TOOLBAR_HELPTEXT]}\" />";
+            return "<img src='{$url}' alt=\"{$item[MIDCOM_TOOLBAR_HELPTEXT]}\" />";
         }
-
-        $output .= '&nbsp;<span class="toolbar_label">' . $this->_generate_item_label($item) . "</span>";
-        $output .= '</' . $tagname . '>';
-
-        if (!empty($item[MIDCOM_TOOLBAR_SUBMENU])) {
-            $output .= $item[MIDCOM_TOOLBAR_SUBMENU]->render();
-        }
-
-        return $output;
+        return '';
     }
 
     private function get_item_attributes(array $item) : array
@@ -646,16 +565,8 @@ class midcom_helper_toolbar
             $output .= '>';
         }
 
-        if ($item[MIDCOM_TOOLBAR_GLYPHICON] !== null) {
-            $class = 'fa fa-' . $item[MIDCOM_TOOLBAR_GLYPHICON];
-            $output .= "<i class='{$class}'></i>";
-        } elseif ($item[MIDCOM_TOOLBAR_ICON]) {
-            $url = MIDCOM_STATIC_URL . "/{$item[MIDCOM_TOOLBAR_ICON]}";
-            $output .= "<img src=\"{$url}\" alt=\"{$item[MIDCOM_TOOLBAR_HELPTEXT]}\" />";
-        }
-
-        $label = $this->_generate_item_label($item);
-        $output .= " {$label}";
+        $output .= $this->render_icon($item);
+        $output .= ' ' . $this->_generate_item_label($item);
 
         if ($item[MIDCOM_TOOLBAR_ENABLED]) {
             $output .= '</button>';
@@ -665,10 +576,6 @@ class midcom_helper_toolbar
                 $output .= "<input type=\"hidden\" name=\"{$key}\" value=\"{$value}\"/>";
             }
             $output .= '</div></form>';
-        }
-
-        if (!empty($item[MIDCOM_TOOLBAR_SUBMENU])) {
-            $output .= $item[MIDCOM_TOOLBAR_SUBMENU]->render();
         }
 
         return $output;
