@@ -119,7 +119,7 @@ class datamanager
     {
         if ($this->renderer === null) {
             $this->renderer = new renderer(new engine);
-            $this->renderer->set_l10n($this->schema->get_l10n());
+            $this->renderer->set_l10n($this->get_schema()->get_l10n());
         }
         if ($template) {
             if (is_string($template)) {
@@ -154,6 +154,11 @@ class datamanager
         return $this->form;
     }
 
+    /**
+     * Get FormBuilder for manipulating the form before it gets locked by setData().
+     * The builder instance needs to be passed back to build_form() for the modifications
+     * to have a consistent effect.
+     */
     public function get_builder(string $name = null) : FormBuilderInterface
     {
         $config = [
