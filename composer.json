@@ -30,7 +30,7 @@
         "openpsa/ranger": ">=0.3.0",
         "phpspec/php-diff": "^1.1.0",
         "symfony/cache": ">=5.4",
-        "symfony/config": ">=5.4",
+        "symfony/config": ">=5.4 <7.0",
         "symfony/console" : ">=5.4",
         "symfony/dependency-injection": ">=5.4 <6.0",
         "symfony/dom-crawler": ">=5.4",
