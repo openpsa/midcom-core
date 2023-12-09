@@ -66,14 +66,15 @@
     "prefer-stable": true,
     "minimum-stability": "dev",
     "suggest": {
-        "ezyang/htmlpurifier": "^4.7"
+        "ezyang/htmlpurifier": "^4.7",
+        "ext-memcached": "*"
     },
     "provide": {
         "openpsa/midcom": "*"
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "9.9.x-dev"
+            "dev-master": "9.10.x-dev"
         }
     },
     "bin" : [
