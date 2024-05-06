@@ -18,13 +18,13 @@
         }
     ],
     "require": {
-        "php": ">=7.4",
+        "php": ">=8.0",
         "ext-mbstring": "*",
         "ext-iconv": "*",
         "gregwar/captcha": "^1.0",
         "guzzlehttp/guzzle": "^7.2",
-        "michelf/php-markdown": "^1.9.0",
-        "monolog/monolog": "^1.15 || ^2.0",
+        "michelf/php-markdown": "^2.0",
+        "monolog/monolog": "^2.0",
         "openpsa/installer": "^1.0",
         "openpsa/midgard-portable": "^1.10.0",
         "openpsa/ranger": ">=0.3.0",
