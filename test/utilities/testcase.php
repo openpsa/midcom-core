@@ -84,7 +84,7 @@ abstract class openpsa_testcase extends TestCase
                 $topic_attributes = [
                     'up' => $root_topic->id,
                     'component' => $component,
-                    'name' => 'handler_' . str_replace('\\', '_', get_called_class()) . time()
+                    'name' => 'handler_' . str_replace('\\', '_', static::class) . time()
                 ];
                 self::$nodes[$component] = self::create_class_object(midcom_db_topic::class, $topic_attributes);
             }
@@ -120,7 +120,7 @@ abstract class openpsa_testcase extends TestCase
 
         $context = midcom_core_context::enter(midcom_connection::get_url('self') . $url, $topic);
 
-        $request = $request ?? Request::createFromGlobals();
+        $request ??= Request::createFromGlobals();
         $request->attributes->set('context', $context);
         $request->setSession(midcom::get()->session);
 
@@ -189,8 +189,7 @@ abstract class openpsa_testcase extends TestCase
             return $data['__openpsa_testcase_response']->getTargetUrl();
         } catch (openpsa_test_relocate $e) {
             $url = $e->getMessage();
-            $url = preg_replace('/^\//', '', $url);
-            return $url;
+            return preg_replace('/^\//', '', $url);
         }
     }
 
@@ -274,9 +273,7 @@ abstract class openpsa_testcase extends TestCase
         } catch (openpsa_test_relocate $e) {
             $url = $e->getMessage();
         }
-
-        $url = preg_replace('/^\//', '', $url);
-        return $url;
+        return preg_replace('/^\//', '', $url);
     }
 
     public function create_object(string $classname, array $data = []) : object
@@ -329,7 +326,7 @@ abstract class openpsa_testcase extends TestCase
         $object = new $classname();
 
         foreach ($data as $field => $value) {
-            if (strpos($field, '.') !== false) {
+            if (str_contains($field, '.')) {
                 $parts = explode('.', $field);
                 $object->{$parts[0]}->{$parts[1]} = $value;
                 continue;
