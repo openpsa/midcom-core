@@ -266,7 +266,7 @@ class midcom_helper_imagefilter
      */
     public function gamma(float $gamma = 1.2)
     {
-        $gamma = (double) $gamma;
+        $gamma = (float) $gamma;
 
         $cmd = midcom::get()->config->get('utility_imagemagick_base') . "mogrify {$this->_quality} -gamma "
             . escapeshellarg($gamma) . " " . escapeshellarg($this->_filename);

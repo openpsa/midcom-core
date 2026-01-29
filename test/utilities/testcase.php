@@ -228,7 +228,6 @@ abstract class openpsa_testcase extends TestCase
     private function get_controller(midcom_response_styled $response) : controller
     {
         $prop = new ReflectionProperty($response, 'context');
-        $prop->setAccessible(true);
         $callback = $prop->getValue($response)->get_key(MIDCOM_CONTEXT_SHOWCALLBACK);
         if (is_array($callback)) {
             return $callback[0];

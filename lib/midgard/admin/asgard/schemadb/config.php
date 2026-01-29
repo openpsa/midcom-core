@@ -71,7 +71,7 @@ class midgard_admin_asgard_schemadb_config
                 $fields[$key]['default'] = var_export($value, true);
             } else {
                 if ($fields[$key]['widget'] == 'checkbox') {
-                    $value = (boolean) $value;
+                    $value = (bool) $value;
                 }
                 $fields[$key]['default'] = $value;
             }

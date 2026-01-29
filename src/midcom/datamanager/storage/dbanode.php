@@ -27,7 +27,7 @@ abstract class dbanode implements node
             $value = (float) $value;
         }
         if ($this->config['type'] == 'boolean' && !is_bool($value)) {
-            $value = (boolean) $value;
+            $value = (bool) $value;
         }
         return $value;
     }
