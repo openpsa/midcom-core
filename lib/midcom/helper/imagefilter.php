@@ -337,7 +337,7 @@ class midcom_helper_imagefilter
             ];
 
             $tmpfile = $this->_get_tempfile();
-            $cmd = midcom::get()->config->get('utility_jpegtran') . " -outfile {$tmpfile} -copy all";
+            $cmd = midcom::get()->config->get('utility_jpegtran') . " -outfile {$tmpfile} -copy icc";
         } else {
             /* Mogrify */
             debug_add("jpegtran not found, falling back to mogrify.");
