@@ -305,9 +305,13 @@ class midcom_baseclasses_core_dbobject
             }
         }
 
-        if (!self::_delete_privileges($object)) {
-            debug_add('Failed to delete the object privileges.', MIDCOM_LOG_INFO);
-            return false;
+        $qb = new midgard_query_builder('midcom_core_privilege_db');
+        $qb->add_constraint('objectguid', '=', $object->guid);
+        foreach ($qb->execute() as $dbpriv) {
+            if (!$dbpriv->purge()) {
+                debug_add('Failed to purge object privilege ' . $dbpriv->id . ': ' . midcom_connection::get_error_string(), MIDCOM_LOG_INFO);
+                return false;
+            }
         }
 
         // Finally, delete the object itself
@@ -316,26 +320,8 @@ class midcom_baseclasses_core_dbobject
             return false;
         }
 
-        // Explicitly set this in case someone needs to check against it
         self::delete_post_ops($object);
 
-        return true;
-    }
-
-    /**
-     * Unconditionally drop all privileges assigned to the given object.
-     * Called upon successful delete
-     */
-    private static function _delete_privileges(midcom_core_dbaobject $object) : bool
-    {
-        $qb = new midgard_query_builder('midcom_core_privilege_db');
-        $qb->add_constraint('objectguid', '=', $object->guid);
-
-        foreach ($qb->execute() as $dbpriv) {
-            if (!$dbpriv->purge()) {
-                return false;
-            }
-        }
         return true;
     }
 
@@ -430,10 +416,6 @@ class midcom_baseclasses_core_dbobject
 
         $object->__object->get_by_id($id);
 
-        if ($object->id == 0) {
-            debug_add("Failed to load the record identified by {$id}, last Midgard error was:" . midcom_connection::get_error_string(), MIDCOM_LOG_INFO);
-            return false;
-        }
         if (!$object->can_do('midgard:read')) {
             debug_add("Failed to load object, read privilege on the " . $object::class . " {$object->guid} not granted for the current user.",
             MIDCOM_LOG_ERROR);
@@ -458,10 +440,6 @@ class midcom_baseclasses_core_dbobject
         }
         $object->__object->get_by_guid($guid);
 
-        if ($object->id == 0) {
-            debug_add("Failed to load the record identified by {$guid}, last Midgard error was: " . midcom_connection::get_error_string(), MIDCOM_LOG_INFO);
-            return false;
-        }
         $object->_on_loaded();
         return true;
     }
@@ -472,12 +450,8 @@ class midcom_baseclasses_core_dbobject
      */
     public static function get_by_path(midcom_core_dbaobject $object, string $path) : bool
     {
-        $object->__object->get_by_path($path);
-
-        if ($object->id == 0) {
-            return false;
-        }
-        if (!$object->can_do('midgard:read')) {
+        if (   !$object->__object->get_by_path($path)
+            || !$object->can_do('midgard:read')) {
             $object->__object = new $object->__mgdschema_class_name__;
             return false;
         }
