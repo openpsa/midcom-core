@@ -28,7 +28,7 @@ window.midcom_helper_datamanager2_autocomplete = {
     query: function(request, response) {
         var identifier = $('.ui-autocomplete-loading').attr('id').replace(/_search_input$/, ''),
             query_options_var = identifier + '_handler_options',
-            query_options = window[query_options_var],
+            query_options = {...window[query_options_var]},
             cache = $('.ui-autocomplete-loading').data('cache'),
             term = request.term;
 
@@ -50,6 +50,10 @@ window.midcom_helper_datamanager2_autocomplete = {
         }
 
         query_options.term = term;
+        // false would be sent as the string "false", which PHP treats as true
+        if (query_options.categorize_by_parent_label === false) {
+            delete query_options.categorize_by_parent_label;
+        }
         $('.ui-autocomplete-loading').removeClass('ui-autocomplete-error')
 
         $.ajax({
@@ -83,7 +87,6 @@ window.midcom_helper_datamanager2_autocomplete = {
             event.preventDefault();
         } else {
             $('#' + identifier + '_selection').val(JSON.stringify([ui.item.id]));
-            $(event.target).data('selected', ui.item.label);
         }
     },
 
@@ -100,7 +103,7 @@ window.midcom_helper_datamanager2_autocomplete = {
         var dialog_id = identifier + '_creation_dialog',
             handler_options = window[identifier + '_handler_options'],
             input = $('#' + identifier + '_search_input'),
-            create_dialog = $('<div class="autocomplete_widget_creation_dialog" id="' + dialog_id + '"><div class="autocomplete_widget_creation_dialog_content_holder"></div></div>').insertAfter(input),
+            create_dialog = $('<div class="autocomplete_widget_creation_dialog" id="' + dialog_id + '"></div>').insertAfter(input),
             create_button = $('<div class="autocomplete_widget_create_button" id="' + identifier + '_create_button"></div>').insertAfter(create_dialog);
 
         input.css({float: 'left'});
@@ -111,10 +114,10 @@ window.midcom_helper_datamanager2_autocomplete = {
                 showLabel: false
             })
             .on('click', function() {
-                var url = creation_url + '?chooser_widget_id=' + identifier;
+                var url = creation_url;
                 if (   $('#' + identifier + '_search_input').val() !== ''
-                    && handler_options.creation_default_key !== undefined) {
-                    url += '&defaults[' + handler_options.creation_default_key + ']=' + $('#' + identifier + '_search_input').val();
+                    && handler_options.creation_default_key) {
+                    url += '?defaults[' + handler_options.creation_default_key + ']=' + $('#' + identifier + '_search_input').val();
                 }
 
                 var iframe_html = '<iframe src="' + url + '" id="' + identifier + '_creation_dialog_content"'
@@ -151,15 +154,13 @@ window.midcom_helper_datamanager2_autocomplete = {
             handler_options = window[identifier + '_handler_options'],
             dm2_defaults = {
                 minLength: min_length,
-                //Don't change input field during keyboard navigation:
+                // Don't change input field during keyboard navigation:
                 focus: function(event) {
                     event.preventDefault();
                 }
             },
-            options =  $.extend(dm2_defaults, midcom_helper_datamanager2_autocomplete.get_default_options()),
-            input = $('#' + selector),
-            readonly = input.attr('type') === 'hidden',
-            selection_holder_class = 'autocomplete-selection-holder';
+            options =  $.extend(midcom_helper_datamanager2_autocomplete.get_default_options(), dm2_defaults),
+            input = $('#' + selector);
 
         function remove_item(item) {
             var animate_property = 'height',
@@ -192,12 +193,8 @@ window.midcom_helper_datamanager2_autocomplete = {
             }
         }
 
-        if (readonly) {
-            selection_holder_class += ' autocomplete-selection-holder-readonly';
-        }
-
         input.parent()
-            .append('<span class="' + selection_holder_class + '" id="' + identifier + '_selection_holder"></span>')
+            .append('<span class="autocomplete-selection-holder" id="' + identifier + '_selection_holder"></span>')
             .addClass('autocomplete-widget');
         if (handler_options.creation_mode_enabled) {
             midcom_helper_datamanager2_autocomplete.enable_creation_mode(identifier, handler_options.creation_handler);
@@ -214,9 +211,6 @@ window.midcom_helper_datamanager2_autocomplete = {
                 input.data('required', true)
             }
         });
-        if (readonly) {
-            return;
-        }
 
         if (handler_options.categorize_by_parent_label !== false) {
             input.category_complete(options);
@@ -259,10 +253,6 @@ window.midcom_helper_datamanager2_autocomplete = {
                     $("#" + identifier + "_selection").val(JSON.stringify(result));
                 }
             });
-
-            $("#" + identifier + "_search_input").on("autocompleteselect", function() {
-                $("#" + identifier + "_selection_holder").sortable("refresh");
-            });
         }
     },
 
@@ -299,9 +289,7 @@ window.midcom_helper_datamanager2_autocomplete = {
 
             status = (selected === true ? 'selected ' : 'todelete ') + status;
             item = $('<span class="autocomplete-item autocomplete-' + status + '" data-id="' + item_id + '"><span class="autocomplete-item-label" title="' + text + '">' + text + '</span></span>');
-            if (!selection_holder.hasClass('autocomplete-selection-holder-readonly')) {
-                item.append('<span class="autocomplete-action-icon"><i class="fa fa-check"></i><i class="fa fa-plus"></i><i class="fa fa-trash"></i></span>');
-            }
+            item.append('<span class="autocomplete-action-icon"><i class="fa fa-check"></i><i class="fa fa-plus"></i><i class="fa fa-trash"></i></span>');
             item.prependTo(selection_holder);
         } else if (existing_item.hasClass('autocomplete-todelete')) {
             midcom_helper_datamanager2_autocomplete.restore_item(identifier, existing_item);
